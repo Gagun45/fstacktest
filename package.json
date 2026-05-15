@@ -6,7 +6,10 @@
   "packageManager": "pnpm@11.1.2",
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "dev:api": "turbo run dev --filter=api",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:shared": "turbo run dev --filter=@repo/shared"
   },
   "keywords": [],
   "author": "",
