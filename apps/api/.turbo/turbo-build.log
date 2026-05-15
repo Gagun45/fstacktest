@@ -1,0 +1,2 @@
+[WARN] Cannot use both "packageManager" and "devEngines.packageManager" in package.json. "packageManager" will be ignored
+$ tsc
