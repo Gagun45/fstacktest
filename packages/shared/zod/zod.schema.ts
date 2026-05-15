@@ -7,4 +7,4 @@ export const userSchema = z.object({
 
 export type User = z.infer<typeof userSchema>;
 
-export const ids = [1, 2, 3, 4];
+export const ids = [6, 7, 8];

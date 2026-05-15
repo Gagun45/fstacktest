@@ -8,9 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/api/hello", (_req, res) => {
-  console.log(ids);
   res.json({
     message: "Hello from Express",
+    ids,
   });
 });
 
