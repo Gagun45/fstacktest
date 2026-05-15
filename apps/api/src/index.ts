@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload);
 app.use(
   cors({
-    origin: config.FRONTEND_URL,
+    origin: true,
     credentials: true,
   }),
 );
