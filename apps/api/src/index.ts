@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.get("/api/hello", (_req, res) => {
   res.json({
-    message: "Hello from Express",
+    message: "Hello from Express2",
     users,
   });
 });
