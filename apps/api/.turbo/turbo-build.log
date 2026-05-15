@@ -1,1 +1,5 @@
 $ tsc
+src/index.ts(12,9): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type 'RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any>>' is not assignable to parameter of type 'PathParams'.
+[ELIFECYCLE] Command failed with exit code 2.

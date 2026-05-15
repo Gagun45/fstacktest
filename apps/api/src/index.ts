@@ -1,6 +1,11 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { NextFunction, Request, Response } from "express";
+import express, {
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+} from "express";
 import fileUpload from "express-fileupload";
 import { ApiError } from "./errors/api.error.js";
 import { config } from "./configs/config.js";
@@ -9,7 +14,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload);
+app.use(fileUpload() as unknown as RequestHandler);
 app.use(
   cors({
     origin: true,
