@@ -1,7 +1,11 @@
 import { users } from "@repo/shared";
 
 export default async function Home() {
-  const res = await fetch("https://fstacktest.onrender.com/api/hello");
+  const res = await fetch("https://fstacktest.onrender.com/api/hello", {
+    next: {
+      revalidate: 10,
+    },
+  });
   const data = await res.json();
   return (
     <div>
