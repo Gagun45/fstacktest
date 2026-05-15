@@ -7,7 +7,7 @@ export const CreateUserSchema = z.object({
 
 export type CreateUserDTO = z.infer<typeof CreateUserSchema>;
 
-export const users = [1, 2];
+export const users = [1, 2, 3, 4, 5];
 
 export const API_CONFIG = {
   PORT: 4000,
