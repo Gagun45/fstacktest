@@ -2,3 +2,6 @@ node_modules
 dist
 **/.turbo
 .turbo
+
+.env.development
+.env.production

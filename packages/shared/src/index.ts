@@ -1,15 +1,23 @@
-import { z } from "zod";
+export * from "./constants/regex";
+export * from "./constants/user.roles";
 
-export const CreateUserSchema = z.object({
-  email: z.email("Invalid email format"),
-  username: z.string().min(3, "Username too short"),
-});
+export * from "./enums/enums";
 
-export type CreateUserDTO = z.infer<typeof CreateUserSchema>;
+export * from "./types/auth.types";
+export * from "./types/category.types";
+export * from "./types/general.types";
+export * from "./types/order-item.types";
+export * from "./types/order.types";
+export * from "./types/product.types";
+export * from "./types/review.types";
+export * from "./types/user.types";
 
-export const users = [1, 2, 3, 4, 5];
+export * from "./zod/auth.schema";
+export * from "./zod/category.schema";
+export * from "./zod/order-item.schema";
+export * from "./zod/order.schema";
+export * from "./zod/product.schema";
+export * from "./zod/review.schema";
+export * from "./zod/user.schema";
 
-export const API_CONFIG = {
-  PORT: 4000,
-  BASE_URL: "http://localhost:4000",
-};
+export * from "./configs/file.config";
