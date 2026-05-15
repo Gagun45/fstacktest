@@ -4,13 +4,12 @@ import express, { NextFunction, Request, Response } from "express";
 import fileUpload from "express-fileupload";
 import { ApiError } from "./errors/api.error.js";
 import { config } from "./configs/config.js";
-
 const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
+app.use(fileUpload);
 app.use(
   cors({
     origin: config.FRONTEND_URL,
