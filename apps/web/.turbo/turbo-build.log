@@ -1,29 +1,22 @@
-@tailwindcss/postcss is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\@tailwindcss+postcss@4.3.0\node_modules\@tailwindcss\postcss
-@types/node is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\@types+node@20.19.41\node_modules\@types\node
-@types/react is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\@types+react@19.2.14\node_modules\@types\react
-@types/react-dom is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\@types+react-dom@19.2.3_@types+react@19.2.14\node_modules\@types\react-dom
-tailwindcss is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\tailwindcss@4.3.0\node_modules\tailwindcss
-eslint-config-next is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\eslint-config-next@16.2.6_@_a81655bebb7bc3291ceae052ca71fc61\node_modules\eslint-config-next
-eslint is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\eslint@9.39.4_jiti@2.7.0\node_modules\eslint
-typescript is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\typescript@5.9.3\node_modules\typescript
-next is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\next@16.2.6_@babel+core@7.2_7d7ddfdd25bda7360fc181e5027d31b3\node_modules\next
-react is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\react@19.2.4\node_modules\react
-react-dom is linked to D:\CODING\fullstack-test\apps\web\node_modules from D:\CODING\fullstack-test\node_modules\.pnpm\react-dom@19.2.4_react@19.2.4\node_modules\react-dom
-[ERR_PNPM_WORKSPACE_PKG_NOT_FOUND] In : "@repo/shared@workspace:*" is in the dependencies but no package named "@repo/shared" is present in the workspace
+$ next build
+▲ Next.js 16.2.6 (Turbopack)
 
-This error happened while installing a direct dependency of D:\CODING\fullstack-test\apps\web
+  Creating an optimized production build ...
+✓ Compiled successfully in 1740ms
+  Running TypeScript ...
+  Finished TypeScript in 1356ms ...
+  Collecting page data using 5 workers ...
+  Generating static pages using 5 workers (0/4) ...
+  Generating static pages using 5 workers (1/4) 
+  Generating static pages using 5 workers (2/4) 
+  Generating static pages using 5 workers (3/4) 
+✓ Generating static pages using 5 workers (4/4) in 423ms
+  Finalizing page optimization ...
 
-Packages found in the workspace: web
-[ERROR] Command failed with exit code 1: "C:\Program Files\nodejs\node.exe" "C:\Users\Oleksandr\AppData\Roaming\npm\node_modules\pnpm\bin\pnpm.mjs" install
+Route (app)
+┌ ○ /
+└ ○ /_not-found
 
-pnpm: Command failed with exit code 1: "C:\Program Files\nodejs\node.exe" "C:\Users\Oleksandr\AppData\Roaming\npm\node_modules\pnpm\bin\pnpm.mjs" install
-    at getFinalError (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:28776:14)
-    at makeError (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:31083:21)
-    at getSyncResult (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:32927:10)
-    at spawnSubprocessSync (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:32887:14)
-    at execaCoreSync (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:32817:23)
-    at callBoundExeca (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:35345:23)
-    at boundExeca (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:35322:49)
-    at sync (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:35481:10)
-    at runPnpmCli (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:211258:5)
-    at runDepsStatusCheck (file:///C:/Users/Oleksandr/AppData/Roaming/npm/node_modules/pnpm/dist/pnpm.mjs:212964:7)
+
+○  (Static)  prerendered as static content
+

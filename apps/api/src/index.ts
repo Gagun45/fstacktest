@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { ids } from "@repo/shared";
+import { users } from "@repo/shared";
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use(express.json());
 app.get("/api/hello", (_req, res) => {
   res.json({
     message: "Hello from Express",
-    ids,
+    users,
   });
 });
 
