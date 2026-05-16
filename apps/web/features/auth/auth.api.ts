@@ -6,14 +6,12 @@ import {
   SignInDto,
   SignUpDto,
   User,
-  UserResponse,
   VerifyAccountDto,
 } from "@repo/shared";
 
 export const authService = {
   signIn: (data: SignInDto) => api.post<User>(backendUrls.auth.signIn, data),
-  signUp: (data: SignUpDto) =>
-    api.post<UserResponse>(backendUrls.auth.signUp, data),
+  signUp: (data: SignUpDto) => api.post<User>(backendUrls.auth.signUp, data),
   logout: () => api.post(backendUrls.auth.logout),
   forgotPassword: (data: ForgotPasswordDto) =>
     api.post(backendUrls.auth.forgotPassword, data),

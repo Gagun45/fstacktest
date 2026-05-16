@@ -1,4 +1,4 @@
-import { SignInDto, SignUpDto, UserResponse } from "@repo/shared";
+import { SignInDto, SignUpDto, User, UserResponse } from "@repo/shared";
 import { NextFunction, Request, Response } from "express";
 import { authService } from "../services/auth.service.js";
 import { helperMiddleware } from "../lib/helper.middleware.js";
@@ -13,9 +13,7 @@ export const authController = {
       const { tokens, user } = await authService.signUp(dto);
       helperMiddleware.setAccessTokenCookie(res, tokens.accessToken);
       helperMiddleware.setRefreshTokenCookie(res, tokens.refreshToken);
-      const response: UserResponse = {
-        user: userPresenter.toPublicUser(user),
-      };
+      const response: User = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.CREATED).json(response);
     } catch (e) {
       next(e);
@@ -27,9 +25,7 @@ export const authController = {
       const { user, tokens } = await authService.signIn(dto);
       helperMiddleware.setAccessTokenCookie(res, tokens.accessToken);
       helperMiddleware.setRefreshTokenCookie(res, tokens.refreshToken);
-      const response: UserResponse = {
-        user: userPresenter.toPublicUser(user),
-      };
+      const response: User = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);
@@ -47,9 +43,7 @@ export const authController = {
       const { user, tokens } = await authService.refresh(refreshToken);
       helperMiddleware.setAccessTokenCookie(res, tokens.accessToken);
       helperMiddleware.setRefreshTokenCookie(res, tokens.refreshToken);
-      const response: UserResponse = {
-        user: userPresenter.toPublicUser(user),
-      };
+      const response: User = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);
@@ -73,10 +67,7 @@ export const authController = {
   me: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = res.locals.currentUser;
-      const publicUser = userPresenter.toPublicUser(user);
-      const response: UserResponse = {
-        user: publicUser,
-      };
+      const response: User = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);

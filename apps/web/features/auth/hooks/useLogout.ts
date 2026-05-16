@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authService } from "../api/auth.api";
-import { frontendUrls } from "@/constants/frontend.urls";
+
 import { useRouter } from "next/navigation";
+import { authService } from "../auth.api";
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
@@ -10,7 +10,7 @@ export const useLogout = () => {
     mutationFn: authService.logout,
     onSettled: () => {
       queryClient.clear();
-      router.push(frontendUrls.home);
+      router.push("/");
       router.refresh();
     },
   });

@@ -1,22 +1,21 @@
-import { QUERY_KEYS } from "@/constants/query.keys";
+import { SignUpDto, User } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
-import { authService } from "../api/auth.api";
-import { ISignUpDto, IUserResponse } from "@evently/shared";
+import { authService } from "../auth.api";
 
 export function useSignUp() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<
-    AxiosResponse<IUserResponse>,
+    AxiosResponse<User>,
     AxiosError<ApiError>,
-    ISignUpDto
+    SignUpDto
   >({
     mutationFn: authService.signUp,
 
     onSuccess: ({ data }) => {
-      queryClient.setQueryData(QUERY_KEYS.user.me(), data);
+      queryClient.setQueryData(["me"], data);
     },
   });
   return mutation;

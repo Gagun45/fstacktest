@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SignInForm from "@/forms/auth/sign-in/SignInForm";
+import SignUpForm from "@/forms/auth/sign-up/SignUpForm";
 import { useState } from "react";
 
 enum TABS {

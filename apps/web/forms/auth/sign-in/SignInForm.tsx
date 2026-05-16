@@ -10,6 +10,7 @@ import SignInPasswordField from "./fields/PasswordField";
 import { LoadingButton } from "@/components/general/LoadingButton";
 import { authSchemas, SignInDto } from "@repo/shared";
 import { useSignIn } from "@/features/auth/hooks/useSignIn";
+import { frontendUrls } from "@/lib/frontendUrls";
 
 const SignInForm = () => {
   const { mutate, isPending } = useSignIn();
@@ -36,7 +37,7 @@ const SignInForm = () => {
         <SignInEmailField />
         <SignInPasswordField />
         <div className="flex justify-end">
-          <Link href={"/auth/forgot-password"}>Forgot password?</Link>
+          <Link href={frontendUrls.auth.forgotPassword}>Forgot password?</Link>
         </div>
 
         <LoadingButton
