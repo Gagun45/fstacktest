@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 import { Regex } from "../constants/regex";
 import { userFields } from "./user.schema";
 
