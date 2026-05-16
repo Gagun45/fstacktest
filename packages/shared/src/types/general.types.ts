@@ -1,5 +1,3 @@
-import { IDashboardEvent, IOwnEvent } from "./event.types";
-
 export type FileOptionsType = {
   maxSize: number;
   allowedMimeTypes: string[];
@@ -25,9 +23,5 @@ export interface IMessageResponse {
 export interface IFavoritedResponse {
   isFavorited: boolean;
 }
-
-export type IOwnEventsResponse = IPaginatedResponse<IOwnEvent>;
-
-export type IDashboardResponse = IPaginatedResponse<IDashboardEvent>;
 
 export type IAscDescType = "asc" | "desc";

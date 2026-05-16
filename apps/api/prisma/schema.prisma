@@ -1,0 +1,270 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ORGANIZER
+  ADMIN
+}
+
+enum ActionTokenType {
+  FORGOT_PASSWORD
+  VERIFY_ACCOUNT
+}
+
+enum CategoryType {
+  KEYBOARD
+  SWITCHES
+  KEYCAPS
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderItemStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+
+  avatar String?
+
+  name     String
+  username String  @unique
+  bio      String?
+  phone    String?
+  country  String?
+
+  isVerified Boolean @default(false)
+  isBlocked  Boolean @default(false)
+
+  role UserRole @default(USER)
+
+  lastLoginAt DateTime?
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  tokens       Token[]
+  actionTokens ActionToken[]
+
+  reviews       Review[] // as reviewer
+  sellerReviews Review[]    @relation("SellerReviews") // reviews received as seller
+  orderItems    OrderItem[]
+
+  products  Product[]  @relation("UserProducts")
+  orders    Order[]    @relation("UserOrders")
+  favorites Favorite[]
+
+  @@map("users")
+}
+
+// --- ENUMS ---
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+// --- CORE MODELS ---
+
+model Product {
+  id                Int      @id @default(autoincrement())
+  title             String
+  description       String
+  price             Float
+  stock             Int      @default(1)
+  lowStockThreshold Int      @default(5)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // NEW: Category Type Enum
+  type CategoryType
+
+  // RELATIONS: Specialized Data
+  // These are optional because a Product is ONLY one of these
+  keyboard Keyboard?
+  switches Switches?
+  keycaps  Keycaps?
+
+  // EXISTING RELATIONS
+  sellerId Int
+  seller   User @relation("UserProducts", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  orderItems OrderItem[]
+  reviews    Review[]
+  images     Image[]
+  favorites  Favorite[]
+
+  @@map("products")
+}
+
+// --- SPECIALIZED TABLES (The "DNA") ---
+
+model Keyboard {
+  id        Int     @id @default(autoincrement())
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  layout       String // e.g., "60%", "TKL"
+  caseMaterial String // e.g., "Aluminum"
+  isHotswap    Boolean @default(true)
+}
+
+model Switches {
+  id        Int     @id @default(autoincrement())
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  switchType     String // e.g., "Linear", "Tactile"
+  actuationForce Int // e.g., 45
+  brand          String
+}
+
+model Keycaps {
+  id        Int     @id @default(autoincrement())
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  profile  String // e.g., "Cherry", "XDA"
+  material String // e.g., "PBT", "ABS"
+}
+
+// --- ORDER SYSTEM ---
+
+model Order {
+  id      Int  @id @default(autoincrement())
+  buyerId Int
+  buyer   User @relation("UserOrders", fields: [buyerId], references: [id])
+
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  total         Float
+  status        OrderStatus @default(PENDING)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  items OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id      Int   @id @default(autoincrement())
+  orderId Int
+  order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  // Snapshot data (Important for history)
+  title       String
+  priceAtTime Float
+  quantity    Int
+  seller      User            @relation(fields: [sellerId], references: [id])
+  sellerId    Int
+  status      OrderItemStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("order_items")
+}
+
+model Image {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  isMain    Boolean @default(false)
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  createdAt DateTime @default(now())
+
+  @@map("images")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int      @default(5) // 1-5
+  comment   String?
+  createdAt DateTime @default(now())
+
+  // Who wrote the review
+  reviewerId Int
+  reviewer   User @relation(fields: [reviewerId], references: [id])
+
+  // Which product
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // Seller being reviewed (denormalized for easy access)
+  sellerId Int
+  seller   User @relation("SellerReviews", fields: [sellerId], references: [id])
+
+  @@unique([reviewerId, productId]) // one review per user per product
+  @@map("reviews")
+}
+
+model Token {
+  id    Int    @id @default(autoincrement())
+  token String @unique
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ActionToken {
+  id Int @id @default(autoincrement())
+
+  type  ActionTokenType
+  token String
+
+  expiresAt DateTime
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+// npx prisma migrate dev --name NAME
+// npx prisma generate

@@ -65,3 +65,5 @@ export const updateProfileSchema = z
     country,
   })
   .partial();
+
+export type UserUpdateDto = z.infer<typeof updateProfileSchema>;

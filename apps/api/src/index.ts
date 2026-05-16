@@ -9,6 +9,7 @@ import express, {
 import fileUpload from "express-fileupload";
 import { ApiError } from "./errors/api.error.js";
 import { config } from "./configs/config.js";
+import { apiRouter } from "./routers/api.router.js";
 const app = express();
 
 app.use(cookieParser());
@@ -22,9 +23,11 @@ app.use(
   }),
 );
 
+app.use("/", apiRouter);
+
 app.get("/api/hello", (_req, res) => {
   res.json({
-    message: "Hello from Express2",
+    message: "Hello from Express",
   });
 });
 

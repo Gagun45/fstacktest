@@ -11,8 +11,7 @@ export const authFields = {
     ),
 };
 
-const { bio, email, name, password, phone, username, verificationCode } =
-  userFields;
+const { email, name, password, username } = userFields;
 const { token } = authFields;
 
 export const authSchemas = {
@@ -40,3 +39,12 @@ export const authSchemas = {
     username,
   }),
 };
+
+export type SignInDto = z.infer<typeof authSchemas.signIn>;
+export type SignUpDto = z.infer<typeof authSchemas.signUp>;
+export type ForgotPasswordDto = z.infer<typeof authSchemas.forgotPassword>;
+export type ResetPasswordDto = z.infer<typeof authSchemas.resetPassword>;
+export type VerifyAccountDto = z.infer<typeof authSchemas.verifyAccount>;
+export type ResendVerificationDto = z.infer<
+  typeof authSchemas.resendVerification
+>;

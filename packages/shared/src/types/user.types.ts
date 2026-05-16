@@ -1,9 +1,6 @@
-import { z } from "zod";
-import { zodSchemas } from "../zod/zod.schemas";
 import { UserRoleEnum } from "../constants/user.roles";
 
-export type IUserUpdateDto = z.infer<typeof zodSchemas.user.updateProfile>;
-export type IUser = {
+export type User = {
   id: number;
   name: string;
   username: string;
@@ -17,6 +14,6 @@ export type IUser = {
   role: UserRoleEnum;
 };
 
-export interface IUserResponse {
-  user: IUser;
+export interface UserResponse {
+  user: User;
 }

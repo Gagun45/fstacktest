@@ -1,5 +1,3 @@
-import { IPaginatedResponse } from "./general.types";
-
 export interface IReviewResponse {
   total: number;
   reviews: IReview[];
