@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload() as unknown as RequestHandler);
 app.use(
   cors({
-    origin: true,
+    origin: config.FRONTEND_URL,
     credentials: true,
   }),
 );

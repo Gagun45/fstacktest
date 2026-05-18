@@ -1,14 +1,25 @@
 $ next build
-▲ Next.js 16.2.6 (Turbopack)
+▲ Next.js 16.2.1 (Turbopack)
 - Environments: .env.production
 
   Creating an optimized production build ...
-✓ Compiled successfully in 1988ms
+✓ Compiled successfully in 2.9s
   Running TypeScript ...
-  Finished TypeScript in 1468ms ...
-  Collecting page data using 5 workers ...
-  Generating static pages using 5 workers (0/4) ...
+  Finished TypeScript in 3.4s ...
+  Collecting page data using 6 workers ...
+  Generating static pages using 6 workers (0/5) ...
 https://fstacktest.onrender.com
-  Generating static pages using 5 workers (1/4) 
-  Generating static pages using 5 workers (2/4) 
-  Generating static pages using 5 workers (3/4) 
+  Generating static pages using 6 workers (1/5) 
+  Generating static pages using 6 workers (2/5) 
+  Generating static pages using 6 workers (3/5) 
+✓ Generating static pages using 6 workers (5/5) in 695ms
+  Finalizing page optimization ...
+
+Route (app)      Revalidate  Expire
+┌ ○ /                   15s      1y
+├ ○ /_not-found
+└ ○ /auth
+
+
+○  (Static)  prerendered as static content
+
