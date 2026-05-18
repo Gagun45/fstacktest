@@ -9,4 +9,7 @@ export const backendUrls = {
     resetPassword: "auth/reset-password",
     verifyAccount: "auth/verify-account",
   },
+  products: {
+    dashboardCards: "products",
+  },
 };
