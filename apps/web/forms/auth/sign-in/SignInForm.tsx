@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import SignInEmailField from "./fields/EmailField";
 import SignInPasswordField from "./fields/PasswordField";
 import { LoadingButton } from "@/components/general/LoadingButton";
-import { authSchemas, SignInDto } from "@repo/shared";
+import { authSchemas, ISignInDto } from "@repo/shared";
 import { useSignIn } from "@/features/auth/hooks/useSignIn";
 import { frontendUrls } from "@/lib/frontendUrls";
 
@@ -16,14 +16,14 @@ const SignInForm = () => {
   const { mutate, isPending } = useSignIn();
   const router = useRouter();
   const schema = authSchemas.signIn;
-  const form = useForm<SignInDto>({
+  const form = useForm<ISignInDto>({
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
-  const onSubmit = async (formData: SignInDto) => {
+  const onSubmit = async (formData: ISignInDto) => {
     mutate(formData, {
       onSuccess: () => {
         router.push("/");

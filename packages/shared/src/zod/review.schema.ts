@@ -11,4 +11,4 @@ export const reviewSchema = z.object({
 });
 
 // 2. Export types derived from the schemas
-export type CreateReviewDto = z.infer<typeof reviewSchema>;
+export type ICreateReviewDto = z.infer<typeof reviewSchema>;

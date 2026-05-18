@@ -4,4 +4,4 @@ export const categorySchema = z.object({
   name: z.string().min(2).max(100),
 });
 
-export type CategoryDto = z.infer<typeof categorySchema>;
+export type ICategoryDto = z.infer<typeof categorySchema>;

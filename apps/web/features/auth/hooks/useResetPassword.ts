@@ -1,4 +1,4 @@
-import { IMessageResponse, ResetPasswordDto } from "@repo/shared";
+import { IMessageResponse, IResetPasswordDto } from "@repo/shared";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
@@ -8,7 +8,7 @@ export function useResetPassword() {
   const mutation = useMutation<
     AxiosResponse<IMessageResponse>,
     AxiosError<ApiError>,
-    ResetPasswordDto
+    IResetPasswordDto
   >({
     mutationFn: authService.resetPassword,
   });

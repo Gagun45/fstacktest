@@ -8,11 +8,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { User } from "@repo/shared";
+import { IUser } from "@repo/shared";
 import Link from "next/link";
 
 interface Props {
-  user: User;
+  user: IUser;
 }
 
 const HeaderUserMenu = ({ user }: Props) => {

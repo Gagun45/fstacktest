@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { User as IUser, UserRoleEnum } from "@repo/shared";
+import { IUser, UserRoleEnum } from "@repo/shared";
 import { config } from "../configs/config.js";
 
 export const userPresenter = {

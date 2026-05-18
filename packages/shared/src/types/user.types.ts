@@ -1,6 +1,6 @@
 import { UserRoleEnum } from "../constants/user.roles";
 
-export type User = {
+export type IUser = {
   id: number;
   name: string;
   username: string;
@@ -14,6 +14,6 @@ export type User = {
   role: UserRoleEnum;
 };
 
-export interface UserResponse {
-  user: User;
+export interface IUserResponse {
+  user: IUser;
 }

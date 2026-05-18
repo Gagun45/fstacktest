@@ -12,10 +12,10 @@ import { EmailTypeEnum } from "../enums/email-types.enum.js";
 import { userService } from "./user.service.js";
 import { TokenTypesEnum } from "../enums/token-types.enum.js";
 import { tokenRepository } from "../repositories/token.repository.js";
-import { SignInDto, SignUpDto } from "@repo/shared";
+import { ISignInDto, ISignUpDto } from "@repo/shared";
 
 export const authService = {
-  signUp: async (dto: SignUpDto) => {
+  signUp: async (dto: ISignUpDto) => {
     const existingUser = await userRepository.findFirst({
       where: {
         OR: [{ email: dto.email }, { username: dto.username }],
@@ -49,7 +49,7 @@ export const authService = {
     });
     return { user: newUser, tokens };
   },
-  signIn: async (dto: SignInDto) => {
+  signIn: async (dto: ISignInDto) => {
     const user = await userRepository.findFirst({
       where: {
         email: dto.email,

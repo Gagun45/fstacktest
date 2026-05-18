@@ -1,22 +1,22 @@
 import { api } from "@/axios/axios";
 import { backendUrls } from "@/lib/backend.urls";
 import {
-  ForgotPasswordDto,
-  ResetPasswordDto,
-  SignInDto,
-  SignUpDto,
-  User,
-  VerifyAccountDto,
+  IForgotPasswordDto,
+  IResetPasswordDto,
+  ISignInDto,
+  ISignUpDto,
+  IUser,
+  IVerifyAccountDto,
 } from "@repo/shared";
 
 export const authService = {
-  signIn: (data: SignInDto) => api.post<User>(backendUrls.auth.signIn, data),
-  signUp: (data: SignUpDto) => api.post<User>(backendUrls.auth.signUp, data),
+  signIn: (data: ISignInDto) => api.post<IUser>(backendUrls.auth.signIn, data),
+  signUp: (data: ISignUpDto) => api.post<IUser>(backendUrls.auth.signUp, data),
   logout: () => api.post(backendUrls.auth.logout),
-  forgotPassword: (data: ForgotPasswordDto) =>
+  forgotPassword: (data: IForgotPasswordDto) =>
     api.post(backendUrls.auth.forgotPassword, data),
-  resetPassword: (data: ResetPasswordDto) =>
+  resetPassword: (data: IResetPasswordDto) =>
     api.post(backendUrls.auth.resetPassword, data),
-  verifyAccount: (data: VerifyAccountDto) =>
+  verifyAccount: (data: IVerifyAccountDto) =>
     api.post(backendUrls.auth.verifyAccount, data),
 };

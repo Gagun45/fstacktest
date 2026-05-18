@@ -7,7 +7,7 @@ import SignUpNameField from "./fields/NameField";
 import SignUpPasswordField from "./fields/PasswordField";
 import SignUpUsernameField from "./fields/UsernameField";
 import { frontendUrls } from "@/lib/frontendUrls";
-import { authSchemas, SignUpDto } from "@repo/shared";
+import { authSchemas, ISignUpDto } from "@repo/shared";
 import { LoadingButton } from "@/components/general/LoadingButton";
 import { toast } from "sonner";
 
@@ -15,7 +15,7 @@ const SignUpForm = () => {
   const { mutate, isPending } = useSignUp();
   const router = useRouter();
   const schema = authSchemas.signUp;
-  const form = useForm<SignUpDto>({
+  const form = useForm<ISignUpDto>({
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
@@ -24,7 +24,7 @@ const SignUpForm = () => {
       username: "",
     },
   });
-  const onSubmit = async (formData: SignUpDto) => {
+  const onSubmit = async (formData: ISignUpDto) => {
     mutate(formData, {
       onSuccess: () => {
         toast.success("Logged in!");

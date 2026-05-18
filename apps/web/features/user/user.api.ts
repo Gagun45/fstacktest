@@ -1,9 +1,9 @@
 import { api } from "@/axios/axios";
 import { backendUrls } from "@/lib/backend.urls";
-import { User } from "@repo/shared";
+import { IUser } from "@repo/shared";
 
 export const userService = {
-  me: () => api.get<User>(backendUrls.auth.me),
+  me: () => api.get<IUser>(backendUrls.auth.me),
   //   uploadAvatar: (formData: FormData) => {
   //     return api.patch<UserResponse>(backendUrls..me.avatar, formData, {
   //       headers: {

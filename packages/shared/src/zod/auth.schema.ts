@@ -40,11 +40,11 @@ export const authSchemas = {
   }),
 };
 
-export type SignInDto = z.infer<typeof authSchemas.signIn>;
-export type SignUpDto = z.infer<typeof authSchemas.signUp>;
-export type ForgotPasswordDto = z.infer<typeof authSchemas.forgotPassword>;
-export type ResetPasswordDto = z.infer<typeof authSchemas.resetPassword>;
-export type VerifyAccountDto = z.infer<typeof authSchemas.verifyAccount>;
-export type ResendVerificationDto = z.infer<
+export type ISignInDto = z.infer<typeof authSchemas.signIn>;
+export type ISignUpDto = z.infer<typeof authSchemas.signUp>;
+export type IForgotPasswordDto = z.infer<typeof authSchemas.forgotPassword>;
+export type IResetPasswordDto = z.infer<typeof authSchemas.resetPassword>;
+export type IVerifyAccountDto = z.infer<typeof authSchemas.verifyAccount>;
+export type IResendVerificationDto = z.infer<
   typeof authSchemas.resendVerification
 >;

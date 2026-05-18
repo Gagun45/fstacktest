@@ -101,5 +101,5 @@ export const updateProductSchema = z.discriminatedUnion("type", [
 // ==========================================
 // 4. Inferred TypeScript Types
 // ==========================================
-export type CreateProductDto = z.infer<typeof productSchema>;
-export type UpdateProductDto = z.infer<typeof updateProductSchema>;
+export type ICreateProductDto = z.infer<typeof productSchema>;
+export type IUpdateProductDto = z.infer<typeof updateProductSchema>;
