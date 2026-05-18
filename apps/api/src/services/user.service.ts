@@ -1,14 +1,14 @@
 import { User } from "@prisma/client";
 import { UploadedFile } from "express-fileupload";
 import { userRepository } from "../repositories/user.repository.js";
-import { COUNTRIES, SignUpDto, UserUpdateDto } from "@repo/shared";
+import { COUNTRIES, ISignUpDto, IUserUpdateDto } from "@repo/shared";
 import { ApiError } from "../errors/api.error.js";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { s3Service } from "./s3.service.js";
 import { S3Folder } from "../enums/s3-folder.enum.js";
 
 export const userService = {
-  create: (dto: SignUpDto) => {
+  create: (dto: ISignUpDto) => {
     return userRepository.create({ data: dto });
   },
   uploadAvatar: async (userId: number, file: UploadedFile): Promise<User> => {
@@ -35,7 +35,7 @@ export const userService = {
     if (oldAvatar) await s3Service.deleteFile(oldAvatar);
     return updatedUser;
   },
-  updateProfile: async (userId: number, dto: UserUpdateDto): Promise<User> => {
+  updateProfile: async (userId: number, dto: IUserUpdateDto): Promise<User> => {
     if (dto.country) {
       const existingCountry = COUNTRIES.find(
         (c) => c.toLowerCase() === dto.country?.toLowerCase(),

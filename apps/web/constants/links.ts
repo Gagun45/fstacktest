@@ -8,25 +8,29 @@ export const PUBLIC_LINKS: ILink[] = [
 ];
 export const USER_LINKS: ILink[] = [
   {
-    href: "/orders",
-    label: "My orders",
+    href: "/products",
+    label: "All products",
   },
+  // {
+  //   href: "/orders",
+  //   label: "My orders",
+  // },
+  // {
+  //   href: "/favorites",
+  //   label: "My favorites",
+  // },
+  // {
+  //   href: "/my-products",
+  //   label: "My products",
+  // },
   {
-    href: "/favorites",
-    label: "My favorites",
-  },
-  {
-    href: "/my-products",
-    label: "My products",
-  },
-  {
-    href: "/my-products/add",
+    href: "/products/create",
     label: "Add product",
   },
-  {
-    href: "/my-sales",
-    label: "My sales",
-  },
+  // {
+  //   href: "/my-sales",
+  //   label: "My sales",
+  // },
 ];
 export const ORGANIZER_LINKS: ILink[] = [];
 

@@ -1,19 +1,19 @@
-import { SignInDto, SignUpDto, User, UserResponse } from "@repo/shared";
 import { NextFunction, Request, Response } from "express";
 import { authService } from "../services/auth.service.js";
 import { helperMiddleware } from "../lib/helper.middleware.js";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { userPresenter } from "../presenters/user.presenter.js";
 import { ApiError } from "../errors/api.error.js";
+import { ISignInDto, ISignUpDto, IUser } from "@repo/shared";
 
 export const authController = {
   signUp: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const dto = req.body as SignUpDto;
+      const dto = req.body as ISignUpDto;
       const { tokens, user } = await authService.signUp(dto);
       helperMiddleware.setAccessTokenCookie(res, tokens.accessToken);
       helperMiddleware.setRefreshTokenCookie(res, tokens.refreshToken);
-      const response: User = userPresenter.toPublicUser(user);
+      const response: IUser = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.CREATED).json(response);
     } catch (e) {
       next(e);
@@ -21,11 +21,11 @@ export const authController = {
   },
   signIn: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const dto = req.body as SignInDto;
+      const dto = req.body as ISignInDto;
       const { user, tokens } = await authService.signIn(dto);
       helperMiddleware.setAccessTokenCookie(res, tokens.accessToken);
       helperMiddleware.setRefreshTokenCookie(res, tokens.refreshToken);
-      const response: User = userPresenter.toPublicUser(user);
+      const response: IUser = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);
@@ -43,7 +43,7 @@ export const authController = {
       const { user, tokens } = await authService.refresh(refreshToken);
       helperMiddleware.setAccessTokenCookie(res, tokens.accessToken);
       helperMiddleware.setRefreshTokenCookie(res, tokens.refreshToken);
-      const response: User = userPresenter.toPublicUser(user);
+      const response: IUser = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);
@@ -67,7 +67,7 @@ export const authController = {
   me: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = res.locals.currentUser;
-      const response: User = userPresenter.toPublicUser(user);
+      const response: IUser = userPresenter.toPublicUser(user);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);

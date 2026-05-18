@@ -6,4 +6,4 @@ export const orderItemStatusSchema = z.object({
 });
 
 // Rename to UpdateOrderItemStatusDto if used exclusively for updates
-export type OrderItemStatusDto = z.infer<typeof orderItemStatusSchema>;
+export type IOrderItemStatusDto = z.infer<typeof orderItemStatusSchema>;

@@ -4,6 +4,11 @@ export const frontendUrls = {
     forgotPassword: "/auth/forgot-password",
     resetPassword: "/auth/reset-password",
   },
+  products: {
+    all: "/products",
+    create: "/products/create",
+    details: (productId: number) => `/products/${productId}`,
+  },
   organizer: {
     addEvent: "/organizer/add-event",
     ownEvents: "/organizer/own-events",

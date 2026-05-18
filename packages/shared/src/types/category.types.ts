@@ -1,8 +1,8 @@
-export interface Category {
+export interface ICategory {
   id: number;
   category: string;
 }
 
-export interface CategoryResponse {
-  categories: Category[];
+export interface ICategoryResponse {
+  categories: ICategory[];
 }

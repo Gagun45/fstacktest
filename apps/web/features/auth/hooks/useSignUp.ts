@@ -1,4 +1,4 @@
-import { SignUpDto, User } from "@repo/shared";
+import { ISignUpDto, IUser } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
@@ -8,9 +8,9 @@ export function useSignUp() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<
-    AxiosResponse<User>,
+    AxiosResponse<IUser>,
     AxiosError<ApiError>,
-    SignUpDto
+    ISignUpDto
   >({
     mutationFn: authService.signUp,
 

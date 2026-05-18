@@ -31,31 +31,14 @@ export type IProductCard = IBaseProduct & {
 
 export type IMyProduct = IProductCard & {
   totalSold: number;
+  lowStockThreshold: number;
 };
 
-export interface IProductDetails {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  stock: number;
-  lowStockThreshold: number;
-  images:
-    | {
-        id: number;
-        url: string;
-        isMain: boolean;
-      }[]
-    | null;
-  seller: {
-    id: number;
-    username: string;
-  };
-  type: IProductType;
+export type IProductDetails = IProductCard & {
   keyboard: IKeyboard | null;
   switches: ISwitches | null;
   keycaps: IKeycaps | null;
-}
+};
 
 export interface IKeyboard {
   id: number;

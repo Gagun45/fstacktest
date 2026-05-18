@@ -9,4 +9,9 @@ export const backendUrls = {
     resetPassword: "auth/reset-password",
     verifyAccount: "auth/verify-account",
   },
+  products: {
+    all: "products",
+    create: "products",
+    detailsById: (productId: number) => `products/${productId}/details`,
+  },
 };

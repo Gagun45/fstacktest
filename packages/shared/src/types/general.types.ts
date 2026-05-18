@@ -1,3 +1,5 @@
+import { IProductCard } from "./product.types";
+
 export type FileOptionsType = {
   maxSize: number;
   allowedMimeTypes: string[];
@@ -23,5 +25,7 @@ export interface IMessageResponse {
 export interface IFavoritedResponse {
   isFavorited: boolean;
 }
+
+export type IDashboardResponse = IPaginatedResponse<IProductCard>;
 
 export type IAscDescType = "asc" | "desc";

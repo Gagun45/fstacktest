@@ -1,10 +1,10 @@
 import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { SignUpDto } from "@repo/shared";
+import { ISignUpDto } from "@repo/shared";
 import { Controller, useFormContext } from "react-hook-form";
 
 const SignUpEmailField = () => {
-  const form = useFormContext<SignUpDto>();
+  const form = useFormContext<ISignUpDto>();
   return (
     <Controller
       name="email"

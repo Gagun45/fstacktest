@@ -66,4 +66,4 @@ export const updateProfileSchema = z
   })
   .partial();
 
-export type UserUpdateDto = z.infer<typeof updateProfileSchema>;
+export type IUserUpdateDto = z.infer<typeof updateProfileSchema>;

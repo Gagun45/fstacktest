@@ -1,5 +1,6 @@
 "use client";
 
+import ThemeToggle from "../theme-toggle/ThemeToggle";
 import { SidebarTrigger } from "../ui/sidebar";
 import HeaderAuthSection from "./auth-section/HeaderAuthSection";
 
@@ -11,7 +12,7 @@ const Header = () => {
     >
       {/* <NotificationProvider /> */}
       <SidebarTrigger className="dark:text-foreground" />
-      {/* <ThemeToggle /> */}
+      <ThemeToggle />
       <div className="flex items-center ml-auto gap-4">
         <HeaderAuthSection />
       </div>

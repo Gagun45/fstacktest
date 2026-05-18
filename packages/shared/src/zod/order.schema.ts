@@ -19,6 +19,6 @@ export const checkoutSchema = z.object({
 });
 
 // PascalCase naming without the "I" prefix
-export type OrderItemDto = z.infer<typeof orderItemSchema>;
-export type CustomerInfoDto = z.infer<typeof customerInfoSchema>;
-export type CheckoutDto = z.infer<typeof checkoutSchema>;
+export type IOrderItemDto = z.infer<typeof orderItemSchema>;
+export type ICustomerInfoDto = z.infer<typeof customerInfoSchema>;
+export type ICheckoutDto = z.infer<typeof checkoutSchema>;
