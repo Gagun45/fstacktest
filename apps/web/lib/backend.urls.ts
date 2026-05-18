@@ -10,6 +10,8 @@ export const backendUrls = {
     verifyAccount: "auth/verify-account",
   },
   products: {
-    dashboardCards: "products",
+    all: "products",
+    create: "products",
+    detailsById: (productId: number) => `products/${productId}/details`,
   },
 };

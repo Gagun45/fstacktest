@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { frontendUrls } from "@/lib/frontendUrls";
 import { useAppDispatch, useAppSelector } from "@/redux";
 import { addToCart, removeFromCart } from "@/redux/slices/cart-slice";
 import { IProductCard } from "@repo/shared";
+import Link from "next/link";
 
 interface Props {
   product: IProductCard;
@@ -29,6 +31,7 @@ const DashboardCard = ({ product }: Props) => {
       ) : (
         <p>OUT OF STOCK</p>
       )}
+      <Link href={frontendUrls.products.details(product.id)}>Go to</Link>
     </div>
   );
 };

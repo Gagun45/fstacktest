@@ -1,10 +1,14 @@
-import { Prisma } from "@prisma/client";
-import { IPrismaProductCard } from "../lib/prisma.args.js";
-import { IBaseProduct, IProductCard } from "@repo/shared";
+import { IProductCard, IProductDetails } from "@repo/shared";
 import { config } from "../configs/config.js";
+import {
+  IPrismaProductCard,
+  IPrismaProductDetails,
+} from "../lib/prisma.args.js";
 
 export const productPresenter = {
-  toProductCard: (product: IPrismaProductCard): IProductCard => {
+  toProductCard: (
+    product: IPrismaProductCard | IPrismaProductDetails,
+  ): IProductCard => {
     return {
       id: product.id,
       images: product.images.map((img) => ({
@@ -23,6 +27,14 @@ export const productPresenter = {
       },
       rating: product.reviews.reduce((sum, i) => sum + i.rating, 0),
       totalReviews: product.reviews.length,
+    };
+  },
+  toProductDetails: (product: IPrismaProductDetails): IProductDetails => {
+    return {
+      ...productPresenter.toProductCard(product),
+      keyboard: product.keyboard,
+      keycaps: product.keycaps,
+      switches: product.switches,
     };
   },
 };

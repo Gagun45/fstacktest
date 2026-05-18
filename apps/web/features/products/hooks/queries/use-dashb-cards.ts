@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { productService } from "../products.api";
+import { productService } from "../../products.api";
 import { IDashboardResponse, IProductQueryDto } from "@repo/shared";
 
-export const useDashboardCards = (params: IProductQueryDto) => {
+export const useGetDashboardCards = (params: IProductQueryDto) => {
   return useInfiniteQuery({
     queryKey: ["products", params],
     queryFn: async ({ pageParam = 1 }) => {
