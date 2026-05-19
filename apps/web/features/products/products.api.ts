@@ -5,7 +5,6 @@ import {
   IDashboardResponse,
   IMyProduct,
   IMyProductsResponse,
-  IProductCard,
   IProductDetails,
   IProductQueryDto,
   IUpdateProductDto,
@@ -23,7 +22,7 @@ export const productService = {
   getMyById: (productId: number) =>
     api.get<IMyProduct>(backendUrls.products.myById(productId)),
   create: (dto: ICreateProductDto) =>
-    api.post<IProductCard>(backendUrls.products.create, dto),
+    api.post<IProductDetails>(backendUrls.products.create, dto),
   update: ({ dto, productId }: { dto: IUpdateProductDto; productId: number }) =>
     api.patch<IMyProduct>(backendUrls.products.update(productId), dto),
   detailsById: (productId: number) =>

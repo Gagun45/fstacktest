@@ -1,7 +1,6 @@
 "use client";
 
 import { useCreateProduct } from "@/features/products/hooks/mutations/useCreateProduct";
-import ProductForm from "@/forms/product/create-edit/ProductForm";
 import CreateProductForm from "@/forms/product/create/CreateProductForm";
 import { frontendUrls } from "@/lib/frontendUrls";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,10 +37,9 @@ const AddProduct = () => {
 
   const handleSubmit = async (dto: ICreateProductDto) => {
     mutate(dto, {
-      onSuccess: () => {
-        form.reset();
+      onSuccess: ({ data: product }) => {
         toast.success("Product created");
-        router.push(frontendUrls.products.all);
+        router.push(frontendUrls.products.details(product.id));
       },
       onError: (e) => {
         const msg = e.response?.data.message ?? "Something went wrong";

@@ -1,8 +1,8 @@
 import { useUpdateProduct } from "@/features/products/hooks/mutations/useUpdateProduct";
 import EditProductForm from "@/forms/product/edit/EditProductForm";
+import { frontendUrls } from "@/lib/frontendUrls";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ICreateProductDto,
   IMyProduct,
   IUpdateProductDto,
   updateProductSchema,
@@ -42,10 +42,11 @@ const EditProductComponent = ({ product }: Props) => {
       {
         onSuccess: (_, { productId }) => {
           toast.success("Product edited successfully");
-          router.push(`/products/${productId}`);
+          router.push(frontendUrls.products.details(productId));
         },
         onError: (e) => {
-          toast.error(e.response?.data.message ?? "qwe");
+          const msg = e.response?.data.message ?? "Something went wrong";
+          toast.error(msg);
         },
       },
     );

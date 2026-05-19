@@ -21,12 +21,12 @@ const renderTemplate = async <T extends EmailTypeEnum>(
   context: EmailContextType[T],
 ) => {
   const layoutSourse = await fs.readFile(
-    path.join(process.cwd(), "templates", "base.hbs"),
+    path.join(process.cwd(), "src", "templates", "base.hbs"),
     "utf-8",
   );
   const layoutTemplate = handlebars.compile(layoutSourse);
   const templateSource = await fs.readFile(
-    path.join(process.cwd(), "templates", `${templateName}.hbs`),
+    path.join(process.cwd(), "src", "templates", `${templateName}.hbs`),
     "utf-8",
   );
   const childTemplate = handlebars.compile(templateSource);

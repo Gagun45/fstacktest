@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../products.api";
 import { IProductQueryDto } from "@repo/shared";
+import { productKeys } from "../../lib/product.keys";
 
 export const useMyProducts = (query: IProductQueryDto) => {
   return useQuery({
-    queryKey: ["products", "my", query],
+    queryKey: productKeys.myList(query),
     queryFn: async () => {
       const { data } = await productService.getMy(query);
       return data;

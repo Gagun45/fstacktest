@@ -1,7 +1,7 @@
 "use client";
 
 import Loader from "@/components/general/Loader";
-import { useProductDetails } from "@/features/products/hooks/queries/use-prod-details";
+import { useProductDetails } from "@/features/products/hooks/queries/use-product-details";
 import Image from "next/image";
 
 interface Props {

@@ -50,7 +50,7 @@ export const productService = {
     const data = buildCreateProduct(dto, sellerId);
     const newCard = await productRepository.create({
       data,
-      ...productCardArgs,
+      ...productDetailsArgs,
     });
     return newCard;
   },
@@ -121,7 +121,7 @@ export const productService = {
     userId: number,
     productId: number,
     dto: IUpdateProductDto,
-  ): Promise<IPrismaMyProduct> => {
+  ): Promise<IPrismaProductDetails> => {
     const { removeImageIds, addImages, ...rest } = dto;
 
     const product = await productRepository.findUnique({
@@ -171,18 +171,12 @@ export const productService = {
         : null,
     ]);
     const updateData = buildUpdateProduct(rest);
-    const [updatedProduct, totalSold] = await Promise.all([
-      productRepository.update({
-        where: { id: productId },
-        data: updateData,
-        ...productDetailsArgs,
-      }),
-      orderItemService.getTotalSold(productId),
-    ]);
+    const updatedProduct = await productRepository.update({
+      where: { id: productId },
+      data: updateData,
+      ...productDetailsArgs,
+    });
 
-    return {
-      ...updatedProduct,
-      totalSold,
-    };
+    return updatedProduct;
   },
 };

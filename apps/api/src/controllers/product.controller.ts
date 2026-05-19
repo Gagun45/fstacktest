@@ -33,7 +33,7 @@ export const productController = {
 
       const sellerId = res.locals.currentUserId;
       const card = await productService.create(sellerId, dto);
-      const response: IProductCard = productPresenter.toProductCard(card);
+      const response: IProductDetails = productPresenter.toProductDetails(card);
 
       res.status(StatusCodesEnum.CREATED).json(response);
     } catch (e) {
@@ -50,7 +50,8 @@ export const productController = {
         productId,
         dto,
       );
-      const response: IMyProduct = productPresenter.toMyProduct(updatedProduct);
+      const response: IProductDetails =
+        productPresenter.toProductDetails(updatedProduct);
 
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {

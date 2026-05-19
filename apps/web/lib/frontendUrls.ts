@@ -8,6 +8,7 @@ export const frontendUrls = {
     all: "/products",
     my: "/my-products",
     create: "/products/create",
+    edit: (productId: number) => `/products/${productId}/edit`,
     details: (productId: number) => `/products/${productId}`,
   },
   organizer: {
