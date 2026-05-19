@@ -1,8 +1,5 @@
 import { IPaginatedResponse } from "./general.types";
 
-export type IProductsResponse = IPaginatedResponse<IProductCard>;
-export type IMyProductsResponse = IPaginatedResponse<IMyProduct>;
-
 export const PRODUCT_TYPES = ["KEYBOARD", "SWITCHES", "KEYCAPS"] as const;
 
 export type IProductType = (typeof PRODUCT_TYPES)[number];

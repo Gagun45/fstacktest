@@ -1,4 +1,4 @@
-import { IProductCard } from "./product.types";
+import { IMyProduct, IProductCard } from "./product.types";
 
 export type FileOptionsType = {
   maxSize: number;
@@ -27,5 +27,8 @@ export interface IFavoritedResponse {
 }
 
 export type IDashboardResponse = IPaginatedResponse<IProductCard>;
+
+export type IProductsResponse = IPaginatedResponse<IProductCard>;
+export type IMyProductsResponse = IPaginatedResponse<IMyProduct>;
 
 export type IAscDescType = "asc" | "desc";

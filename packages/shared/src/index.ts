@@ -21,5 +21,3 @@ export * from "./zod/review.schema";
 export * from "./zod/user.schema";
 
 export * from "./configs/file.config";
-
-export const id = [1, 2, 3, 4];

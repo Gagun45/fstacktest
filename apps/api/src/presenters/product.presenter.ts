@@ -1,6 +1,7 @@
-import { IProductCard, IProductDetails } from "@repo/shared";
+import { IMyProduct, IProductCard, IProductDetails } from "@repo/shared";
 import { config } from "../configs/config.js";
 import {
+  IPrismaMyProduct,
   IPrismaProductCard,
   IPrismaProductDetails,
 } from "../lib/prisma.args.js";
@@ -35,6 +36,13 @@ export const productPresenter = {
       keyboard: product.keyboard,
       keycaps: product.keycaps,
       switches: product.switches,
+    };
+  },
+  toMyProduct: (product: IPrismaMyProduct): IMyProduct => {
+    return {
+      ...productPresenter.toProductDetails(product),
+      lowStockThreshold: product.lowStockThreshold,
+      totalSold: product.totalSold,
     };
   },
 };
