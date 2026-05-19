@@ -76,6 +76,12 @@ export const buildCreateProduct = (
     price: dto.price,
     stock: dto.stock,
     type: dto.type,
+    images: {
+      create: dto.images?.map((img) => ({
+        url: img.url,
+        key: img.key,
+      })),
+    },
     seller: {
       connect: { id: sellerId },
     },

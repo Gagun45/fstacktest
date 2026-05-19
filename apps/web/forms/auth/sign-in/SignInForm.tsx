@@ -29,6 +29,10 @@ const SignInForm = () => {
         router.push("/");
         toast.success("Signed in!");
       },
+      onError: (e) => {
+        const msg = e.response?.data.message ?? "Something went wrong";
+        toast.error(msg);
+      },
     });
   };
   return (

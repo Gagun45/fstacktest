@@ -12,6 +12,10 @@ export const backendUrls = {
   products: {
     all: "products",
     create: "products",
+    my: "products/me",
+    getUploadUrl: "products/upload-url",
+    myById: (productId: number) => `products/me/${productId}`,
     detailsById: (productId: number) => `products/${productId}/details`,
+    update: (productId: number) => `products/${productId}`,
   },
 };

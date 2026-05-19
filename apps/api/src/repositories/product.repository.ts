@@ -11,7 +11,7 @@ export const productRepository = {
     args: Prisma.SelectSubset<T, Prisma.ProductFindUniqueArgs>,
   ): Promise<Prisma.ProductGetPayload<T> | null> =>
     prisma.product.findUnique(args),
-  findManyNew: <T extends Prisma.ProductFindManyArgs>(
+  findMany: <T extends Prisma.ProductFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.ProductFindManyArgs>,
   ): Promise<Prisma.ProductGetPayload<T>[]> => prisma.product.findMany(args),
   count: (args?: Prisma.ProductCountArgs): Promise<number> =>

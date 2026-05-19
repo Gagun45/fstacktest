@@ -1,8 +1,5 @@
 import { IPaginatedResponse } from "./general.types";
 
-export type IProductsResponse = IPaginatedResponse<IProductCard>;
-export type IMyProductsResponse = IPaginatedResponse<IMyProduct>;
-
 export const PRODUCT_TYPES = ["KEYBOARD", "SWITCHES", "KEYCAPS"] as const;
 
 export type IProductType = (typeof PRODUCT_TYPES)[number];
@@ -14,30 +11,34 @@ export interface IBaseProduct {
   type: IProductType;
   price: number;
   stock: number;
-  images: {
-    id: number;
-    url: string;
-    isMain: boolean;
-  }[];
+  images: IExistingImage[];
   seller: {
     id: number;
     username: string;
   };
 }
+
+export interface IExistingImage {
+  id: number;
+  url: string;
+  key: string;
+  order: number;
+}
+
 export type IProductCard = IBaseProduct & {
   rating: number;
   totalReviews: number;
-};
-
-export type IMyProduct = IProductCard & {
-  totalSold: number;
-  lowStockThreshold: number;
 };
 
 export type IProductDetails = IProductCard & {
   keyboard: IKeyboard | null;
   switches: ISwitches | null;
   keycaps: IKeycaps | null;
+};
+
+export type IMyProduct = IProductDetails & {
+  totalSold: number;
+  lowStockThreshold: number;
 };
 
 export interface IKeyboard {

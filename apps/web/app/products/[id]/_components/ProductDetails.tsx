@@ -2,6 +2,7 @@
 
 import Loader from "@/components/general/Loader";
 import { useProductDetails } from "@/features/products/hooks/queries/use-prod-details";
+import Image from "next/image";
 
 interface Props {
   id: number;
@@ -16,6 +17,13 @@ const ProductDetails = ({ id }: Props) => {
       <h1>Product details page</h1>
       <h2>Title: {product.title}</h2>
       <p>Seller: {product.seller.username}</p>
+      <div className="flex flex-wrap gap-4">
+        {product.images.map((img) => (
+          <div key={img.id} className="size-24 relative">
+            <Image src={img.url} fill alt="" />
+          </div>
+        ))}
+      </div>
       {/* <ProductReviews id={id} />
       <NewReview productId={product.id} /> */}
     </div>

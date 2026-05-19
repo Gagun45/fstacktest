@@ -10,6 +10,7 @@ import { ProductTypeSelect } from "../shared-fields/fields/ProductTypeSelect";
 import KeyboardFields from "../shared-fields/fields/KeyboardFields";
 import SwitchFields from "../shared-fields/fields/SwitchesFields";
 import KeycapFields from "../shared-fields/fields/KeycapsFields";
+import CreateImageUploader from "./CreateImageUploader";
 
 interface Props {
   form: UseFormReturn<ICreateProductDto>;
@@ -27,7 +28,7 @@ const CreateProductForm = ({ form, onSubmit, isPending, onReset }: Props) => {
         <FieldSet disabled={isPending}>
           <BaseFields />
 
-          {/* <CreateImageUploader /> */}
+          <CreateImageUploader />
 
           <ProductTypeSelect disabled={false} />
 

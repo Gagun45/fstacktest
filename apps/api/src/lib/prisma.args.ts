@@ -28,3 +28,7 @@ export const productDetailsArgs = {
 export type IPrismaProductDetails = Prisma.ProductGetPayload<
   typeof productDetailsArgs
 >;
+
+export type IPrismaMyProduct = Prisma.ProductGetPayload<
+  typeof productDetailsArgs
+> & { totalSold: number };

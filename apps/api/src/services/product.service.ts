@@ -3,19 +3,26 @@ import {
   IPaginatedResponse,
   IProductCard,
   IProductQueryDto,
+  IUpdateProductDto,
 } from "@repo/shared";
-import { productQueryBuilder } from "../lib/product.query.builder.js";
-import { productRepository } from "../repositories/product.repository.js";
+import { StatusCodesEnum } from "../enums/status-codes.enum.js";
+import { ApiError } from "../errors/api.error.js";
+import { createPaginatedResponse } from "../lib/paginated-res-builder.js";
 import {
+  IPrismaMyProduct,
   IPrismaProductDetails,
   productCardArgs,
   productDetailsArgs,
 } from "../lib/prisma.args.js";
+import {
+  buildCreateProduct,
+  buildUpdateProduct,
+} from "../lib/product-builder.js";
+import { productQueryBuilder } from "../lib/product.query.builder.js";
 import { productPresenter } from "../presenters/product.presenter.js";
-import { createPaginatedResponse } from "../lib/paginated-res-builder.js";
-import { buildCreateProduct } from "../lib/product-builder.js";
-import { ApiError } from "../errors/api.error.js";
-import { StatusCodesEnum } from "../enums/status-codes.enum.js";
+import { productRepository } from "../repositories/product.repository.js";
+import { orderItemService } from "./order-item.service.js";
+import { imageRepository } from "../repositories/image.repository.js";
 
 export const productService = {
   getCards: async (
@@ -23,7 +30,7 @@ export const productService = {
   ): Promise<IPaginatedResponse<IProductCard>> => {
     const args = productQueryBuilder(query);
     const [items, totalItems] = await Promise.all([
-      productRepository.findManyNew({
+      productRepository.findMany({
         ...args,
         ...productCardArgs,
       }),
@@ -55,5 +62,127 @@ export const productService = {
     if (!product)
       throw new ApiError("Product not found", StatusCodesEnum.NOT_FOUND);
     return product;
+  },
+  getMyById: async (
+    sellerId: number,
+    productId: number,
+  ): Promise<IPrismaMyProduct> => {
+    const [product, totalSold] = await Promise.all([
+      productRepository.findUnique({
+        where: {
+          id: productId,
+          sellerId,
+        },
+        ...productDetailsArgs,
+      }),
+
+      orderItemService.getTotalSold(productId),
+    ]);
+
+    if (!product) {
+      throw new ApiError(
+        "Product not found or you do not own it",
+        StatusCodesEnum.NOT_FOUND,
+      );
+    }
+
+    return {
+      ...product,
+      totalSold,
+    };
+  },
+  getMy: async (
+    sellerId: number,
+    query: IProductQueryDto,
+  ): Promise<IPaginatedResponse<IPrismaMyProduct>> => {
+    const args = productQueryBuilder(query);
+    args.where = { ...args.where, sellerId };
+    const [items, totalItems] = await Promise.all([
+      productRepository.findMany({ ...args, ...productDetailsArgs }),
+      productRepository.count({ where: args.where }),
+    ]);
+    const productIds = items.map((item) => item.id);
+    const totalSoldMap =
+      await orderItemService.getTotalSoldForProducts(productIds);
+
+    // Attach totalSold to each product
+    const myProducts: IPrismaMyProduct[] = items.map((item) => ({
+      ...item,
+      totalSold: totalSoldMap[item.id] ?? 0,
+    }));
+    return createPaginatedResponse(
+      myProducts,
+      totalItems,
+      query.page,
+      query.limit,
+    );
+  },
+  update: async (
+    userId: number,
+    productId: number,
+    dto: IUpdateProductDto,
+  ): Promise<IPrismaMyProduct> => {
+    const { removeImageIds, addImages, ...rest } = dto;
+
+    const product = await productRepository.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product)
+      throw new ApiError("Product not found", StatusCodesEnum.NOT_FOUND);
+
+    if (product.sellerId !== userId)
+      throw new ApiError("Forbidden", StatusCodesEnum.FORBIDDEN);
+
+    if (product.type !== dto.type)
+      throw new ApiError(
+        "Cannot change product type",
+        StatusCodesEnum.BAD_REQUEST,
+      );
+    const currentImageCount = await imageRepository.count({
+      where: { productId },
+    });
+    const removeCount = removeImageIds?.length ?? 0;
+    const addCount = addImages?.length ?? 0;
+    const finalCount = currentImageCount - removeCount + addCount;
+    if (finalCount > 10) {
+      throw new ApiError(
+        "Maximum 10 images allowed",
+        StatusCodesEnum.BAD_REQUEST,
+      );
+    }
+    await Promise.all([
+      removeImageIds?.length
+        ? imageRepository.deleteMany({
+            where: {
+              id: { in: removeImageIds.map(Number) },
+              productId,
+            },
+          })
+        : null,
+      addImages?.length
+        ? imageRepository.createMany({
+            data: addImages.map((img) => ({
+              productId,
+              key: img.key,
+              url: img.url,
+            })),
+          })
+        : null,
+    ]);
+    const updateData = buildUpdateProduct(rest);
+    const [updatedProduct, totalSold] = await Promise.all([
+      productRepository.update({
+        where: { id: productId },
+        data: updateData,
+        ...productDetailsArgs,
+      }),
+      orderItemService.getTotalSold(productId),
+    ]);
+
+    return {
+      ...updatedProduct,
+      totalSold,
+    };
   },
 };

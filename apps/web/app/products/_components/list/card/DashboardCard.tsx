@@ -3,6 +3,7 @@ import { frontendUrls } from "@/lib/frontendUrls";
 import { useAppDispatch, useAppSelector } from "@/redux";
 import { addToCart, removeFromCart } from "@/redux/slices/cart-slice";
 import { IProductCard } from "@repo/shared";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
@@ -21,6 +22,13 @@ const DashboardCard = ({ product }: Props) => {
     <div className="border p-4">
       <h2>{product.title}</h2>
       <p>ID: {product.id}</p>
+      <div className="size-24 relative">
+        <Image
+          alt="previ"
+          fill
+          src={product.images[0]?.url ?? "/default-poster.jpg"}
+        />
+      </div>
       {product.stock > 0 ? (
         <Button
           onClick={handleClick}

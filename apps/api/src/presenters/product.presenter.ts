@@ -1,6 +1,7 @@
-import { IProductCard, IProductDetails } from "@repo/shared";
+import { IMyProduct, IProductCard, IProductDetails } from "@repo/shared";
 import { config } from "../configs/config.js";
 import {
+  IPrismaMyProduct,
   IPrismaProductCard,
   IPrismaProductDetails,
 } from "../lib/prisma.args.js";
@@ -13,8 +14,9 @@ export const productPresenter = {
       id: product.id,
       images: product.images.map((img) => ({
         id: img.id,
-        isMain: img.isMain,
-        url: `${config.AWS_S3_ENDPOINT}/${img.url}`,
+        url: img.url,
+        key: img.key,
+        order: img.order,
       })),
       description: product.description,
       price: product.price,
@@ -35,6 +37,13 @@ export const productPresenter = {
       keyboard: product.keyboard,
       keycaps: product.keycaps,
       switches: product.switches,
+    };
+  },
+  toMyProduct: (product: IPrismaMyProduct): IMyProduct => {
+    return {
+      ...productPresenter.toProductDetails(product),
+      lowStockThreshold: product.lowStockThreshold,
+      totalSold: product.totalSold,
     };
   },
 };

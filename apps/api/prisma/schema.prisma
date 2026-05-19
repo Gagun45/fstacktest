@@ -207,6 +207,9 @@ model OrderItem {
 model Image {
   id  Int    @id @default(autoincrement())
   url String
+  key String
+
+  order Int @default(0)
 
   isMain    Boolean @default(false)
   product   Product @relation(fields: [productId], references: [id])
@@ -214,6 +217,7 @@ model Image {
 
   createdAt DateTime @default(now())
 
+  @@index([productId])
   @@map("images")
 }
 
