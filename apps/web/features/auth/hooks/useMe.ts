@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { userService } from "../user.api";
+import { authService } from "../auth.api";
 
 export const useMe = () => {
   const query = useQuery({
     queryKey: ["me"],
     queryFn: async () => {
-      const res = await userService.me();
+      const res = await authService.me();
       return res.data;
     },
   });

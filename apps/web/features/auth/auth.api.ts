@@ -19,4 +19,5 @@ export const authService = {
     api.post(backendUrls.auth.resetPassword, data),
   verifyAccount: (data: IVerifyAccountDto) =>
     api.post(backendUrls.auth.verifyAccount, data),
+  me: () => api.get<IUser>(backendUrls.auth.me),
 };

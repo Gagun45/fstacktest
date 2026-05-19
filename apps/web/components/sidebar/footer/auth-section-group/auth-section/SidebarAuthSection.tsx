@@ -1,4 +1,4 @@
-import { useMe } from "@/features/user/hooks/useMe";
+import { useMe } from "@/features/auth/hooks/useMe";
 import SidebarUserMenu from "./user-menu/SidebarUserMenu";
 
 const SidebarAuthSection = () => {
