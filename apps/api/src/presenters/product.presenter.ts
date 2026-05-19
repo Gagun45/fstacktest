@@ -14,8 +14,9 @@ export const productPresenter = {
       id: product.id,
       images: product.images.map((img) => ({
         id: img.id,
-        isMain: img.isMain,
-        url: `${config.AWS_S3_ENDPOINT}/${img.url}`,
+        url: img.url,
+        key: img.key,
+        order: img.order,
       })),
       description: product.description,
       price: product.price,

@@ -16,8 +16,12 @@ export const useUpdateProduct = () => {
     }
   >({
     mutationFn: productService.update,
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       qclient.invalidateQueries({ queryKey: ["products"], exact: false });
+      qclient.invalidateQueries({
+        queryKey: ["product", data.id],
+        exact: false,
+      });
     },
   });
   return mutation;

@@ -24,6 +24,11 @@ router.post(
   commonMiddleware.isBodyValid(productSchema),
   productController.create,
 );
+router.post(
+  "/upload-url",
+  authMiddleware.checkAccessToken,
+  productController.getUploadUrl,
+);
 
 router.get(`/:${productId}/details`, productController.getDetails);
 router.get(

@@ -15,7 +15,14 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload() as unknown as RequestHandler);
+app.use(
+  fileUpload({
+    limits: {
+      fieldSize: 10 * 1024 * 1024,
+    },
+    useTempFiles: false,
+  }),
+);
 app.use(
   cors({
     origin: true,

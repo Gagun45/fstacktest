@@ -1,7 +1,12 @@
 import { useUpdateProduct } from "@/features/products/hooks/mutations/useUpdateProduct";
-import ProductForm from "@/forms/product/create-edit/ProductForm";
+import EditProductForm from "@/forms/product/edit/EditProductForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ICreateProductDto, IMyProduct, productSchema } from "@repo/shared";
+import {
+  ICreateProductDto,
+  IMyProduct,
+  IUpdateProductDto,
+  updateProductSchema,
+} from "@repo/shared";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -10,12 +15,12 @@ interface Props {
   product: IMyProduct;
 }
 
-const EditProductForm = ({ product }: Props) => {
+const EditProductComponent = ({ product }: Props) => {
   const { mutate, isPending } = useUpdateProduct();
   const router = useRouter();
 
-  const form = useForm<ICreateProductDto>({
-    resolver: zodResolver(productSchema),
+  const form = useForm<IUpdateProductDto>({
+    resolver: zodResolver(updateProductSchema),
     defaultValues: {
       // 1. Spread base product fields (title, price, stock, description, type)
       ...product,
@@ -31,7 +36,7 @@ const EditProductForm = ({ product }: Props) => {
     form.reset();
   };
 
-  const handleUpdate = async (dto: ICreateProductDto) => {
+  const handleUpdate = async (dto: IUpdateProductDto) => {
     mutate(
       { dto, productId: product.id },
       {
@@ -46,14 +51,14 @@ const EditProductForm = ({ product }: Props) => {
     );
   };
   return (
-    <ProductForm
+    <EditProductForm
       onReset={onReset}
       form={form}
       onSubmit={handleUpdate}
-      isEdit={true}
       isPending={isPending}
+      initialData={product}
     />
   );
 };
 
-export default EditProductForm;
+export default EditProductComponent;

@@ -22,6 +22,7 @@ import { productQueryBuilder } from "../lib/product.query.builder.js";
 import { productPresenter } from "../presenters/product.presenter.js";
 import { productRepository } from "../repositories/product.repository.js";
 import { orderItemService } from "./order-item.service.js";
+import { imageRepository } from "../repositories/image.repository.js";
 
 export const productService = {
   getCards: async (
@@ -121,6 +122,8 @@ export const productService = {
     productId: number,
     dto: IUpdateProductDto,
   ): Promise<IPrismaMyProduct> => {
+    const { removeImageIds, addImages, ...rest } = dto;
+
     const product = await productRepository.findUnique({
       where: { id: productId },
     });
@@ -136,7 +139,38 @@ export const productService = {
         "Cannot change product type",
         StatusCodesEnum.BAD_REQUEST,
       );
-    const updateData = buildUpdateProduct(dto);
+    const currentImageCount = await imageRepository.count({
+      where: { productId },
+    });
+    const removeCount = removeImageIds?.length ?? 0;
+    const addCount = addImages?.length ?? 0;
+    const finalCount = currentImageCount - removeCount + addCount;
+    if (finalCount > 10) {
+      throw new ApiError(
+        "Maximum 10 images allowed",
+        StatusCodesEnum.BAD_REQUEST,
+      );
+    }
+    await Promise.all([
+      removeImageIds?.length
+        ? imageRepository.deleteMany({
+            where: {
+              id: { in: removeImageIds.map(Number) },
+              productId,
+            },
+          })
+        : null,
+      addImages?.length
+        ? imageRepository.createMany({
+            data: addImages.map((img) => ({
+              productId,
+              key: img.key,
+              url: img.url,
+            })),
+          })
+        : null,
+    ]);
+    const updateData = buildUpdateProduct(rest);
     const [updatedProduct, totalSold] = await Promise.all([
       productRepository.update({
         where: { id: productId },

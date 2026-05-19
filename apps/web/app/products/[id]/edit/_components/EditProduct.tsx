@@ -2,7 +2,7 @@
 
 import Loader from "@/components/general/Loader";
 import { useMyProduct } from "@/features/products/hooks/queries/use-my-product";
-import EditProductForm from "./form/EditProductForm";
+import EditProductComponent from "./form/EditProductComponent";
 
 interface Props {
   id: number;
@@ -17,7 +17,7 @@ const EditProduct = ({ id }: Props) => {
   return (
     <div>
       <h2>Product - {product.title}</h2>
-      <EditProductForm product={product} />
+      <EditProductComponent product={product} />
     </div>
   );
 };

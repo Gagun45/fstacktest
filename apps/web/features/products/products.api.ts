@@ -28,4 +28,10 @@ export const productService = {
     api.patch<IMyProduct>(backendUrls.products.update(productId), dto),
   detailsById: (productId: number) =>
     api.get<IProductDetails>(backendUrls.products.detailsById(productId)),
+  getUploadUrl: (data: { fileName: string; contentType: string }) =>
+    api.post<{
+      uploadUrl: string;
+      key: string;
+      publicUrl: string;
+    }>(backendUrls.products.getUploadUrl, data),
 };
