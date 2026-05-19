@@ -6,6 +6,7 @@ export const frontendUrls = {
   },
   products: {
     all: "/products",
+    my: "/my-products",
     create: "/products/create",
     details: (productId: number) => `/products/${productId}`,
   },
