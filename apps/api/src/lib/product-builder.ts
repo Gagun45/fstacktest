@@ -9,6 +9,9 @@ export const buildUpdateProduct = (
     ...(dto.description !== undefined && { description: dto.description }),
     ...(dto.price !== undefined && { price: dto.price }),
     ...(dto.stock !== undefined && { stock: dto.stock }),
+    ...(dto.lowStockThreshold !== undefined && {
+      lowStockThreshold: dto.lowStockThreshold,
+    }),
   };
 
   switch (dto.type) {
@@ -76,6 +79,7 @@ export const buildCreateProduct = (
     price: dto.price,
     stock: dto.stock,
     type: dto.type,
+    lowStockThreshold: dto.lowStockThreshold,
     images: {
       create: dto.images?.map((img) => ({
         url: img.url,
