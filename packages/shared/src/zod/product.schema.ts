@@ -67,29 +67,19 @@ export const productSchema = z.discriminatedUnion("type", [
     type: z.literal("KEYBOARD"),
     ...baseProductSchema.shape,
     ...keyboardSpecs.shape,
-    images: z
-      .array(imageSchema)
-      .min(1, "At least one image is required")
-      .max(10),
+    images: z.array(imageSchema).max(10),
   }),
   z.object({
     type: z.literal("SWITCHES"),
     ...baseProductSchema.shape,
     ...switchSpecs.shape,
-    images: z
-      .array(imageSchema)
-      .min(1, "At least one image is required")
-      .max(10),
+    images: z.array(imageSchema).max(10),
   }),
   z.object({
     type: z.literal("KEYCAPS"),
     ...baseProductSchema.shape,
     ...keycapSpecs.shape,
-    images: z
-      .array(imageSchema)
-      .min(1, "At least one image is required")
-      .max(10)
-      .optional(),
+    images: z.array(imageSchema).max(10).optional(),
   }),
 ]);
 

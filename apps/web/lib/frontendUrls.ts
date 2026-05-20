@@ -11,6 +11,10 @@ export const frontendUrls = {
     edit: (productId: number) => `/products/${productId}/edit`,
     details: (productId: number) => `/products/${productId}`,
   },
+  orders: {
+    checkout: "/checkout",
+    my: "/orders",
+  },
   organizer: {
     addEvent: "/organizer/add-event",
     ownEvents: "/organizer/own-events",

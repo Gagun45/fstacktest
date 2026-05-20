@@ -1,5 +1,6 @@
 "use client";
 
+import CartDrawer from "../cart-drawer/CartDrawer";
 import ThemeToggle from "../theme-toggle/ThemeToggle";
 import { SidebarTrigger } from "../ui/sidebar";
 import HeaderAuthSection from "./auth-section/HeaderAuthSection";
@@ -16,7 +17,7 @@ const Header = () => {
       <div className="flex items-center ml-auto gap-4">
         <HeaderAuthSection />
       </div>
-      {/* <CartDrawer /> */}
+      <CartDrawer />
     </header>
   );
 };
