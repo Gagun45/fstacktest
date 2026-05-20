@@ -15,6 +15,10 @@ export const USER_LINKS: ILink[] = [
     href: "/my-products",
     label: "My products",
   },
+  {
+    href: "/orders",
+    label: "My orders",
+  },
   // {
   //   href: "/orders",
   //   label: "My orders",

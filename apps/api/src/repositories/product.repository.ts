@@ -13,7 +13,11 @@ export const productRepository = {
     prisma.product.findUnique(args),
   findMany: <T extends Prisma.ProductFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.ProductFindManyArgs>,
-  ): Promise<Prisma.ProductGetPayload<T>[]> => prisma.product.findMany(args),
+    tx?: Prisma.TransactionClient,
+  ): Promise<Prisma.ProductGetPayload<T>[]> => {
+    const client = tx ?? prisma;
+    return client.product.findMany(args);
+  },
   count: (args?: Prisma.ProductCountArgs): Promise<number> =>
     prisma.product.count(args),
   update: <T extends Prisma.ProductUpdateArgs>(

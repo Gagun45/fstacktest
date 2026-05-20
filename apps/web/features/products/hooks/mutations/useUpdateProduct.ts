@@ -1,9 +1,9 @@
-import { IMyProduct, IProductDetails, IUpdateProductDto } from "@repo/shared";
+import { IProductDetails, IUpdateProductDto } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
-import { productService } from "../../products.api";
 import { productKeys } from "../../lib/product.keys";
+import { productService } from "../../products.api";
 
 export const useUpdateProduct = () => {
   const qclient = useQueryClient();

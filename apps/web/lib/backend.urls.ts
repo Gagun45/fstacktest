@@ -18,4 +18,8 @@ export const backendUrls = {
     detailsById: (productId: number) => `products/${productId}/details`,
     update: (productId: number) => `products/${productId}`,
   },
+  orders: {
+    checkout: "/orders/checkout",
+    getMy: "/orders/my",
+  },
 };
