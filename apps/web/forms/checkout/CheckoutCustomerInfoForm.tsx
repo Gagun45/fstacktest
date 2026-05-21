@@ -9,6 +9,7 @@ import AdditionalInfoField from "./add-info/AdditionalInfoField";
 import EmailField from "./email/EmailField";
 import { Button } from "@/components/ui/button";
 import { ICustomerInfoDto } from "@repo/shared";
+import ShippingFields from "./shipping-fields/ShippingFields";
 
 interface Props {
   form: UseFormReturn<ICustomerInfoDto>;
@@ -30,7 +31,7 @@ const CheckoutCustomerInfoForm = ({
           <NameField />
           <EmailField />
           <PhoneField />
-          <AdditionalInfoField />
+          <ShippingFields />
           <Button type="submit">
             {isPending ? "Submitting..." : "Submit"}
           </Button>

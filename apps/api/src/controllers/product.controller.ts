@@ -31,8 +31,8 @@ export const productController = {
     try {
       const dto = req.body as ICreateProductDto;
 
-      const sellerId = res.locals.currentUserId;
-      const card = await productService.create(sellerId, dto);
+      const userId = res.locals.currentUserId;
+      const card = await productService.create(userId, dto);
       const response: IProductDetails = productPresenter.toProductDetails(card);
 
       res.status(StatusCodesEnum.CREATED).json(response);

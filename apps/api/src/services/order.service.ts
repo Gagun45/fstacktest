@@ -9,7 +9,7 @@ import { handleLowStockAlert } from "../lib/low-stock-alert.helper.js";
 import { orderArgs } from "../lib/prisma.args.js";
 
 export const orderService = {
-  create: async (userId: number, dto: ICheckoutDto) => {
+  create: async (userId: number | null, dto: ICheckoutDto) => {
     const { customer, items } = dto;
     const productIds = items.map((item) => item.productId);
     return prisma.$transaction(async (tx) => {
@@ -42,20 +42,38 @@ export const orderService = {
         });
         total += item.quantity * product.price;
       }
-      const newOrder = await orderRepository.create(
-        {
-          data: {
-            buyer: { connect: { id: userId } },
-            customerEmail: customer.email,
-            customerName: customer.name,
-            customerPhone: customer.phone,
-            total,
-            items: { create: orderItemsData },
-          },
-          ...orderArgs,
+      const orderData: Prisma.OrderCreateArgs = {
+        data: {
+          customerEmail: customer.email,
+          customerName: customer.name,
+          customerPhone: customer.phone,
+          shippingCity: customer.shippingCity,
+          shippingAddress1: customer.shippingAddress1,
+          shippingCountry: customer.shippingCountry,
+          total,
+          items: { create: orderItemsData },
         },
-        tx,
-      );
+      };
+
+      if (customer.shippingAddress2) {
+        orderData.data.shippingAddress2 = customer.shippingAddress2;
+      }
+
+      if (customer.shippingPostalCode) {
+        orderData.data.shippingPostalCode = customer.shippingPostalCode;
+      }
+
+      if (customer.shippingNote) {
+        orderData.data.shippingNote = customer.shippingNote;
+      }
+      if (userId) {
+        orderData.data.buyer = { connect: { id: userId } };
+      }
+
+      const newOrder = await orderRepository.create({
+        ...orderData,
+        ...orderArgs,
+      });
       for (const item of items) {
         const product = products.find((p) => p.id === item.productId)!;
         const updated = await productRepository.update(

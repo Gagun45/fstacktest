@@ -165,17 +165,27 @@ model Keycaps {
 // --- ORDER SYSTEM ---
 
 model Order {
-  id      Int  @id @default(autoincrement())
-  buyerId Int
-  buyer   User @relation("UserOrders", fields: [buyerId], references: [id])
+  id      Int   @id @default(autoincrement())
+  buyerId Int?
+  buyer   User? @relation("UserOrders", fields: [buyerId], references: [id])
 
   customerName  String
   customerEmail String
   customerPhone String?
-  total         Float
-  status        OrderStatus @default(PENDING)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+
+  shippingCountry    String
+  shippingCity       String
+  shippingAddress1   String
+  shippingAddress2   String?
+  shippingPostalCode String?
+  shippingNote       String?
+
+  total Float
+
+  status OrderStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   items OrderItem[]
 

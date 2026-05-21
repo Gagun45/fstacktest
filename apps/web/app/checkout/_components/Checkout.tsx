@@ -15,19 +15,26 @@ import { toast } from "sonner";
 import { clearCart } from "@/redux/slices/cart-slice";
 import { useRouter } from "next/navigation";
 import { frontendUrls } from "@/lib/frontendUrls";
+import { useMe } from "@/features/auth/hooks/useMe";
 
 const Checkout = () => {
   const { items, totalAmount } = useAppSelector((s) => s.cart);
   const dispatch = useAppDispatch();
+  const { data: user } = useMe();
   const router = useRouter();
   const { mutate, isPending } = useCheckout();
   const form = useForm<ICustomerInfoDto>({
     resolver: zodResolver(customerInfoSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      additionalInfo: "",
+      name: user?.name ?? "",
+      email: user?.email ?? "",
+      phone: user?.phone ?? "",
+      shippingCountry: "",
+      shippingAddress1: "",
+      shippingCity: "",
+      shippingAddress2: "",
+      shippingNote: "",
+      shippingPostalCode: "",
     },
   });
 

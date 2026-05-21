@@ -13,6 +13,7 @@ const OrderCard = ({ order }: Props) => {
       <p>Total: {order.total}</p>
       <p>Created: {createdAt.toDateString()}</p>
       <p>Status: {order.status}</p>
+      <p>Address: {order.shippingAddress1}</p>
       <OrderItemsList items={order.items} />
     </div>
   );

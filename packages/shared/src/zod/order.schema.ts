@@ -8,9 +8,22 @@ export const orderItemSchema = z.object({
 
 export const customerInfoSchema = z.object({
   name: z.string().min(2).max(100),
+
+  email: z.email(),
+
   phone: z.string().regex(Regex.PHONE).optional(),
-  additionalInfo: z.string().max(1000).optional(),
-  email: z.email(), // Fixed: changed from z.email() to z.string().email()
+
+  shippingCountry: z.string().min(2).max(100),
+
+  shippingCity: z.string().min(2).max(100),
+
+  shippingAddress1: z.string().min(5).max(255),
+
+  shippingAddress2: z.string().max(255).optional(),
+
+  shippingPostalCode: z.string().max(30).optional(),
+
+  shippingNote: z.string().max(1000).optional(),
 });
 
 export const checkoutSchema = z.object({
@@ -18,7 +31,7 @@ export const checkoutSchema = z.object({
   customer: customerInfoSchema,
 });
 
-// PascalCase naming without the "I" prefix
+// DTO types
 export type IOrderItemDto = z.infer<typeof orderItemSchema>;
 export type ICustomerInfoDto = z.infer<typeof customerInfoSchema>;
 export type ICheckoutDto = z.infer<typeof checkoutSchema>;

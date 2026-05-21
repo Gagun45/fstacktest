@@ -8,7 +8,7 @@ export const orderController = {
     try {
       const checkout = req.body as ICheckoutDto;
 
-      const userId = res.locals.currentUserId;
+      const userId = res.locals.currentUserId ?? null;
 
       const response: IOrder = await orderService.create(userId, checkout);
       res.status(StatusCodesEnum.CREATED).json(response);
