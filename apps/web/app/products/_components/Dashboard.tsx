@@ -2,9 +2,9 @@
 
 import Loader from "@/components/general/Loader";
 import { useProductFilters } from "@/features/products/lib/use-prod-filters";
-import DashboardCardsList from "./list/DashboardCardsList";
 import { Button } from "@/components/ui/button";
 import { useProducts } from "@/features/products/hooks/queries/use-products";
+import ProductsList from "./list/ProductsList";
 
 const Dashboard = () => {
   const { filters } = useProductFilters();
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const products = data.pages.flatMap((page) => page.data) ?? [];
   return (
     <>
-      <DashboardCardsList products={products} />
+      <ProductsList products={products} />
       {hasNextPage && (
         <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
           Load more

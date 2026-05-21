@@ -17,6 +17,11 @@ export const backendUrls = {
     myById: (productId: number) => `products/me/${productId}`,
     detailsById: (productId: number) => `products/${productId}/details`,
     update: (productId: number) => `products/${productId}`,
+    favorites: {
+      ids: "/products/favorites/ids",
+      all: "/products/favorites",
+      addOrRemove: (productId: number) => `/products/favorites/${productId}`,
+    },
   },
   orders: {
     checkout: "/orders/checkout",

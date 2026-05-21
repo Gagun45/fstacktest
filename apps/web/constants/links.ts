@@ -25,6 +25,10 @@ export const USER_LINKS: ILink[] = [
     label: "My sales",
   },
   {
+    href: frontendUrls.products.favorites,
+    label: "Favorites",
+  },
+  {
     href: "/populate",
     label: "Populate",
   },

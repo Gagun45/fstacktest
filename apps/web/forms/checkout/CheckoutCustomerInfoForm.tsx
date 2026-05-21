@@ -5,7 +5,6 @@ import { FormProvider, UseFormReturn } from "react-hook-form";
 
 import NameField from "./name/NameField";
 import PhoneField from "./phone/PhoneField";
-import AdditionalInfoField from "./add-info/AdditionalInfoField";
 import EmailField from "./email/EmailField";
 import { Button } from "@/components/ui/button";
 import { ICustomerInfoDto } from "@repo/shared";

@@ -10,6 +10,7 @@ import { ApiError } from "../errors/api.error.js";
 import { createPaginatedResponse } from "../lib/paginated-res-builder.js";
 import {
   IPrismaMyProduct,
+  IPrismaProductCard,
   IPrismaProductDetails,
   productCardArgs,
   productDetailsArgs,
@@ -23,6 +24,7 @@ import { productPresenter } from "../presenters/product.presenter.js";
 import { productRepository } from "../repositories/product.repository.js";
 import { orderItemService } from "./order-item.service.js";
 import { imageRepository } from "../repositories/image.repository.js";
+import { favoriteRepository } from "../repositories/favorite.repository.js";
 
 export const productService = {
   getCards: async (
@@ -178,5 +180,54 @@ export const productService = {
     });
 
     return updatedProduct;
+  },
+  getFavoriteIds: async (userId: number) => {
+    const entities = await favoriteRepository.findMany({
+      where: { userId },
+      select: { productId: true },
+    });
+    const ids: number[] = entities.map((ent) => ent.productId);
+    return ids;
+  },
+  getFavorites: async (userId: number): Promise<IPrismaProductCard[]> => {
+    console.log(userId);
+    const favorites = await productRepository.findMany({
+      where: {
+        favorites: {
+          some: { userId },
+        },
+      },
+      ...productCardArgs,
+    });
+    return favorites;
+  },
+  addToFavorites: async (userId: number, productId: number) => {
+    const product = await productRepository.findUnique({
+      where: { id: productId },
+      include: { favorites: true },
+    });
+    if (!product)
+      throw new ApiError("Product not found", StatusCodesEnum.NOT_FOUND);
+    if (product.favorites.some((f) => f.userId === userId)) return;
+    await favoriteRepository.create({
+      data: { productId, userId },
+    });
+  },
+  removeFromFavorites: async (userId: number, productId: number) => {
+    const product = await productRepository.findUnique({
+      where: { id: productId },
+      include: { favorites: true },
+    });
+    if (!product)
+      throw new ApiError("Product not found", StatusCodesEnum.NOT_FOUND);
+    if (!product.favorites.some((f) => f.userId === userId)) return;
+    await favoriteRepository.delete({
+      where: {
+        userId_productId: {
+          productId,
+          userId,
+        },
+      },
+    });
   },
 };

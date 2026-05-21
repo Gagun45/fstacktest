@@ -5,6 +5,7 @@ import {
   IDashboardResponse,
   IMyProduct,
   IMyProductsResponse,
+  IProductCard,
   IProductDetails,
   IProductQueryDto,
   IUpdateProductDto,
@@ -33,4 +34,11 @@ export const productService = {
       key: string;
       publicUrl: string;
     }>(backendUrls.products.getUploadUrl, data),
+  getFavoriteIds: () => api.get<number[]>(backendUrls.products.favorites.ids),
+  getFavorites: () =>
+    api.get<IProductCard[]>(backendUrls.products.favorites.all),
+  addToFavorites: (productId: number) =>
+    api.post(backendUrls.products.favorites.addOrRemove(productId)),
+  removeFromFavorites: (productId: number) =>
+    api.delete(backendUrls.products.favorites.addOrRemove(productId)),
 };

@@ -5,11 +5,14 @@ import { addToCart, removeFromCart } from "@/redux/slices/cart-slice";
 import { IProductCard } from "@repo/shared";
 import Image from "next/image";
 import Link from "next/link";
+import FavoriteButton from "./fav-btn/FavoriteButton";
 
 interface Props {
   product: IProductCard;
+  isFavorite: boolean;
+  onToggleFavorite?: (productId: number, isFavorite: boolean) => void;
 }
-const DashboardCard = ({ product }: Props) => {
+const ProductCard = ({ product, isFavorite, onToggleFavorite }: Props) => {
   const dispatch = useAppDispatch();
   const cart = useAppSelector((s) => s.cart);
   const isAdded = cart.items.some((item) => item.id === product.id);
@@ -40,8 +43,14 @@ const DashboardCard = ({ product }: Props) => {
         <p>OUT OF STOCK</p>
       )}
       <Link href={frontendUrls.products.details(product.id)}>Go to</Link>
+      {onToggleFavorite && (
+        <FavoriteButton
+          isFavorite={isFavorite}
+          onClick={() => onToggleFavorite(product.id, isFavorite)}
+        />
+      )}
     </div>
   );
 };
 
-export default DashboardCard;
+export default ProductCard;

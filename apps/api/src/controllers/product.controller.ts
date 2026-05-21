@@ -118,4 +118,49 @@ export const productController = {
       next(e);
     }
   },
+  getFavoriteIds: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = res.locals.currentUserId;
+      const response: number[] = await productService.getFavoriteIds(userId);
+      res.status(StatusCodesEnum.OK).json(response);
+    } catch (e) {
+      next(e);
+    }
+  },
+  getFavoriteCards: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = res.locals.currentUserId;
+      const cards = await productService.getFavorites(userId);
+      const response: IProductCard[] = cards.map(
+        productPresenter.toProductCard,
+      );
+      res.status(StatusCodesEnum.OK).json(response);
+    } catch (e) {
+      next(e);
+    }
+  },
+  addToFavorite: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = res.locals.currentUserId;
+      const productId = Number(req.params["productId"]);
+      await productService.addToFavorites(userId, productId);
+      res.sendStatus(StatusCodesEnum.NO_CONTENT);
+    } catch (e) {
+      next(e);
+    }
+  },
+  removeFromFavorites: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const userId = res.locals.currentUserId;
+      const productId = Number(req.params["productId"]);
+      await productService.removeFromFavorites(userId, productId);
+      res.sendStatus(StatusCodesEnum.NO_CONTENT);
+    } catch (e) {
+      next(e);
+    }
+  },
 };

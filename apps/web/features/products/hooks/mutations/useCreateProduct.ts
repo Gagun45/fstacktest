@@ -1,9 +1,9 @@
-import { ICreateProductDto, IProductCard, IProductDetails } from "@repo/shared";
+import { ICreateProductDto, IProductDetails } from "@repo/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
-import { productService } from "../../products.api";
 import { productKeys } from "../../lib/product.keys";
+import { productService } from "../../products.api";
 
 export const useCreateProduct = () => {
   const qclient = useQueryClient();
@@ -16,11 +16,11 @@ export const useCreateProduct = () => {
     mutationFn: productService.create,
     onSuccess: ({ data }) => {
       qclient.invalidateQueries({
-        queryKey: productKeys.lists(),
+        queryKey: productKeys.list(),
       });
 
       qclient.invalidateQueries({
-        queryKey: productKeys.myLists(),
+        queryKey: productKeys.myList(),
       });
       qclient.setQueryData(productKeys.detail(data.id), data);
     },

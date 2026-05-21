@@ -25,11 +25,11 @@ export const useUpdateProduct = () => {
       });
 
       qclient.invalidateQueries({
-        queryKey: productKeys.lists(),
+        queryKey: productKeys.list(),
       });
 
       qclient.invalidateQueries({
-        queryKey: productKeys.myLists(),
+        queryKey: productKeys.myList(),
       });
     },
   });

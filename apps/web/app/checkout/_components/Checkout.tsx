@@ -1,22 +1,18 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from "@/redux";
-import CheckoutItemsList from "./list/CheckoutItemsList";
-import { useForm } from "react-hook-form";
-import {
-  customerInfoSchema,
-  ICheckoutDto,
-  ICustomerInfoDto,
-} from "@repo/shared";
-import { useCheckout } from "@/features/orders/hooks/mutations/use-checkout";
-import { zodResolver } from "@hookform/resolvers/zod";
-import CheckoutCustomerInfoForm from "@/forms/checkout/CheckoutCustomerInfoForm";
-import { toast } from "sonner";
-import { clearCart } from "@/redux/slices/cart-slice";
-import { useRouter } from "next/navigation";
-import { frontendUrls } from "@/lib/frontendUrls";
 import { useMe } from "@/features/auth/hooks/useMe";
+import { useCheckout } from "@/features/orders/hooks/mutations/use-checkout";
+import CheckoutCustomerInfoForm from "@/forms/checkout/CheckoutCustomerInfoForm";
+import { frontendUrls } from "@/lib/frontendUrls";
+import { useAppDispatch, useAppSelector } from "@/redux";
+import { clearCart } from "@/redux/slices/cart-slice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { customerInfoSchema, ICustomerInfoDto } from "@repo/shared";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import CheckoutItemsList from "./list/CheckoutItemsList";
 
 const Checkout = () => {
   const { items, totalAmount } = useAppSelector((s) => s.cart);

@@ -6,6 +6,7 @@ export const frontendUrls = {
   },
   products: {
     all: "/products",
+    favorites: "/products/favorites",
     my: "/my-products",
     create: "/products/create",
     edit: (productId: number) => `/products/${productId}/edit`,
