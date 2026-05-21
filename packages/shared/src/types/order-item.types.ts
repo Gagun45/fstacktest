@@ -20,3 +20,23 @@ export interface IOrderItem {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type ISaleItem = IOrderItem & {};
+
+export interface ISaleOrder {
+  id: number;
+  createdAt: Date;
+  items: IOrderItem[];
+  shippingInfo: {
+    customerName: string;
+    customerEmail: string;
+    customerPhone?: string | null;
+
+    shippingCountry: string;
+    shippingCity: string;
+    shippingAddress1: string;
+    shippingAddress2?: string | null;
+    shippingPostalCode?: string | null;
+    shippingNote?: string | null;
+  };
+}

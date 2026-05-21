@@ -13,7 +13,11 @@ export const frontendUrls = {
   },
   orders: {
     checkout: "/checkout",
-    my: "/orders",
+    orders: "/orders",
+    sales: "/sales",
+  },
+  sales: {
+    my: "/sales",
   },
   organizer: {
     addEvent: "/organizer/add-event",

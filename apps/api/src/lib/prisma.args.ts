@@ -33,8 +33,16 @@ export type IPrismaMyProduct = Prisma.ProductGetPayload<
   typeof productDetailsArgs
 > & { totalSold: number };
 
-export const orderArgs = {
+export const purchaseArgs = {
   include: {
     items: true,
   },
 } satisfies Omit<Prisma.OrderFindManyArgs, "where">;
+
+export const saleArgs = {
+  include: {
+    items: true,
+  },
+} satisfies Omit<Prisma.OrderFindManyArgs, "where">;
+
+export type IPrismaSaleOrder = Prisma.OrderGetPayload<typeof saleArgs>;

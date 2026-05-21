@@ -1,3 +1,4 @@
+import { frontendUrls } from "@/lib/frontendUrls";
 import { ILink } from "@/types/link.types";
 
 export const PUBLIC_LINKS: ILink[] = [
@@ -8,16 +9,20 @@ export const PUBLIC_LINKS: ILink[] = [
 ];
 export const USER_LINKS: ILink[] = [
   {
-    href: "/products",
+    href: frontendUrls.products.all,
     label: "All products",
   },
   {
-    href: "/my-products",
+    href: frontendUrls.products.my,
     label: "My products",
   },
   {
-    href: "/orders",
+    href: frontendUrls.orders.orders,
     label: "My orders",
+  },
+  {
+    href: frontendUrls.orders.sales,
+    label: "My sales",
   },
   {
     href: "/populate",

@@ -20,6 +20,7 @@ export const backendUrls = {
   },
   orders: {
     checkout: "/orders/checkout",
-    getMy: "/orders/my",
+    getMyPurchases: "/orders/my/purchases",
+    getMySales: "/orders/my/sales",
   },
 };

@@ -6,4 +6,7 @@ export const orderItemRepository = {
     prisma.orderItem.aggregate(args),
   groupBy: (args: Prisma.OrderItemGroupByArgs) =>
     prisma.orderItem.groupBy(args as any),
+  findMany: <T extends Prisma.OrderItemFindManyArgs>(
+    args: Prisma.SelectSubset<T, Prisma.OrderItemFindManyArgs>,
+  ) => prisma.orderItem.findMany(args),
 };

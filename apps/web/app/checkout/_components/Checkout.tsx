@@ -16,6 +16,7 @@ import { clearCart } from "@/redux/slices/cart-slice";
 import { useRouter } from "next/navigation";
 import { frontendUrls } from "@/lib/frontendUrls";
 import { useMe } from "@/features/auth/hooks/useMe";
+import { useEffect } from "react";
 
 const Checkout = () => {
   const { items, totalAmount } = useAppSelector((s) => s.cart);
@@ -23,6 +24,7 @@ const Checkout = () => {
   const { data: user } = useMe();
   const router = useRouter();
   const { mutate, isPending } = useCheckout();
+
   const form = useForm<ICustomerInfoDto>({
     resolver: zodResolver(customerInfoSchema),
     defaultValues: {
@@ -37,6 +39,16 @@ const Checkout = () => {
       shippingPostalCode: "",
     },
   });
+  useEffect(() => {
+    if (!user) return;
+
+    form.reset({
+      ...form.getValues(),
+      name: user.name ?? "",
+      email: user.email ?? "",
+      phone: user.phone ?? "",
+    });
+  }, [user, form]);
 
   const onSubmit = (values: ICustomerInfoDto) => {
     mutate(
@@ -48,7 +60,7 @@ const Checkout = () => {
         onSuccess: () => {
           dispatch(clearCart());
           toast.success("Order placed successfully!");
-          router.push(frontendUrls.orders.my);
+          router.push(frontendUrls.orders.orders);
         },
         onError: (e) => {
           const msg = e.response?.data.message || "Something went wrong";

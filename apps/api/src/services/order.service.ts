@@ -1,12 +1,12 @@
-import { ICheckoutDto } from "@repo/shared";
-import { productRepository } from "../repositories/product.repository.js";
-import { ApiError } from "../errors/api.error.js";
-import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { Prisma } from "@prisma/client";
+import { ICheckoutDto } from "@repo/shared";
+import { StatusCodesEnum } from "../enums/status-codes.enum.js";
+import { ApiError } from "../errors/api.error.js";
+import { handleLowStockAlert } from "../lib/low-stock-alert.helper.js";
+import { purchaseArgs } from "../lib/prisma.args.js";
 import { prisma } from "../lib/prisma.js";
 import { orderRepository } from "../repositories/order.repository.js";
-import { handleLowStockAlert } from "../lib/low-stock-alert.helper.js";
-import { orderArgs } from "../lib/prisma.args.js";
+import { productRepository } from "../repositories/product.repository.js";
 
 export const orderService = {
   create: async (userId: number | null, dto: ICheckoutDto) => {
@@ -72,7 +72,7 @@ export const orderService = {
 
       const newOrder = await orderRepository.create({
         ...orderData,
-        ...orderArgs,
+        ...purchaseArgs,
       });
       for (const item of items) {
         const product = products.find((p) => p.id === item.productId)!;
@@ -106,10 +106,31 @@ export const orderService = {
       return newOrder;
     });
   },
-  getByUserId: (userId: number) =>
+  getPurchasesByUserId: (userId: number) =>
     orderRepository.findMany({
       where: { buyerId: userId },
-      ...orderArgs,
+      ...purchaseArgs,
       orderBy: { createdAt: "desc" },
+    }),
+  getSalesByUserId: (userId: number) =>
+    orderRepository.findMany({
+      where: {
+        items: {
+          some: {
+            product: {
+              sellerId: userId,
+            },
+          },
+        },
+      },
+      include: {
+        items: {
+          where: {
+            product: {
+              sellerId: userId,
+            },
+          },
+        },
+      },
     }),
 };

@@ -3,9 +3,9 @@ import { orderService } from "../../orders.api";
 
 export const useOrders = () => {
   return useQuery({
-    queryKey: ["orders"],
+    queryKey: ["purchases"],
     queryFn: async () => {
-      const { data } = await orderService.getMy();
+      const { data } = await orderService.getMyPurchases();
       return data;
     },
   });

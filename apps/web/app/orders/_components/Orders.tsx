@@ -1,8 +1,8 @@
 "use client";
 
 import Loader from "@/components/general/Loader";
-import { useOrders } from "@/features/orders/hooks/queries/useOrders";
 import OrdersList from "./list/OrdersList";
+import { useOrders } from "@/features/orders/hooks/queries/use-orders";
 
 const Orders = () => {
   const { data: orders, isLoading } = useOrders();
