@@ -9,6 +9,13 @@ export const orderRepository = {
     const client = tx ?? prisma;
     return client.order.create(args);
   },
+  update: <T extends Prisma.OrderUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.OrderUpdateArgs>,
+    tx?: Prisma.TransactionClient,
+  ) => {
+    const client = tx ?? prisma;
+    return client.order.update(args);
+  },
   findMany: <T extends Prisma.OrderFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.OrderFindManyArgs>,
   ) => prisma.order.findMany(args),

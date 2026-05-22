@@ -89,19 +89,16 @@ export const orderService = {
       where: {
         items: {
           some: {
-            product: {
-              sellerId: userId,
-            },
+            sellerId: userId,
           },
         },
       },
       include: {
         items: {
           where: {
-            product: {
-              sellerId: userId,
-            },
+            sellerId: userId,
           },
+          orderBy: { id: "asc" },
         },
       },
     }),

@@ -1,4 +1,5 @@
 import { ISaleItem } from "@repo/shared";
+import StatusUpdate from "./status-upd/StatusUpdate";
 
 interface Props {
   item: ISaleItem;
@@ -10,6 +11,7 @@ const SaleItemCard = ({ item }: Props) => {
       <p>
         {item.title} for ${item.priceAtTime} x {item.quantity}
       </p>
+      <StatusUpdate currentStatus={item.status} orderItemId={item.id} />
     </div>
   );
 };

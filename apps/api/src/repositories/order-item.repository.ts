@@ -9,4 +9,10 @@ export const orderItemRepository = {
   findMany: <T extends Prisma.OrderItemFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.OrderItemFindManyArgs>,
   ) => prisma.orderItem.findMany(args),
+  update: <T extends Prisma.OrderItemUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.OrderItemUpdateArgs>,
+  ) => prisma.orderItem.update(args),
+  findUnique: <T extends Prisma.OrderItemFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.OrderItemFindUniqueArgs>,
+  ) => prisma.orderItem.findUnique(args),
 };

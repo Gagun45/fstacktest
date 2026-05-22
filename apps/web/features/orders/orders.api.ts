@@ -4,6 +4,8 @@ import {
   ICheckoutDto,
   IMyOrdersResponse,
   IOrder,
+  IOrderItem,
+  IOrderItemStatusDto,
   ISaleOrder,
 } from "@repo/shared";
 
@@ -13,4 +15,15 @@ export const orderService = {
   getMyPurchases: () =>
     api.get<IMyOrdersResponse>(backendUrls.orders.getMyPurchases),
   getMySales: () => api.get<ISaleOrder[]>(backendUrls.orders.getMySales),
+  updateStatus: ({
+    dto,
+    orderItemId,
+  }: {
+    orderItemId: number;
+    dto: IOrderItemStatusDto;
+  }) =>
+    api.patch<IOrderItem>(
+      backendUrls.orderItems.updateStatus(orderItemId),
+      dto,
+    ),
 };

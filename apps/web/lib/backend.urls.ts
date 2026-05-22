@@ -28,4 +28,7 @@ export const backendUrls = {
     getMyPurchases: "/orders/my/purchases",
     getMySales: "/orders/my/sales",
   },
+  orderItems: {
+    updateStatus: (orderItemId: number) => `/order-items/${orderItemId}/status`,
+  },
 };
