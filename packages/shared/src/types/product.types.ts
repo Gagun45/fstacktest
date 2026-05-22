@@ -10,7 +10,7 @@ export interface IBaseProduct {
   description: string;
   type: IProductType;
   price: number;
-  stock: number;
+  isInStock: boolean;
   images: IExistingImage[];
   seller: {
     id: number;
@@ -38,7 +38,6 @@ export type IProductDetails = IProductCard & {
 
 export type IMyProduct = IProductDetails & {
   totalSold: number;
-  lowStockThreshold: number;
 };
 
 export interface IKeyboard {

@@ -25,9 +25,8 @@ const AddProduct = () => {
       material: "",
       price: 0,
       profile: "",
-      stock: 0,
+      isInStock: false,
       switchType: "",
-      lowStockThreshold: 0,
     },
   });
 

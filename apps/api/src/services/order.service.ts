@@ -2,14 +2,13 @@ import { Prisma } from "@prisma/client";
 import { ICheckoutDto } from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
-import { handleLowStockAlert } from "../lib/low-stock-alert.helper.js";
 import { purchaseArgs } from "../lib/prisma.args.js";
 import { prisma } from "../lib/prisma.js";
 import { orderRepository } from "../repositories/order.repository.js";
 import { productRepository } from "../repositories/product.repository.js";
 
 export const orderService = {
-  create: async (userId: number | null, dto: ICheckoutDto) => {
+  create: async (userId: number, dto: ICheckoutDto) => {
     const { customer, items } = dto;
     const productIds = items.map((item) => item.productId);
     return prisma.$transaction(async (tx) => {
@@ -28,9 +27,9 @@ export const orderService = {
             `Product ${item.productId} not found`,
             StatusCodesEnum.NOT_FOUND,
           );
-        if (item.quantity > product.stock)
+        if (!product.isInStock)
           throw new ApiError(
-            `Not enough stock for ${product.title}. Available: ${product.stock}`,
+            `Product ${product.title} is not in stock`,
             StatusCodesEnum.BAD_REQUEST,
           );
         orderItemsData.push({
@@ -51,6 +50,7 @@ export const orderService = {
           shippingAddress1: customer.shippingAddress1,
           shippingCountry: customer.shippingCountry,
           total,
+          buyer: { connect: { id: userId } },
           items: { create: orderItemsData },
         },
       };
@@ -66,43 +66,15 @@ export const orderService = {
       if (customer.shippingNote) {
         orderData.data.shippingNote = customer.shippingNote;
       }
-      if (userId) {
-        orderData.data.buyer = { connect: { id: userId } };
-      }
 
-      const newOrder = await orderRepository.create({
-        ...orderData,
-        ...purchaseArgs,
-      });
-      for (const item of items) {
-        const product = products.find((p) => p.id === item.productId)!;
-        const updated = await productRepository.update(
-          {
-            where: {
-              id: item.productId,
-            },
-            data: {
-              stock: { decrement: item.quantity },
-            },
-          },
-          tx,
-        );
-        if (updated.stock < 0) {
-          throw new ApiError(
-            `Insufficient stock for ${product.title}`,
-            StatusCodesEnum.BAD_REQUEST,
-          );
-        }
+      const newOrder = await orderRepository.create(
+        {
+          ...orderData,
+          ...purchaseArgs,
+        },
+        tx,
+      );
 
-        handleLowStockAlert(
-          {
-            lowStockThreshold: updated.lowStockThreshold,
-            stock: updated.stock,
-            title: updated.title,
-          },
-          product.stock,
-        );
-      }
       return newOrder;
     });
   },

@@ -26,19 +26,9 @@ const baseProductSchema = z.object({
     .positive("Price must be greater than 0")
     .max(999999, "Price is too high"),
 
-  stock: z
-    .number({
-      message: "Stock is required",
-    })
-    .int("Stock must be a whole number")
-    .min(0, "Stock cannot be negative"),
-
-  lowStockThreshold: z
-    .number({
-      message: "Low stock threshold is required",
-    })
-    .int("Must be a whole number")
-    .min(0, "Cannot be negative"),
+  isInStock: z.boolean({
+    message: "Stock status is required",
+  }),
 });
 
 // Type-specific schemas

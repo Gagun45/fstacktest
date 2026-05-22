@@ -1,7 +1,7 @@
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { ICreateProductDto } from "@repo/shared";
-import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 const BaseFields = () => {
@@ -48,35 +48,16 @@ const BaseFields = () => {
         )}
       />
       <Controller
-        name="stock"
+        name="isInStock"
         control={control}
         render={({ field, fieldState }) => (
           <Field>
-            <FieldLabel>Stock</FieldLabel>
-            <Input
-              {...field}
-              type="number"
-              value={field.value}
-              onChange={(e) => field.onChange(Number(e.target.value))}
-              placeholder="Stock"
-            />
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
-      <Controller
-        name="lowStockThreshold"
-        control={control}
-        render={({ field, fieldState }) => (
-          <Field>
-            <FieldLabel>Low stock threshold</FieldLabel>
-            <Input
-              {...field}
-              type="number"
-              value={field.value}
-              onChange={(e) => field.onChange(Number(e.target.value))}
-              placeholder="Low stock threshold"
-            />
+            <div className="flex items-center gap-3">
+              <FieldLabel>Is in stock</FieldLabel>
+
+              <Switch checked={field.value} onCheckedChange={field.onChange} />
+            </div>
+
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
         )}

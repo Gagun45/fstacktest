@@ -18,7 +18,7 @@ const MyProductCard = ({ product }: Props) => {
           src={product.images[0]?.url ?? "/default-poster.jpg"}
         />
       </div>
-      <p>Stock: {product.stock}</p>
+      <p>Is in stock: {product.isInStock}</p>
       <Link href={frontendUrls.products.details(product.id)}>Go to</Link>
       <Link href={frontendUrls.products.edit(product.id)}>Edit</Link>
     </div>

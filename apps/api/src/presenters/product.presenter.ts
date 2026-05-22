@@ -20,7 +20,7 @@ export const productPresenter = {
       })),
       description: product.description,
       price: product.price,
-      stock: product.stock,
+      isInStock: product.isInStock,
       title: product.title,
       type: product.type,
       seller: {
@@ -42,7 +42,6 @@ export const productPresenter = {
   toMyProduct: (product: IPrismaMyProduct): IMyProduct => {
     return {
       ...productPresenter.toProductDetails(product),
-      lowStockThreshold: product.lowStockThreshold,
       totalSold: product.totalSold,
     };
   },

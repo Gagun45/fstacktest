@@ -32,7 +32,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite }: Props) => {
           src={product.images[0]?.url ?? "/default-poster.jpg"}
         />
       </div>
-      {product.stock > 0 ? (
+      {product.isInStock ? (
         <Button
           onClick={handleClick}
           variant={isAdded ? "destructive" : "default"}

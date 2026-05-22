@@ -17,11 +17,10 @@ const generateMockProducts = () => {
       description:
         "A premium mechanical keyboard with customizable RGB and high-quality build materials.",
       price: Math.floor(Math.random() * 200) + 50,
-      stock: Math.floor(Math.random() * 20) + 1,
+      isInStock: Math.random() < 0.5,
       layout: ["60%", "65%", "75%", "TKL", "Full-size"][
         Math.floor(Math.random() * 5)
       ],
-      lowStockThreshold: Math.floor(Math.random() * 50),
       caseMaterial: ["Aluminum", "Polycarbonate", "Acrylic", "Wood"][
         Math.floor(Math.random() * 4)
       ],
@@ -38,11 +37,10 @@ const generateMockProducts = () => {
       description:
         "High-performance mechanical switches designed for both gaming and heavy typing sessions.",
       price: Math.floor(Math.random() * 40) + 15,
-      stock: Math.floor(Math.random() * 100) + 50,
+      isInStock: Math.random() < 0.5,
       switchType: ["Linear", "Tactile", "Clicky"][
         Math.floor(Math.random() * 3)
       ],
-      lowStockThreshold: Math.floor(Math.random() * 50),
       actuationForce: [45, 50, 55, 62, 67][Math.floor(Math.random() * 5)],
       brand: ["Gateron", "Cherry", "Kailh", "Durock", "JWK"][
         Math.floor(Math.random() * 5)
@@ -59,11 +57,10 @@ const generateMockProducts = () => {
       description:
         "Durable keycaps with crisp legends and a vibrant color palette to match your desk setup.",
       price: Math.floor(Math.random() * 100) + 30,
-      stock: Math.floor(Math.random() * 10) + 2,
+      isInStock: Math.random() < 0.5,
       profile: ["Cherry", "OEM", "XDA", "DSA", "SA", "MT3"][
         Math.floor(Math.random() * 6)
       ],
-      lowStockThreshold: Math.floor(Math.random() * 50),
       material: ["PBT", "ABS"][Math.floor(Math.random() * 2)],
     });
   }

@@ -3,6 +3,9 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+// pnpm prisma migrate dev --name _
+//
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -100,15 +103,14 @@ model Favorite {
 // --- CORE MODELS ---
 
 model Product {
-  id                Int      @id @default(autoincrement())
-  title             String
-  description       String
-  price             Float
-  stock             Int      @default(1)
-  lowStockThreshold Int      @default(5)
-  isActive          Boolean  @default(true)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  isInStock   Boolean
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // NEW: Category Type Enum
   type CategoryType
@@ -165,9 +167,9 @@ model Keycaps {
 // --- ORDER SYSTEM ---
 
 model Order {
-  id      Int   @id @default(autoincrement())
-  buyerId Int?
-  buyer   User? @relation("UserOrders", fields: [buyerId], references: [id])
+  id      Int  @id @default(autoincrement())
+  buyerId Int
+  buyer   User @relation("UserOrders", fields: [buyerId], references: [id])
 
   customerName  String
   customerEmail String
