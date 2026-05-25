@@ -41,12 +41,7 @@ export const productService = {
     const itemsWithRating: IProductCard[] = items.map(
       productPresenter.toProductCard,
     );
-    return createPaginatedResponse(
-      itemsWithRating,
-      totalItems,
-      query.page,
-      query.limit,
-    );
+    return createPaginatedResponse(itemsWithRating, totalItems, query.page, 10);
   },
   create: async (sellerId: number, dto: ICreateProductDto) => {
     const data = buildCreateProduct(dto, sellerId);
@@ -112,12 +107,7 @@ export const productService = {
       ...item,
       totalSold: totalSoldMap[item.id] ?? 0,
     }));
-    return createPaginatedResponse(
-      myProducts,
-      totalItems,
-      query.page,
-      query.limit,
-    );
+    return createPaginatedResponse(myProducts, totalItems, query.page, 10);
   },
   update: async (
     userId: number,

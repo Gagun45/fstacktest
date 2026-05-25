@@ -25,6 +25,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite }: Props) => {
     <div className="border p-4">
       <h2>{product.title}</h2>
       <p>ID: {product.id}</p>
+      <p>Price: {product.price}</p>
       <div className="size-24 relative">
         <Image
           alt="previ"

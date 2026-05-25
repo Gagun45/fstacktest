@@ -1,6 +1,7 @@
 export * from "./constants/regex";
 export * from "./constants/user.roles";
 export * from "./constants/countries";
+export * from "./constants/sort.fields";
 
 export * from "./enums/enums";
 

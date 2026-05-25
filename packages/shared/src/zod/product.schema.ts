@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  ORDER_FIELDS,
+  SORT_BY_FIELDS_PRODUCTS,
+} from "../constants/sort.fields";
+import { zodCommonFields } from "./common.fields";
 
 // ==========================================
 // 1. Reusable Schemas
@@ -126,19 +131,13 @@ export type ICreateProductDto = z.infer<typeof productSchema>;
 export type IUpdateProductDto = z.infer<typeof updateProductSchema>;
 export type ImageData = z.infer<typeof imageSchema>;
 
+const {
+  query: { order, page },
+} = zodCommonFields;
+
 export const productQuerySchema = z.object({
-  categoryId: z.coerce.number().int().optional(),
-  minPrice: z.coerce.number().positive().optional(),
-  maxPrice: z.coerce.number().positive().optional(),
-  search: z.string().optional(),
-
-  // Pagination
-  page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(100).default(10),
-
-  // Sorting
-  sortBy: z.enum(["price", "createdAt", "title"]).default("createdAt"),
-
-  order: z.enum(["asc", "desc"]).default("desc"),
+  page,
+  order,
+  sortBy: z.enum(SORT_BY_FIELDS_PRODUCTS).catch("createdAt"),
 });
 export type IProductQueryDto = z.infer<typeof productQuerySchema>;

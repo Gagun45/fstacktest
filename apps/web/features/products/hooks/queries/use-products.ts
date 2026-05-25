@@ -3,12 +3,12 @@ import { productService } from "../../products.api";
 import { IDashboardResponse, IProductQueryDto } from "@repo/shared";
 import { productKeys } from "../../lib/product.keys";
 
-export const useProducts = (params: IProductQueryDto) => {
+export const useProducts = (query: IProductQueryDto) => {
   return useInfiniteQuery({
-    queryKey: productKeys.list(params),
+    queryKey: productKeys.list(query),
     queryFn: async ({ pageParam = 1 }) => {
       const { data } = await productService.dashboardCards({
-        ...params,
+        ...query,
         page: pageParam,
       });
       return data;
