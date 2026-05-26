@@ -11,14 +11,6 @@ export const productQueryBuilder = (
   const skip = (page - 1) * LIMIT;
   const where: Prisma.ProductWhereInput = {};
 
-  // if (search) {
-  //   where.OR = [
-  //     { title: { contains: search, mode: "insensitive" } },
-  //     { description: { contains: search, mode: "insensitive" } },
-  //   ];
-  // }
-
-  // Handle Price Range
   if (query.minPrice || query.maxPrice) {
     where.price = {
       ...(query.minPrice && { gte: query.minPrice }),

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { productKeys } from "../../lib/product.keys";
 import { productService } from "../../products.api";
 import { IProductQueryDto } from "@repo/shared";
-import { productKeys } from "../../lib/product.keys";
 
 export const useMyProducts = (query: IProductQueryDto) => {
   return useQuery({

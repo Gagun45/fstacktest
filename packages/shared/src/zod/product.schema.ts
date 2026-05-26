@@ -1,14 +1,16 @@
 import { z } from "zod";
-import { PRODUCT_TYPES } from "../../dist";
-import { SORT_BY_FIELDS_PRODUCTS } from "../constants/sort.fields";
+import {
+  ORDER_FIELDS,
+  SORT_BY_FIELDS_PRODUCTS,
+} from "../constants/sort.fields";
 import { zodCommonFields } from "./common.fields";
-import { IProductType } from "../types/product.types";
+import { PRODUCT_TYPES } from "../../dist";
 
 // ==========================================
 // 1. Reusable Schemas
 // ==========================================
 export const imageSchema = z.object({
-  url: z.url({ message: "Invalid image URL" }),
+  url: z.string().url({ message: "Invalid image URL" }),
   key: z.string().min(1, { message: "Image key is required" }),
 });
 
@@ -53,62 +55,73 @@ const keycapSpecs = z.object({
   material: z.string().min(1, "Material is required"),
 });
 
-const PRODUCT_CONFIG: Record<IProductType, z.ZodObject> = {
-  KEYBOARD: keyboardSpecs,
-  SWITCHES: switchSpecs,
-  KEYCAPS: keycapSpecs,
-} as const;
-
 // ==========================================
 // 2. Create Product Schema
 // ==========================================
-const createProductSchema = <T extends keyof typeof PRODUCT_CONFIG>(type: T) =>
-  z.object({
-    type: z.literal(type),
-    ...baseProductSchema.shape,
-    ...PRODUCT_CONFIG[type].shape,
-    images: z.array(imageSchema).max(10),
-  });
-
 export const productSchema = z.discriminatedUnion("type", [
-  createProductSchema("KEYBOARD"),
-  createProductSchema("SWITCHES"),
-  createProductSchema("KEYCAPS"),
+  z.object({
+    type: z.literal("KEYBOARD"),
+    ...baseProductSchema.shape,
+    ...keyboardSpecs.shape,
+    images: z.array(imageSchema).max(10),
+  }),
+  z.object({
+    type: z.literal("SWITCHES"),
+    ...baseProductSchema.shape,
+    ...switchSpecs.shape,
+    images: z.array(imageSchema).max(10),
+  }),
+  z.object({
+    type: z.literal("KEYCAPS"),
+    ...baseProductSchema.shape,
+    ...keycapSpecs.shape,
+    images: z.array(imageSchema).max(10).optional(),
+  }),
 ]);
 
 // ==========================================
 // 3. Update Product Schema (with image management)
 // ==========================================
-
-const createUpdateSchema = (type: IProductType) =>
-  z
-    .object({
-      type: z.literal(type),
-      addImages: z.array(imageSchema).max(10).optional(),
-      removeImageIds: z.array(z.cuid2()).optional(),
-    })
-    .extend(baseProductSchema.partial().shape)
-    .extend(PRODUCT_CONFIG[type].partial().shape);
-
 export const updateProductSchema = z
   .discriminatedUnion("type", [
-    createUpdateSchema("KEYBOARD"),
-    createUpdateSchema("SWITCHES"),
-    createUpdateSchema("KEYCAPS"),
+    z
+      .object({
+        type: z.literal("KEYBOARD"),
+        addImages: z.array(imageSchema).max(10).optional(),
+        removeImageIds: z.array(z.cuid2()).optional(),
+      })
+      .extend(baseProductSchema.partial().shape)
+      .extend(keyboardSpecs.partial().shape),
+
+    z
+      .object({
+        type: z.literal("SWITCHES"),
+        addImages: z.array(imageSchema).max(10).optional(),
+        removeImageIds: z.array(z.cuid2()).optional(),
+      })
+      .extend(baseProductSchema.partial().shape)
+      .extend(switchSpecs.partial().shape),
+
+    z
+      .object({
+        type: z.literal("KEYCAPS"),
+        addImages: z.array(imageSchema).max(10).optional(),
+        removeImageIds: z.array(z.cuid2()).optional(),
+      })
+      .extend(baseProductSchema.partial().shape)
+      .extend(keycapSpecs.partial().shape),
   ])
   .refine(
     (data) => {
+      // At least one field is being updated (excluding type)
       const { type, addImages, removeImageIds, ...rest } = data;
-
       return (
-        Object.values(rest).some((v) => v !== undefined) ||
-        !!addImages?.length ||
-        !!removeImageIds?.length
+        Object.values(rest).some((value) => value !== undefined) ||
+        addImages?.length ||
+        removeImageIds?.length
       );
     },
-    {
-      message: "At least one field must be updated",
-    },
+    { message: "At least one field must be updated" },
   );
 
 // ==========================================
@@ -117,32 +130,3 @@ export const updateProductSchema = z
 export type ICreateProductDto = z.infer<typeof productSchema>;
 export type IUpdateProductDto = z.infer<typeof updateProductSchema>;
 export type ImageData = z.infer<typeof imageSchema>;
-
-const {
-  query: { order, page },
-} = zodCommonFields;
-
-export const productQuerySchema = z
-  .object({
-    page,
-    order,
-    sortBy: z
-      .enum(SORT_BY_FIELDS_PRODUCTS)
-      .default(SORT_BY_FIELDS_PRODUCTS["0"]),
-    minPrice: z.coerce.number().nonnegative().optional(),
-    maxPrice: z.coerce.number().nonnegative().optional(),
-    types: z.array(z.enum(PRODUCT_TYPES.map((t) => t.value))).optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.minPrice !== undefined && data.maxPrice !== undefined) {
-        return data.minPrice <= data.maxPrice;
-      }
-      return true;
-    },
-    {
-      message: "minPrice must be less than or equal to maxPrice",
-      path: ["maxPrice"], // highlights the maxPrice field in error
-    },
-  );
-export type IProductQueryDto = z.infer<typeof productQuerySchema>;

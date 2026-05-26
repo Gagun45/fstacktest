@@ -22,13 +22,16 @@ const defaultQuery: IProductQueryDto = {
   minPrice: 0,
 };
 
-export const useProductQuery = () => {
+export const useProductsQuery = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
   // 1. Parse all values with useMemo (Very Important for performance)
   const query = useMemo<IProductQueryDto>(() => {
+    const pageParam = Number(searchParams.get("page"));
+    const page = pageParam > 0 ? pageParam : 1;
+
     const orderParam = searchParams.get("order") as ISortOrder;
     const order: ISortOrder = ORDER_FIELDS.includes(orderParam)
       ? orderParam
@@ -56,7 +59,7 @@ export const useProductQuery = () => {
     ).map((t) => t.value);
 
     return {
-      page: 1,
+      page,
       order,
       sortBy,
       minPrice,
@@ -88,6 +91,11 @@ export const useProductQuery = () => {
       if (updates.minPrice !== undefined) {
         if (updates.minPrice <= 0) params.delete("minPrice");
         else params.set("minPrice", updates.minPrice.toString());
+      }
+
+      if (updates.page !== undefined) {
+        if (updates.page === 1) params.delete("page");
+        else params.set("page", updates.page.toString());
       }
 
       if (updates.types !== undefined) {
@@ -122,6 +130,13 @@ export const useProductQuery = () => {
     [setQuery],
   );
 
+  const setPage = useCallback(
+    (page: number) => {
+      if (page > 0) setQuery({ page });
+    },
+    [setQuery],
+  );
+
   const setTypes = useCallback(
     (type: IProductType) => {
       const currentTypes = query.types ?? []; // ← Safe default
@@ -144,6 +159,7 @@ export const useProductQuery = () => {
     setSorting,
     setPricing,
     setTypes,
+    setPage,
     resetQuery,
   };
 };

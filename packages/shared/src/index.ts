@@ -18,6 +18,7 @@ export * from "./zod/category.schema";
 export * from "./zod/order-item.schema";
 export * from "./zod/order.schema";
 export * from "./zod/product.schema";
+export * from "./zod/product.query.schema";
 export * from "./zod/review.schema";
 export * from "./zod/user.schema";
 

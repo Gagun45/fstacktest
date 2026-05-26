@@ -4,13 +4,13 @@ import Loader from "@/components/general/Loader";
 import { Button } from "@/components/ui/button";
 import { PRODUCT_SORT_OPTIONS } from "@/constants/sort.options";
 import { useProducts } from "@/features/products/hooks/queries/use-products";
-import { useProductQuery } from "@/features/products/lib/use-product-query";
 import ProductFilters from "./filters/ProductFilters";
 import ProductsList from "./list/ProductsList";
 import SelectComponent from "@/components/sorting/SelectComponent";
+import { useProductsQuery } from "@/features/products/lib/use-products-query";
 
 const Dashboard = () => {
-  const { query, setSorting } = useProductQuery();
+  const { query, setSorting } = useProductsQuery();
 
   const { order, sortBy } = query;
 

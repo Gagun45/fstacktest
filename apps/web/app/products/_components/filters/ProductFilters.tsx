@@ -2,11 +2,11 @@
 
 import PriceRange from "@/components/price-range/PriceRange";
 import TypeFilter from "@/components/category/TypeFilter";
-import { useProductQuery } from "@/features/products/lib/use-product-query";
 import { Button } from "@/components/ui/button";
+import { useProductsQuery } from "@/features/products/lib/use-products-query";
 
 export default function ProductFilters() {
-  const { query, setPricing, setTypes, resetQuery } = useProductQuery();
+  const { query, setPricing, setTypes, resetQuery } = useProductsQuery();
   const { minPrice, maxPrice, types = [] } = query;
   return (
     <div className="flex flex-col md:flex-row gap-6">

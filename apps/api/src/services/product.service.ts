@@ -1,5 +1,6 @@
 import {
   ICreateProductDto,
+  IMyProductQueryDto,
   IPaginatedResponse,
   IProductCard,
   IProductQueryDto,
@@ -91,7 +92,7 @@ export const productService = {
   },
   getMy: async (
     sellerId: number,
-    query: IProductQueryDto,
+    query: IMyProductQueryDto,
   ): Promise<IPaginatedResponse<IPrismaMyProduct>> => {
     const args = productQueryBuilder(query);
     args.where = { ...args.where, sellerId };
