@@ -26,6 +26,12 @@ export const productQueryBuilder = (
     };
   }
 
+  if (query.types) {
+    where.type = {
+      in: query.types,
+    };
+  }
+
   return {
     skip,
     take: LIMIT,

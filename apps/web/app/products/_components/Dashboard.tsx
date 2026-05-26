@@ -1,36 +1,25 @@
 "use client";
 
 import Loader from "@/components/general/Loader";
-import { Button } from "@/components/ui/button";
-import { useProducts } from "@/features/products/hooks/queries/use-products";
-import ProductsList from "./list/ProductsList";
-import { useProductQuery } from "@/features/products/lib/use-product-query";
 import SortSelect from "@/components/sorting/SortSelect";
+import { Button } from "@/components/ui/button";
 import { PRODUCT_SORT_OPTIONS } from "@/constants/sort.options";
-import PriceRange from "@/components/price-range/PriceRange";
-import { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { useProducts } from "@/features/products/hooks/queries/use-products";
+import { useProductQuery } from "@/features/products/lib/use-product-query";
+import ProductFilters from "./filters/ProductFilters";
+import ProductsList from "./list/ProductsList";
 
 const Dashboard = () => {
-  const { query, setSorting, setPricing } = useProductQuery();
+  const { query, setSorting } = useProductQuery();
+
+  const { order, sortBy } = query;
 
   const { data, fetchNextPage, status, hasNextPage, isFetchingNextPage } =
     useProducts(query);
 
-  const { order, sortBy, minPrice, maxPrice } = query;
-  const [priceRange, setPriceRange] = useState({
-    minPrice: minPrice ?? 0,
-    maxPrice: maxPrice ?? 15000,
-  });
-  const [debounedPriceRange] = useDebounce(priceRange, 500);
-  useEffect(() => {
-    setPricing(priceRange);
-  }, [debounedPriceRange]);
-
-  if (status === "pending") return <Loader />;
   if (status === "error") return <p>Error loading products.</p>;
 
-  const products = data.pages.flatMap((page) => page.data) ?? [];
+  const products = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
     <>
@@ -40,12 +29,11 @@ const Dashboard = () => {
         options={PRODUCT_SORT_OPTIONS}
         onChange={setSorting}
       />
-      <PriceRange
-        minPrice={priceRange.minPrice}
-        maxPrice={priceRange.maxPrice}
-        onChange={setPriceRange}
-      />
-      {products.length === 0 ? (
+      <ProductFilters />
+
+      {status === "pending" ? (
+        <Loader />
+      ) : products.length === 0 ? (
         <p>No products found satisfying filters</p>
       ) : (
         <ProductsList products={products} />

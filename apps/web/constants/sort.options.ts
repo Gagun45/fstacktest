@@ -22,4 +22,4 @@ export const PRODUCT_SORT_OPTIONS: ISortOption<IProductSortOption>[] = [
     sortBy: "price",
     order: "desc",
   },
-];
+] as const;

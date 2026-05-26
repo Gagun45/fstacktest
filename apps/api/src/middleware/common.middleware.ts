@@ -30,7 +30,13 @@ export const commonMiddleware = {
   isQueryValid: (schema: z.ZodSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const validatedQuery = await schema.parseAsync(req.query);
+        const query = { ...req.query };
+        if (query.types) {
+          query.types = Array.isArray(query.types)
+            ? query.types
+            : [query.types];
+        }
+        const validatedQuery = await schema.parseAsync(query);
         res.locals.validatedQuery = validatedQuery;
         next();
       } catch (e: any) {

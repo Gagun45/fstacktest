@@ -4,6 +4,7 @@ import {
   SORT_BY_FIELDS_PRODUCTS,
 } from "../constants/sort.fields";
 import { zodCommonFields } from "./common.fields";
+import { PRODUCT_TYPES } from "../../dist";
 
 // ==========================================
 // 1. Reusable Schemas
@@ -59,19 +60,19 @@ const keycapSpecs = z.object({
 // ==========================================
 export const productSchema = z.discriminatedUnion("type", [
   z.object({
-    type: z.literal("KEYBOARD"),
+    type: z.literal(PRODUCT_TYPES[0]),
     ...baseProductSchema.shape,
     ...keyboardSpecs.shape,
     images: z.array(imageSchema).max(10),
   }),
   z.object({
-    type: z.literal("SWITCHES"),
+    type: z.literal(PRODUCT_TYPES[1]),
     ...baseProductSchema.shape,
     ...switchSpecs.shape,
     images: z.array(imageSchema).max(10),
   }),
   z.object({
-    type: z.literal("KEYCAPS"),
+    type: z.literal(PRODUCT_TYPES[2]),
     ...baseProductSchema.shape,
     ...keycapSpecs.shape,
     images: z.array(imageSchema).max(10).optional(),
@@ -85,7 +86,7 @@ export const updateProductSchema = z
   .discriminatedUnion("type", [
     z
       .object({
-        type: z.literal("KEYBOARD"),
+        type: z.literal(PRODUCT_TYPES[0]),
         // Image management
         addImages: z.array(imageSchema).max(10).optional(),
         removeImageIds: z.array(z.cuid2()).optional(),
@@ -95,7 +96,7 @@ export const updateProductSchema = z
 
     z
       .object({
-        type: z.literal("SWITCHES"),
+        type: z.literal(PRODUCT_TYPES[1]),
         addImages: z.array(imageSchema).max(10).optional(),
         removeImageIds: z.array(z.cuid2()).optional(),
       })
@@ -104,7 +105,7 @@ export const updateProductSchema = z
 
     z
       .object({
-        type: z.literal("KEYCAPS"),
+        type: z.literal(PRODUCT_TYPES[2]),
         addImages: z.array(imageSchema).max(10).optional(),
         removeImageIds: z.array(z.cuid2()).optional(),
       })
@@ -144,6 +145,7 @@ export const productQuerySchema = z
       .default(SORT_BY_FIELDS_PRODUCTS["0"]),
     minPrice: z.coerce.number().nonnegative().optional(),
     maxPrice: z.coerce.number().nonnegative().optional(),
+    types: z.array(z.enum(PRODUCT_TYPES)).optional(),
   })
   .refine(
     (data) => {

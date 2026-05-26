@@ -1,97 +1,142 @@
 "use client";
 
+import { useMemo, useCallback } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import {
   IProductQueryDto,
   IProductSortOption,
+  IProductType,
   ISortOrder,
   ORDER_FIELDS,
+  PRODUCT_TYPES,
   SORT_BY_FIELDS_PRODUCTS,
 } from "@repo/shared";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+const defaultQuery: IProductQueryDto = {
+  page: 1,
+  order: "desc",
+  sortBy: "createdAt",
+  types: [],
+  maxPrice: 15000,
+  minPrice: 0,
+};
 
 export const useProductQuery = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  const pageParam = Number(searchParams.get("page"));
-  const page = pageParam > 1 ? pageParam : 1;
+  // 1. Parse all values with useMemo (Very Important for performance)
+  const query = useMemo<IProductQueryDto>(() => {
+    const orderParam = searchParams.get("order") as ISortOrder;
+    const order: ISortOrder = ORDER_FIELDS.includes(orderParam)
+      ? orderParam
+      : defaultQuery.order;
 
-  const orderParam = searchParams.get("order") as ISortOrder;
-  const order: ISortOrder = ORDER_FIELDS.includes(orderParam)
-    ? orderParam
-    : "desc";
+    const sortByParam = searchParams.get("sortBy") as IProductSortOption;
+    const sortBy: IProductSortOption = SORT_BY_FIELDS_PRODUCTS.includes(
+      sortByParam,
+    )
+      ? sortByParam
+      : defaultQuery.sortBy;
 
-  const sortByParam = searchParams.get("sortBy") as IProductSortOption;
-  const sortBy: IProductSortOption = SORT_BY_FIELDS_PRODUCTS.includes(
-    sortByParam,
-  )
-    ? sortByParam
-    : "createdAt";
+    const maxPriceParam = Number(searchParams.get("maxPrice"));
+    const maxPrice = maxPriceParam > 0 ? maxPriceParam : defaultQuery.maxPrice!;
 
-  const maxPriceParam = Number(searchParams.get("maxPrice") ?? 15000);
-  const maxPrice = maxPriceParam >= 0 ? maxPriceParam : 15000;
+    const minPriceParam = Number(searchParams.get("minPrice"));
+    const minPrice =
+      minPriceParam >= 0 && minPriceParam <= maxPrice
+        ? minPriceParam
+        : defaultQuery.minPrice!;
 
-  const minPriceParam = Number(searchParams.get("minPrice"));
-  const minPrice =
-    minPriceParam < 0 || minPriceParam > maxPrice ? 0 : minPriceParam;
+    const types: IProductType[] = searchParams
+      .getAll("types")
+      .filter((type): type is IProductType =>
+        PRODUCT_TYPES.includes(type as IProductType),
+      );
 
-  const query: IProductQueryDto = {
-    order,
-    page,
-    sortBy,
-    minPrice,
-    maxPrice,
+    return {
+      page: 1,
+      order,
+      sortBy,
+      minPrice,
+      maxPrice,
+      types,
+    };
+  }, [searchParams]);
+
+  // 2. Optimized setQuery using useCallback
+  const setQuery = useCallback(
+    (updates: Partial<IProductQueryDto>) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (updates.order !== undefined) {
+        if (updates.order === "desc") params.delete("order");
+        else params.set("order", updates.order);
+      }
+
+      if (updates.sortBy !== undefined) {
+        if (updates.sortBy === "createdAt") params.delete("sortBy");
+        else params.set("sortBy", updates.sortBy);
+      }
+
+      if (updates.maxPrice !== undefined) {
+        if (updates.maxPrice >= 15000) params.delete("maxPrice");
+        else params.set("maxPrice", updates.maxPrice.toString());
+      }
+
+      if (updates.minPrice !== undefined) {
+        if (updates.minPrice <= 0) params.delete("minPrice");
+        else params.set("minPrice", updates.minPrice.toString());
+      }
+
+      if (updates.types !== undefined) {
+        params.delete("types");
+        updates.types.forEach((type) => params.append("types", type));
+      }
+
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, pathname, router],
+  );
+
+  const setSorting = useCallback(
+    (sortBy: IProductSortOption, order: ISortOrder) => {
+      setQuery({ sortBy, order, page: 1 });
+    },
+    [setQuery],
+  );
+
+  const setPricing = useCallback(
+    ({ minPrice, maxPrice }: { minPrice: number; maxPrice: number }) => {
+      setQuery({ minPrice, maxPrice, page: 1 });
+    },
+    [setQuery],
+  );
+
+  const setTypes = useCallback(
+    (type: IProductType) => {
+      const currentTypes = query.types ?? []; // ← Safe default
+
+      const nextTypes = currentTypes.includes(type)
+        ? currentTypes.filter((t) => t !== type)
+        : [...currentTypes, type];
+
+      setQuery({ types: nextTypes, page: 1 });
+    },
+    [query.types, setQuery],
+  );
+
+  const resetQuery = useCallback(() => {
+    setQuery(defaultQuery);
+  }, [setQuery]);
+
+  return {
+    query,
+    setSorting,
+    setPricing,
+    setTypes,
+    resetQuery,
   };
-
-  const setQuery = (updates: Partial<IProductQueryDto>) => {
-    const params = new URLSearchParams(searchParams.toString());
-    const { order, page, sortBy, minPrice, maxPrice } = updates;
-    if (page) {
-      if (page > 1) params.set("page", page.toString());
-      else params.delete("page");
-    }
-
-    if (order) {
-      if (order === "desc") params.delete("order");
-      else params.set("order", order);
-    }
-
-    if (sortBy) {
-      if (sortBy === "createdAt") params.delete("sortBy");
-      else params.set("sortBy", sortBy);
-    }
-
-    if (maxPrice !== undefined) {
-      if (maxPrice >= 15000) params.delete("maxPrice");
-      else params.set("maxPrice", maxPrice.toString());
-    }
-
-    if (minPrice !== undefined) {
-      if (minPrice === 0) params.delete("minPrice");
-      else params.set("minPrice", minPrice.toString());
-    }
-
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const setPage = (page: number) => {
-    setQuery({ page });
-  };
-
-  const setSorting = (sortBy: IProductSortOption, order: ISortOrder) => {
-    setQuery({ sortBy, order, page: 1 });
-  };
-
-  const setPricing = ({
-    maxPrice,
-    minPrice,
-  }: {
-    minPrice: number;
-    maxPrice: number;
-  }) => {
-    setQuery({ maxPrice, minPrice, page: 1 });
-  };
-
-  return { query, setPage, setSorting, setPricing };
 };

@@ -259,6 +259,9 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.19.41
+      '@types/qs':
+        specifier: ^6.15.1
+        version: 6.15.1
       '@types/react':
         specifier: ^19
         version: 19.2.14

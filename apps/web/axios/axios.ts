@@ -1,11 +1,13 @@
 import { backendUrls } from "@/lib/backend.urls";
 import axios, { AxiosError } from "axios";
+import qs from "qs";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const api = axios.create({
   baseURL: BACKEND_URL,
   withCredentials: true,
+  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
 });
 
 let isRefreshing = false;
