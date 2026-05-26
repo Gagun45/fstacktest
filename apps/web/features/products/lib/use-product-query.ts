@@ -1,79 +1,97 @@
 "use client";
 
-import { PRODUCT_SORT_OPTIONS } from "@/constants/sort.options";
-import { ISortOption } from "@/types/sort.types";
 import {
   IProductQueryDto,
   IProductSortOption,
   ISortOrder,
-  productQuerySchema,
+  ORDER_FIELDS,
+  SORT_BY_FIELDS_PRODUCTS,
 } from "@repo/shared";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useMemo, useCallback } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const useProductQuery = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Read current values
-  const query: IProductQueryDto = useMemo(() => {
-    return productQuerySchema.parse({
-      page: searchParams.get("page"),
-      sortBy: searchParams.get("sortBy"),
-      order: searchParams.get("order"),
-    });
-  }, [searchParams]);
+  const pageParam = Number(searchParams.get("page"));
+  const page = pageParam > 1 ? pageParam : 1;
 
-  // Update URL function
-  const updateUrl = useCallback(
-    (newParams: Partial<IProductQueryDto>) => {
-      const params = new URLSearchParams(searchParams);
+  const orderParam = searchParams.get("order") as ISortOrder;
+  const order: ISortOrder = ORDER_FIELDS.includes(orderParam)
+    ? orderParam
+    : "desc";
 
-      const { order, page, sortBy } = newParams;
+  const sortByParam = searchParams.get("sortBy") as IProductSortOption;
+  const sortBy: IProductSortOption = SORT_BY_FIELDS_PRODUCTS.includes(
+    sortByParam,
+  )
+    ? sortByParam
+    : "createdAt";
 
-      // Update values
-      if (sortBy) {
-        if (sortBy === "createdAt") params.delete("sortBy");
-        else params.set("sortBy", sortBy);
-      }
-      if (order) {
-        if (order === "desc") params.delete("order");
-        else params.set("order", order);
-      }
-      if (page) {
-        if (page > 1) {
-          params.set("page", page.toString());
-        } else {
-          params.delete("page");
-        }
-      }
+  const maxPriceParam = Number(searchParams.get("maxPrice") ?? 15000);
+  const maxPrice = maxPriceParam >= 0 ? maxPriceParam : 15000;
 
-      // Reset page to 1 when sorting changes
-      if (sortBy || order) {
-        params.delete("page");
-      }
+  const minPriceParam = Number(searchParams.get("minPrice"));
+  const minPrice =
+    minPriceParam < 0 || minPriceParam > maxPrice ? 0 : minPriceParam;
 
-      router.push(`${pathname}?${params.toString()}`, { scroll: false });
-    },
-    [searchParams, pathname, router],
-  );
+  const query: IProductQueryDto = {
+    order,
+    page,
+    sortBy,
+    minPrice,
+    maxPrice,
+  };
 
-  // Simple setters
-  const setSorting = (optionLabel: string) => {
-    const opt = PRODUCT_SORT_OPTIONS.find((o) => o.label === optionLabel);
-    if (!opt) return;
-    const { sortBy, order } = opt;
-    updateUrl({ sortBy, order });
+  const setQuery = (updates: Partial<IProductQueryDto>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const { order, page, sortBy, minPrice, maxPrice } = updates;
+    if (page) {
+      if (page > 1) params.set("page", page.toString());
+      else params.delete("page");
+    }
+
+    if (order) {
+      if (order === "desc") params.delete("order");
+      else params.set("order", order);
+    }
+
+    if (sortBy) {
+      if (sortBy === "createdAt") params.delete("sortBy");
+      else params.set("sortBy", sortBy);
+    }
+
+    if (maxPrice !== undefined) {
+      if (maxPrice >= 15000) params.delete("maxPrice");
+      else params.set("maxPrice", maxPrice.toString());
+    }
+
+    if (minPrice !== undefined) {
+      if (minPrice === 0) params.delete("minPrice");
+      else params.set("minPrice", minPrice.toString());
+    }
+
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const setPage = (page: number) => {
-    updateUrl({ page });
+    setQuery({ page });
   };
 
-  return {
-    query,
-    setSorting,
-    setPage,
+  const setSorting = (sortBy: IProductSortOption, order: ISortOrder) => {
+    setQuery({ sortBy, order, page: 1 });
   };
+
+  const setPricing = ({
+    maxPrice,
+    minPrice,
+  }: {
+    minPrice: number;
+    maxPrice: number;
+  }) => {
+    setQuery({ maxPrice, minPrice, page: 1 });
+  };
+
+  return { query, setPage, setSorting, setPricing };
 };

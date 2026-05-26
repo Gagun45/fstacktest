@@ -30,6 +30,7 @@ export const productService = {
   getCards: async (
     query: IProductQueryDto,
   ): Promise<IPaginatedResponse<IProductCard>> => {
+    console.log(query);
     const args = productQueryBuilder(query);
     const [items, totalItems] = await Promise.all([
       productRepository.findMany({

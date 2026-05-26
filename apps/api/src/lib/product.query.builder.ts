@@ -19,12 +19,12 @@ export const productQueryBuilder = (
   // }
 
   // Handle Price Range
-  // if (query.minPrice || query.maxPrice) {
-  //   where.price = {
-  //     ...(query.minPrice && { gte: query.minPrice }),
-  //     ...(query.maxPrice && { lte: query.maxPrice }),
-  //   };
-  // }
+  if (query.minPrice || query.maxPrice) {
+    where.price = {
+      ...(query.minPrice && { gte: query.minPrice }),
+      ...(query.maxPrice && { lte: query.maxPrice }),
+    };
+  }
 
   return {
     skip,

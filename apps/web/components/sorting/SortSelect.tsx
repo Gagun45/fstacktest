@@ -12,7 +12,7 @@ interface Props<T extends string> {
   sortBy: T;
   order: ISortOrder;
   options: ISortOption<T>[];
-  onChange: (optionLabel: string) => void;
+  onChange: (sortBy: T, order: ISortOrder) => void;
 }
 
 const SortSelect = <T extends string>({
@@ -25,15 +25,22 @@ const SortSelect = <T extends string>({
     (opt) => opt.order === order && opt.sortBy === sortBy,
   )?.label;
 
+  const handleOnChange = (label: string) => {
+    const option = options.find((opt) => opt.label === label);
+    if (!option) return;
+    const { sortBy, order } = option;
+    onChange(sortBy, order);
+  };
+
   return (
-    <Select value={selectedValue} onValueChange={onChange}>
+    <Select value={selectedValue} onValueChange={handleOnChange}>
       <SelectTrigger className="w-45">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
 
       <SelectContent>
         {options.map((opt) => (
-          <SelectItem key={opt.value} value={opt.label}>
+          <SelectItem key={opt.label} value={opt.label}>
             {opt.label}
           </SelectItem>
         ))}

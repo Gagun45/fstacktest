@@ -6,5 +6,4 @@ export type ISortOption<TField extends string> = {
   label: string;
   sortBy: TField;
   order: ISortOrder;
-  value: ISortValue<TField>;
 };

@@ -135,9 +135,26 @@ const {
   query: { order, page },
 } = zodCommonFields;
 
-export const productQuerySchema = z.object({
-  page,
-  order,
-  sortBy: z.enum(SORT_BY_FIELDS_PRODUCTS).catch("createdAt"),
-});
+export const productQuerySchema = z
+  .object({
+    page,
+    order,
+    sortBy: z
+      .enum(SORT_BY_FIELDS_PRODUCTS)
+      .default(SORT_BY_FIELDS_PRODUCTS["0"]),
+    minPrice: z.coerce.number().nonnegative().optional(),
+    maxPrice: z.coerce.number().nonnegative().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.minPrice !== undefined && data.maxPrice !== undefined) {
+        return data.minPrice <= data.maxPrice;
+      }
+      return true;
+    },
+    {
+      message: "minPrice must be less than or equal to maxPrice",
+      path: ["maxPrice"], // highlights the maxPrice field in error
+    },
+  );
 export type IProductQueryDto = z.infer<typeof productQuerySchema>;
