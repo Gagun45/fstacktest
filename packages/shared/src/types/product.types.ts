@@ -1,8 +1,12 @@
 import { IPaginatedResponse } from "./general.types";
 
-export const PRODUCT_TYPES = ["KEYBOARD", "SWITCHES", "KEYCAPS"] as const;
+export const PRODUCT_TYPES = [
+  { value: "KEYBOARD", label: "Keyboard", slug: "keyboard" },
+  { value: "SWITCHES", label: "Switches", slug: "switches" },
+  { value: "KEYCAPS", label: "Keycaps", slug: "keycaps" },
+] as const;
 
-export type IProductType = (typeof PRODUCT_TYPES)[number];
+export type IProductType = (typeof PRODUCT_TYPES)[number]["value"];
 
 export interface IBaseProduct {
   id: number;

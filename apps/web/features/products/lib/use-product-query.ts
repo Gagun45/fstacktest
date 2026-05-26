@@ -50,11 +50,10 @@ export const useProductQuery = () => {
         ? minPriceParam
         : defaultQuery.minPrice!;
 
-    const types: IProductType[] = searchParams
-      .getAll("types")
-      .filter((type): type is IProductType =>
-        PRODUCT_TYPES.includes(type as IProductType),
-      );
+    const slugs = searchParams.getAll("types");
+    const types: IProductType[] = PRODUCT_TYPES.filter((t) =>
+      slugs.includes(t.slug),
+    ).map((t) => t.value);
 
     return {
       page: 1,
@@ -93,7 +92,11 @@ export const useProductQuery = () => {
 
       if (updates.types !== undefined) {
         params.delete("types");
-        updates.types.forEach((type) => params.append("types", type));
+        updates.types.forEach((type) => {
+          const slug = PRODUCT_TYPES.find((t) => t.value === type)?.slug;
+          if (!slug) return;
+          params.append("types", slug);
+        });
       }
 
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
@@ -102,7 +105,11 @@ export const useProductQuery = () => {
   );
 
   const setSorting = useCallback(
-    (sortBy: IProductSortOption, order: ISortOrder) => {
+    (value: string) => {
+      const [sortBy, order] = value.split("-") as [
+        IProductSortOption,
+        ISortOrder,
+      ];
       setQuery({ sortBy, order, page: 1 });
     },
     [setQuery],

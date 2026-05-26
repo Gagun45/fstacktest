@@ -17,14 +17,14 @@ const TypeFilter = ({ value, onChange }: Props) => {
 
       <div className="space-y-3">
         {PRODUCT_TYPES.map((type) => (
-          <div key={type} className="flex items-center space-x-2">
+          <div key={type.value} className="flex items-center space-x-2">
             <Checkbox
-              id={type}
-              checked={value.includes(type)}
-              onCheckedChange={() => onChange(type)}
+              id={type.value}
+              checked={value.includes(type.value)}
+              onCheckedChange={() => onChange(type.value)}
             />
-            <Label htmlFor={type} className="cursor-pointer">
-              {type}
+            <Label htmlFor={type.value} className="cursor-pointer">
+              {type.label}
             </Label>
           </div>
         ))}

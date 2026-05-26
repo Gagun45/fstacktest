@@ -30,6 +30,7 @@ export const useUpdateProduct = () => {
 
       qclient.invalidateQueries({
         queryKey: productKeys.myList(),
+        exact: false,
       });
     },
   });

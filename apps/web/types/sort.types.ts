@@ -1,9 +1,9 @@
-import { ISortOrder } from "@repo/shared";
-
-export type ISortValue<T extends string> = `${T}-${ISortOrder}`;
-
-export type ISortOption<TField extends string> = {
+export type ISortOption = {
   label: string;
-  sortBy: TField;
-  order: ISortOrder;
+  value: string;
 };
+
+export interface ISelectOption {
+  label: string;
+  value: string;
+}

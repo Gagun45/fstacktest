@@ -1,25 +1,25 @@
-import { ISortOption } from "@/types/sort.types";
-import { IProductSortOption } from "@repo/shared";
+import { ISelectOption } from "@/types/sort.types";
+import { IProductSortOption, ISortOrder } from "@repo/shared";
 
-export const PRODUCT_SORT_OPTIONS: ISortOption<IProductSortOption>[] = [
+export type IProductSortValue = `${IProductSortOption}-${ISortOrder}`;
+
+export const PRODUCT_SORT_OPTIONS: (ISelectOption & {
+  value: IProductSortValue;
+})[] = [
   {
     label: "Newest",
-    sortBy: "createdAt",
-    order: "desc",
+    value: "createdAt-desc",
   },
   {
     label: "Oldest",
-    sortBy: "createdAt",
-    order: "asc",
+    value: "createdAt-asc",
   },
   {
     label: "Price low to high",
-    sortBy: "price",
-    order: "asc",
+    value: "price-asc",
   },
   {
     label: "Price high to low",
-    sortBy: "price",
-    order: "desc",
+    value: "price-desc",
   },
 ] as const;
