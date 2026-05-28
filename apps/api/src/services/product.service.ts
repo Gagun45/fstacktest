@@ -1,6 +1,5 @@
 import {
   ICreateProductDto,
-  IMyProductQueryDto,
   IPaginatedResponse,
   IProductCard,
   IProductQueryDto,
@@ -22,16 +21,15 @@ import {
 } from "../lib/product-builder.js";
 import { productQueryBuilder } from "../lib/product.query.builder.js";
 import { productPresenter } from "../presenters/product.presenter.js";
+import { favoriteRepository } from "../repositories/favorite.repository.js";
+import { imageRepository } from "../repositories/image.repository.js";
 import { productRepository } from "../repositories/product.repository.js";
 import { orderItemService } from "./order-item.service.js";
-import { imageRepository } from "../repositories/image.repository.js";
-import { favoriteRepository } from "../repositories/favorite.repository.js";
 
 export const productService = {
   getCards: async (
     query: IProductQueryDto,
   ): Promise<IPaginatedResponse<IProductCard>> => {
-    console.log(query);
     const args = productQueryBuilder(query);
     const [items, totalItems] = await Promise.all([
       productRepository.findMany({
@@ -92,7 +90,7 @@ export const productService = {
   },
   getMy: async (
     sellerId: number,
-    query: IMyProductQueryDto,
+    query: IProductQueryDto,
   ): Promise<IPaginatedResponse<IPrismaMyProduct>> => {
     const args = productQueryBuilder(query);
     args.where = { ...args.where, sellerId };
@@ -182,7 +180,6 @@ export const productService = {
     return ids;
   },
   getFavorites: async (userId: number): Promise<IPrismaProductCard[]> => {
-    console.log(userId);
     const favorites = await productRepository.findMany({
       where: {
         favorites: {

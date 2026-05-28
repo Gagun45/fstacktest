@@ -26,6 +26,8 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite }: Props) => {
       <h2>{product.title}</h2>
       <p>ID: {product.id}</p>
       <p>Price: {product.price}</p>
+      <p>Rating: {product.rating}</p>
+      <p>Reviews: {product.totalReviews}</p>
       <div className="size-24 relative">
         <Image
           alt="previ"

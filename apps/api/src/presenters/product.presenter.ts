@@ -27,7 +27,7 @@ export const productPresenter = {
         id: product.seller.id,
         username: product.seller.username,
       },
-      rating: product.reviews.reduce((sum, i) => sum + i.rating, 0),
+      rating: product.reviews.reduce((sum, i) => sum + i.rating, 0) / 5,
       totalReviews: product.reviews.length,
     };
   },
