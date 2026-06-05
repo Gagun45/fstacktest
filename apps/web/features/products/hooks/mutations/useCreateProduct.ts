@@ -16,11 +16,11 @@ export const useCreateProduct = () => {
     mutationFn: productService.create,
     onSuccess: ({ data }) => {
       qclient.invalidateQueries({
-        queryKey: productKeys.list(),
+        queryKey: productKeys.lists(),
       });
 
       qclient.invalidateQueries({
-        queryKey: productKeys.myList(),
+        queryKey: productKeys.myLists(),
       });
       qclient.setQueryData(productKeys.detail(data.id), data);
     },

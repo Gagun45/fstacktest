@@ -3,18 +3,22 @@ import { IProductQueryDto } from "@repo/shared";
 export const productKeys = {
   all: ["products"] as const,
 
-  list: (query?: IProductQueryDto) =>
-    [...productKeys.all, "list", query] as const,
+  lists: () => [...productKeys.all, "list"] as const,
+  list: (query?: IProductQueryDto) => [...productKeys.lists(), query] as const,
 
-  detail: (id: number) => [...productKeys.all, "detail", id] as const,
+  details: () => [...productKeys.all, "detail"] as const,
+  detail: (id: number) => [...productKeys.details(), id] as const,
 
+  myLists: () => [...productKeys.all, "my-list"] as const,
   myList: (query?: IProductQueryDto) =>
-    [...productKeys.all, "my-list", query] as const,
+    [...productKeys.myLists(), query] as const,
 
-  myDetail: (id: number) => [...productKeys.all, "my-detail", id] as const,
+  myDetails: () => [...productKeys.all, "my-detail"] as const,
+  myDetail: (id: number) => [...productKeys.myDetails(), id] as const,
 
-  favoriteIds: () => [...productKeys.all, "favorite-ids"] as const,
+  favoriteIds: () => ["favorite-ids"] as const, // or ["products", "favorite-ids"]
 
+  favorites: () => [...productKeys.all, "favorite-list"] as const,
   favoriteList: (query?: IProductQueryDto) =>
-    [...productKeys.all, "favorite-list", query] as const,
-};
+    [...productKeys.favorites(), query] as const,
+} as const;

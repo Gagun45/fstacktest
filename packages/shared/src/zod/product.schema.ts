@@ -10,7 +10,7 @@ import { PRODUCT_TYPES } from "../../dist";
 // 1. Reusable Schemas
 // ==========================================
 export const imageSchema = z.object({
-  url: z.string().url({ message: "Invalid image URL" }),
+  url: z.url({ message: "Invalid image URL" }),
   key: z.string().min(1, { message: "Image key is required" }),
 });
 
@@ -55,29 +55,39 @@ const keycapSpecs = z.object({
   material: z.string().min(1, "Material is required"),
 });
 
+const productTypeSchema = z.enum(["KEYBOARD", "SWITCHES", "KEYCAPS"], {
+  error: "Please select a valid product type",
+});
+
+const typeSchema = z.object({
+  type: productTypeSchema,
+});
+
 // ==========================================
 // 2. Create Product Schema
 // ==========================================
-export const productSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("KEYBOARD"),
-    ...baseProductSchema.shape,
-    ...keyboardSpecs.shape,
-    images: z.array(imageSchema).max(10),
-  }),
-  z.object({
-    type: z.literal("SWITCHES"),
-    ...baseProductSchema.shape,
-    ...switchSpecs.shape,
-    images: z.array(imageSchema).max(10),
-  }),
-  z.object({
-    type: z.literal("KEYCAPS"),
-    ...baseProductSchema.shape,
-    ...keycapSpecs.shape,
-    images: z.array(imageSchema).max(10).optional(),
-  }),
-]);
+export const productSchema = typeSchema.and(
+  z.discriminatedUnion("type", [
+    z.object({
+      type: z.literal("KEYBOARD"),
+      ...baseProductSchema.shape,
+      ...keyboardSpecs.shape,
+      images: z.array(imageSchema).max(10),
+    }),
+    z.object({
+      type: z.literal("SWITCHES"),
+      ...baseProductSchema.shape,
+      ...switchSpecs.shape,
+      images: z.array(imageSchema).max(10),
+    }),
+    z.object({
+      type: z.literal("KEYCAPS"),
+      ...baseProductSchema.shape,
+      ...keycapSpecs.shape,
+      images: z.array(imageSchema).max(10),
+    }),
+  ]),
+);
 
 // ==========================================
 // 3. Update Product Schema (with image management)

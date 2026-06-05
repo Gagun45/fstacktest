@@ -78,7 +78,7 @@ export const useToggleFavorite = () => {
     },
     onSettled: () => {
       qclient.invalidateQueries({ queryKey: productKeys.favoriteIds() });
-      qclient.invalidateQueries({ queryKey: productKeys.favoriteList() });
+      qclient.invalidateQueries({ queryKey: productKeys.favorites() });
     },
   });
   return mutation;

@@ -18,20 +18,17 @@ export const useUpdateProduct = () => {
   >({
     mutationFn: productService.update,
     onSuccess: ({ data }) => {
-      qclient.setQueryData(productKeys.detail(data.id), data);
-
+      qclient.invalidateQueries({
+        queryKey: productKeys.lists(),
+      });
+      qclient.invalidateQueries({
+        queryKey: productKeys.myLists(),
+      });
       qclient.invalidateQueries({
         queryKey: productKeys.myDetail(data.id),
       });
 
-      qclient.invalidateQueries({
-        queryKey: productKeys.list(),
-      });
-
-      qclient.invalidateQueries({
-        queryKey: productKeys.myList(),
-        exact: false,
-      });
+      qclient.setQueryData(productKeys.detail(data.id), data);
     },
   });
   return mutation;
