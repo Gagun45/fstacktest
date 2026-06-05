@@ -1,7 +1,6 @@
-export interface IReviewResponse {
-  total: number;
-  reviews: IReview[];
-}
+import { IPaginatedResponse } from "./general.types";
+
+export type IReviewResponse = IPaginatedResponse<IReview>;
 
 export interface IReview {
   id: number;
@@ -10,5 +9,6 @@ export interface IReview {
   user: {
     id: number;
     username: string;
+    avatar: string | null;
   };
 }

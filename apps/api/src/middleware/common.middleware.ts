@@ -40,6 +40,7 @@ export const commonMiddleware = {
         res.locals.validatedQuery = validatedQuery;
         next();
       } catch (e: any) {
+        console.log(e);
         const message = e.issues?.[0].message || "Invalid query parameters";
         next(new ApiError(message, StatusCodesEnum.BAD_REQUEST));
       }

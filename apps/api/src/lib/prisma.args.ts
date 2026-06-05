@@ -46,3 +46,10 @@ export const saleArgs = {
 } satisfies Omit<Prisma.OrderFindManyArgs, "where">;
 
 export type IPrismaSaleOrder = Prisma.OrderGetPayload<typeof saleArgs>;
+
+export const reviewArgs = {
+  include: {
+    reviewer: true,
+  },
+} satisfies Omit<Prisma.ReviewFindManyArgs, "where">;
+export type IPrismaReview = Prisma.ReviewGetPayload<typeof reviewArgs>;

@@ -2,12 +2,15 @@ import { Router } from "express";
 import {
   productQuerySchema,
   productSchema,
+  reviewQuerySchema,
+  reviewSchema,
   updateProductSchema,
 } from "@repo/shared";
 
 import { productController } from "../controllers/product.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { commonMiddleware } from "../middleware/common.middleware.js";
+import { reviewController } from "../controllers/review.controller.js";
 
 const router = Router();
 
@@ -76,6 +79,18 @@ router.patch(
   authMiddleware.checkAccessToken,
   commonMiddleware.isBodyValid(updateProductSchema),
   productController.update,
+);
+
+router.get(
+  `/:${productId}/reviews`,
+  commonMiddleware.isQueryValid(reviewQuerySchema),
+  reviewController.getByProductId,
+);
+router.post(
+  `/:${productId}/reviews`,
+  authMiddleware.checkAccessToken,
+  commonMiddleware.isBodyValid(reviewSchema),
+  reviewController.create,
 );
 
 export const productRouter = router;
