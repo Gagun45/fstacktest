@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Star } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { useCreateReview } from "@/features/reviews/hooks/mutations/use-create-review";
-import { toast } from "sonner";
+import { ICreateReviewDto, reviewSchema } from "@repo/shared";
 
 interface Props {
   productId: number;
@@ -12,18 +16,18 @@ interface Props {
 
 const AddReview = ({ productId }: Props) => {
   const { mutate } = useCreateReview();
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState("");
 
-  const handleSubmit = () => {
+  const form = useForm<ICreateReviewDto>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      rating: 5,
+      comment: "",
+    },
+  });
+
+  const onSubmit = (data: ICreateReviewDto) => {
     mutate(
-      {
-        productId,
-        dto: {
-          rating,
-          comment,
-        },
-      },
+      { productId, dto: data },
       {
         onError: (err) => {
           const msg = err.response?.data.message ?? "Something went wrong";
@@ -31,39 +35,53 @@ const AddReview = ({ productId }: Props) => {
         },
         onSuccess: () => {
           toast.success("Thank you for the review!");
-          setComment("");
+          form.reset();
         },
       },
     );
   };
 
   return (
-    <div>
-      <div>
-        Rating
-        <div>
-          {[1, 2, 3, 4, 5].map((value) => (
-            <Button
-              key={value}
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => setRating(value)}
-            >
-              <Star fill={value <= rating ? "currentColor" : "none"} />
-            </Button>
-          ))}
-        </div>
-      </div>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <Controller
+        name="rating"
+        control={form.control}
+        render={({ field }) => (
+          <Field>
+            <FieldLabel>Rating</FieldLabel>
 
-      <Textarea
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="Write your review..."
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((value) => (
+                <Button
+                  key={value}
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => field.onChange(value)}
+                >
+                  <Star fill={value <= field.value ? "currentColor" : "none"} />
+                </Button>
+              ))}
+            </div>
+          </Field>
+        )}
       />
 
-      <Button onClick={handleSubmit}>Submit</Button>
-    </div>
+      <Field>
+        <FieldLabel>Comment</FieldLabel>
+
+        <Textarea
+          {...form.register("comment")}
+          placeholder="Write your review..."
+        />
+
+        {form.formState.errors.comment && (
+          <FieldError errors={[form.formState.errors.comment]} />
+        )}
+      </Field>
+
+      <Button type="submit">Submit</Button>
+    </form>
   );
 };
 
