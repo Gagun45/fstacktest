@@ -1,10 +1,4 @@
 import { z } from "zod";
-import {
-  ORDER_FIELDS,
-  SORT_BY_FIELDS_PRODUCTS,
-} from "../constants/sort.fields";
-import { zodCommonFields } from "./common.fields";
-import { PRODUCT_TYPES } from "../../dist";
 
 // ==========================================
 // 1. Reusable Schemas

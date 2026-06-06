@@ -1,7 +1,7 @@
 import z from "zod";
-import { PRODUCT_TYPES } from "../../dist";
 import { SORT_BY_FIELDS_PRODUCTS } from "../constants/sort.fields";
 import { zodCommonFields } from "./common.fields";
+import { PRODUCT_TYPES } from "../types/product.types";
 
 const {
   query: { order, page },
