@@ -62,6 +62,7 @@ const generateMockProducts = () => {
         Math.floor(Math.random() * 6)
       ],
       material: ["PBT", "ABS"][Math.floor(Math.random() * 2)],
+      images: [],
     });
   }
 

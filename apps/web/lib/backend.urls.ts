@@ -23,6 +23,10 @@ export const backendUrls = {
       addOrRemove: (productId: number) => `/products/favorites/${productId}`,
     },
   },
+  reviews: {
+    get: (productId: number) => `products/${productId}/reviews`,
+    create: (productId: number) => `products/${productId}/reviews`,
+  },
   orders: {
     checkout: "/orders/checkout",
     getMyPurchases: "/orders/my/purchases",

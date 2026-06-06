@@ -7,7 +7,10 @@ export const reviewSchema = z.object({
     .int()
     .min(1, "Minimum rating is 1")
     .max(5, "Maximum rating is 5"),
-  comment: z.string().max(1000, "Review is too long").optional(),
+  comment: z
+    .string()
+    .min(1, "Comment is required")
+    .max(1000, "Comment must be at most 1000 characters long"),
 });
 
 // 2. Export types derived from the schemas

@@ -13,6 +13,8 @@ export const reviewPresenter = {
         username: review.reviewer.username,
         avatar: review.reviewer.avatar,
       },
+      createdAt: review.createdAt,
+      updatedAt: review.updatedAt,
     };
   },
 };

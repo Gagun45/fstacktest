@@ -1,3 +1,4 @@
+import { convertDate } from "@/lib/date.converter";
 import { IOrderItem } from "@repo/shared";
 
 interface Props {
@@ -5,13 +6,7 @@ interface Props {
 }
 
 const OrderItemCard = ({ item }: Props) => {
-  const updatedAt = new Date(item.updatedAt).toLocaleString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const updatedAt = convertDate(item.updatedAt);
   return (
     <div className="border">
       <p>Item title: {item.title}</p>

@@ -234,10 +234,12 @@ model Image {
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  rating    Int      @default(5) // 1-5
-  comment   String?
+  id      Int    @id @default(autoincrement())
+  rating  Int    @default(5) // 1-5
+  comment String
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Who wrote the review
   reviewerId Int
