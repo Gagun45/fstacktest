@@ -4,7 +4,7 @@ import Loader from "@/components/general/Loader";
 import { useMyProducts } from "@/features/products/hooks/queries/use-my-products";
 import MyProductsList from "./list/MyProductsList";
 import SelectComponent from "@/components/sorting/SelectComponent";
-import { ISortValue, MY_PRODUCT_SORT_OPTIONS } from "@/constants/sort.options";
+import { ISortValue, PRODUCT_SORT_OPTIONS } from "@/constants/sort.options";
 import { IProductSortOption } from "@repo/shared";
 import { useProductsQuery } from "@/features/products/lib/use-products-query";
 import Pagination from "@/components/pagination/Pagination";
@@ -20,7 +20,7 @@ const MyProducts = () => {
   return (
     <div>
       <SelectComponent
-        options={MY_PRODUCT_SORT_OPTIONS}
+        options={PRODUCT_SORT_OPTIONS}
         value={sortValue}
         onChange={setSorting}
       />

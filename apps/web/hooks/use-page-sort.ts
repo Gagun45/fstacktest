@@ -1,4 +1,4 @@
-import { ISortOption } from "@/types/sort.types";
+import { ISortOption } from "@/constants/sort.options";
 import { ISortOrder } from "@repo/shared";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
@@ -21,14 +21,18 @@ export const usePaginationAndSorting = <T extends string>({
     const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
     const orderParam = searchParams.get("order") as ISortOrder;
-    const order: ISortOrder = options.find((opt) => opt.order === orderParam)
+    const order: ISortOrder = options.find(
+      (opt) => opt.value.split("-")[1] === orderParam,
+    )
       ? orderParam
-      : defaultOption.order;
+      : (defaultOption.value.split("-")[1] as ISortOrder);
 
     const sortByParam = searchParams.get("sortBy") as T;
-    const sortBy = options.find((opt) => opt.sortBy === sortByParam)
+    const sortBy = options.find(
+      (opt) => opt.value.split("-")[0] === sortByParam,
+    )
       ? sortByParam
-      : defaultOption.sortBy;
+      : defaultOption.value.split("-")[0];
 
     return { page, order, sortBy };
   }, [searchParams, defaultOption, options]);
@@ -47,10 +51,10 @@ export const usePaginationAndSorting = <T extends string>({
   const setSorting = useCallback(
     (sortBy: string, order: ISortOrder) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (sortBy === defaultOption.sortBy) params.delete("sortBy");
+      if (sortBy === defaultOption.value.split("-")[0]) params.delete("sortBy");
       else params.set("sortBy", sortBy);
 
-      if (order === defaultOption.order) params.delete("order");
+      if (order === defaultOption.value.split("-")[1]) params.delete("order");
       else params.set("order", order);
 
       // Reset to first page when sorting changes
