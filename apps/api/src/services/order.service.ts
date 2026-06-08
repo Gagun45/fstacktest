@@ -1,5 +1,5 @@
 import { NotificationType, Prisma } from "@prisma/client";
-import { ICheckoutDto, NotificationTypeEnum } from "@repo/shared";
+import { ICheckoutDto } from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
 import { purchaseArgs } from "../lib/prisma.args.js";
@@ -78,14 +78,12 @@ export const orderService = {
       );
       const sellerIdsSet = new Set(newOrder.items.map((i) => i.sellerId));
       sellerIdsSet.forEach(async (sellerId) => {
-        const notification = await notificationService.create(
-          sellerId,
-          NotificationType.NEW_ORDER,
-          {
-            message: "New order",
-            title: "AAAAAA new order check it",
-          },
-        );
+        const notification = await notificationService.create(sellerId, {
+          message: "New order",
+          title: "AAAAAA new order check it",
+          type: "NEW_ORDER",
+          entityId: newOrder.id,
+        });
         sendLiveNotification(sellerId.toString(), notification);
       });
       return newOrder;

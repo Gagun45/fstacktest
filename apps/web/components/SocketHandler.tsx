@@ -36,6 +36,11 @@ export default function SocketHandler() {
         case "NEW_ORDER": {
           qclient.invalidateQueries({ queryKey: orderKeys.sales });
         }
+        case "NEW_REVIEW": {
+          qclient.invalidateQueries({
+            queryKey: productKeys.all,
+          });
+        }
         default: {
         }
       }

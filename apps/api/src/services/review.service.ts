@@ -2,7 +2,6 @@ import {
   ICreateReviewDto,
   IPaginatedResponse,
   IReviewQueryDto,
-  NotificationTypeEnum,
 } from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
@@ -70,14 +69,12 @@ export const reviewService = {
       },
       ...reviewArgs,
     });
-    const notification = await notificationService.create(
-      product.sellerId,
-      "NEW_REVIEW",
-      {
-        message: "New review",
-        title: "New asdasdasd review!",
-      },
-    );
+    const notification = await notificationService.create(product.sellerId, {
+      message: "New review",
+      title: "New asdasdasd review!",
+      type: "NEW_REVIEW",
+      entityId: newReview.productId,
+    });
     sendLiveNotification(product.sellerId.toString(), notification);
     return newReview;
   },

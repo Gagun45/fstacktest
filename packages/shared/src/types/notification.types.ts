@@ -1,10 +1,13 @@
 export type INotificationDto = {
   title: string;
   message: string;
+  type: INotificationType;
+  entityId?: number;
 };
 
 export type INotification = {
   id: number;
+  entityId: number | null;
   message: string;
   title: string;
   type: INotificationType;
@@ -13,7 +16,6 @@ export type INotification = {
 };
 
 export const NotificationType = {
-  BASIC: "BASIC",
   NEW_ORDER: "NEW_ORDER",
   NEW_REVIEW: "NEW_REVIEW",
 } as const;

@@ -10,6 +10,7 @@ export const notificationPresenter = {
       message: notification.message,
       title: notification.title,
       type: notification.type,
+      entityId: notification.entityId,
     };
   },
 };

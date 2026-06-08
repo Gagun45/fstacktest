@@ -1,22 +1,18 @@
-import { NotificationType } from "@prisma/client";
 import { INotificationDto } from "@repo/shared";
-import { notificationRepository } from "../repositories/notification.repository.js";
-import { ApiError } from "../errors/api.error.js";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
+import { ApiError } from "../errors/api.error.js";
+import { notificationRepository } from "../repositories/notification.repository.js";
 
 export const notificationService = {
-  create: async (
-    userId: number,
-    type: NotificationType,
-    dto: INotificationDto,
-  ) => {
-    const { message, title } = dto;
+  create: async (userId: number, dto: INotificationDto) => {
+    const { message, title, type, entityId } = dto;
     const notification = await notificationRepository.create({
       data: {
         message,
         title,
         type,
         userId,
+        entityId,
       },
     });
     return notification;
