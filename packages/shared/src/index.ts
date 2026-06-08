@@ -12,6 +12,7 @@ export * from "./types/order.types";
 export * from "./types/product.types";
 export * from "./types/review.types";
 export * from "./types/user.types";
+export * from "./types/notification.types";
 
 export * from "./zod/auth.schema";
 export * from "./zod/category.schema";

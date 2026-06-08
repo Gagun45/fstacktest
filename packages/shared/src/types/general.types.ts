@@ -1,3 +1,4 @@
+import { INotification } from "./notification.types";
 import { IMyProduct, IProductCard } from "./product.types";
 
 export type FileOptionsType = {
@@ -24,6 +25,11 @@ export interface IMessageResponse {
 
 export interface IFavoritedResponse {
   isFavorited: boolean;
+}
+
+export interface INotificationsResponse {
+  notifications: INotification[];
+  unreadCount: number;
 }
 
 export type IDashboardResponse = IPaginatedResponse<IProductCard>;

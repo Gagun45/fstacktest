@@ -32,6 +32,11 @@ export const backendUrls = {
     getMyPurchases: "/orders/my/purchases",
     getMySales: "/orders/my/sales",
   },
+  notifications: {
+    get: "/notifications",
+    maskAsRead: (notificationId: number) =>
+      `/notifications/${notificationId}/read`,
+  },
   orderItems: {
     updateStatus: (orderItemId: number) => `/order-items/${orderItemId}/status`,
   },

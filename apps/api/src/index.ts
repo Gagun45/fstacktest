@@ -1,4 +1,5 @@
 import cookieParser from "cookie-parser";
+import http from "http";
 import cors from "cors";
 import express, {
   NextFunction,
@@ -10,6 +11,7 @@ import fileUpload from "express-fileupload";
 import { ApiError } from "./errors/api.error.js";
 import { config } from "./configs/config.js";
 import { apiRouter } from "./routers/api.router.js";
+import { initSocket } from "./socket.js";
 const app = express();
 
 app.use(cookieParser());
@@ -29,6 +31,9 @@ app.use(
     credentials: true,
   }),
 );
+const server = http.createServer(app);
+
+initSocket(server);
 
 app.use("/", apiRouter);
 
@@ -47,6 +52,6 @@ app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
 
 const PORT = config.PORT;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`API running on ${PORT}`);
 });

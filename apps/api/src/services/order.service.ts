@@ -1,11 +1,13 @@
-import { Prisma } from "@prisma/client";
-import { ICheckoutDto } from "@repo/shared";
+import { NotificationType, Prisma } from "@prisma/client";
+import { ICheckoutDto, NotificationTypeEnum } from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
 import { purchaseArgs } from "../lib/prisma.args.js";
 import { prisma } from "../lib/prisma.js";
 import { orderRepository } from "../repositories/order.repository.js";
 import { productRepository } from "../repositories/product.repository.js";
+import { sendLiveNotification } from "../socket.js";
+import { notificationService } from "./notification.service.js";
 
 export const orderService = {
   create: async (userId: number, dto: ICheckoutDto) => {
@@ -74,7 +76,18 @@ export const orderService = {
         },
         tx,
       );
-
+      const sellerIdsSet = new Set(newOrder.items.map((i) => i.sellerId));
+      sellerIdsSet.forEach(async (sellerId) => {
+        const notification = await notificationService.create(
+          sellerId,
+          NotificationType.NEW_ORDER,
+          {
+            message: "New order",
+            title: "AAAAAA new order check it",
+          },
+        );
+        sendLiveNotification(sellerId.toString(), notification);
+      });
       return newOrder;
     });
   },

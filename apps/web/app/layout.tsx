@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/sidebar/AppSidebar";
 import Header from "@/components/header/Header";
 import Providers from "@/providers/Providers";
 import { cn } from "@/lib/utils";
+import SocketHandler from "@/components/SocketHandler";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -48,7 +49,7 @@ export default function RootLayout({
     >
       <body>
         <Providers>
-          {/* <AuthInitializer /> */}
+          <SocketHandler />
           <SidebarProvider>
             <AppSidebar />
             <div className="flex flex-col min-h-screen w-full">

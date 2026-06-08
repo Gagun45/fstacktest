@@ -2,6 +2,7 @@ import {
   ICreateReviewDto,
   IPaginatedResponse,
   IReviewQueryDto,
+  NotificationTypeEnum,
 } from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
@@ -10,6 +11,8 @@ import { IPrismaReview, reviewArgs } from "../lib/prisma.args.js";
 import { reviewQueryBuilder } from "../lib/review.query.builder.js";
 import { productRepository } from "../repositories/product.repository.js";
 import { reviewRepository } from "../repositories/review.repository.js";
+import { sendLiveNotification } from "../socket.js";
+import { notificationService } from "./notification.service.js";
 
 export const reviewService = {
   getByProductId: async (
@@ -67,6 +70,15 @@ export const reviewService = {
       },
       ...reviewArgs,
     });
+    const notification = await notificationService.create(
+      product.sellerId,
+      "NEW_REVIEW",
+      {
+        message: "New review",
+        title: "New asdasdasd review!",
+      },
+    );
+    sendLiveNotification(product.sellerId.toString(), notification);
     return newReview;
   },
 };

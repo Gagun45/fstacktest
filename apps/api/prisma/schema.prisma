@@ -48,6 +48,29 @@ enum OrderItemStatus {
   REFUNDED
 }
 
+enum NotificationType {
+  BASIC
+  NEW_ORDER
+  NEW_REVIEW
+}
+
+model Notification {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  type NotificationType
+
+  title   String
+  message String
+
+  isRead Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead, createdAt])
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
@@ -77,9 +100,10 @@ model User {
   sellerReviews Review[]    @relation("SellerReviews") // reviews received as seller
   orderItems    OrderItem[]
 
-  products  Product[]  @relation("UserProducts")
-  orders    Order[]    @relation("UserOrders")
-  favorites Favorite[]
+  products      Product[]      @relation("UserProducts")
+  orders        Order[]        @relation("UserOrders")
+  favorites     Favorite[]
+  notifications Notification[]
 
   @@map("users")
 }
