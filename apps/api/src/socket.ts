@@ -1,9 +1,8 @@
 // socket.ts
+import { Notification } from "@prisma/client";
 import { Server as HttpServer } from "http";
 import { Server } from "socket.io";
 import { config } from "./configs/config.js";
-import { NotificationTypeEnum } from "@repo/shared";
-import { Notification } from "@prisma/client";
 
 let io: Server;
 
