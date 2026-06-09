@@ -14,16 +14,18 @@ import Notifications from "./nots/Notifications";
 
 const NotificationDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useNotifications();
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useNotifications();
 
-  const nots = data?.data.data ?? [];
+  const nots = data?.pages.flatMap((page) => page.data) ?? [];
+  const unreadCount = data?.pages[0].unreadCount;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button>
           <NotificationIcon className="size-5!" />
-          {data?.unreadCount !== undefined && <span>{data.unreadCount}</span>}
+          {unreadCount !== undefined && <span>{unreadCount}</span>}
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -32,6 +34,11 @@ const NotificationDrawer = () => {
           <SheetDescription>Manage your notifications</SheetDescription>
         </SheetHeader>
         <Notifications notifications={nots} isLoading={isLoading} />
+        {hasNextPage && (
+          <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            Load more
+          </Button>
+        )}
       </SheetContent>
     </Sheet>
   );

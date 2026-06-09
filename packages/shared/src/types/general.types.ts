@@ -27,10 +27,9 @@ export interface IFavoritedResponse {
   isFavorited: boolean;
 }
 
-export interface INotificationsResponse {
-  data: IPaginatedResponse<INotification>;
+export type INotificationsResponse = IPaginatedResponse<INotification> & {
   unreadCount: number;
-}
+};
 
 export type IDashboardResponse = IPaginatedResponse<IProductCard>;
 

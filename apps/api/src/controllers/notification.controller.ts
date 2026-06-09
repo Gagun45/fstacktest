@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { notificationService } from "../services/notification.service.js";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
-import { INotification, INotificationsResponse } from "@repo/shared";
+import {
+  INotification,
+  INotificationQueryDto,
+  INotificationsResponse,
+  IPaginatedResponse,
+} from "@repo/shared";
 import { notificationPresenter } from "../presenters/notification.presenter.js";
 import { Notification } from "@prisma/client";
 
@@ -9,11 +14,18 @@ export const notificationController = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = res.locals.currentUserId;
+      const query = res.locals.validatedQuery as INotificationQueryDto;
 
-      const { notifications, unreadCount } =
-        await notificationService.get(userId);
+      const { data, unreadCount } = await notificationService.get(
+        userId,
+        query,
+      );
+      const paginatedData: IPaginatedResponse<INotification> = {
+        pagination: data.pagination,
+        data: data.data.map(notificationPresenter.toPublic),
+      };
       const response: INotificationsResponse = {
-        notifications: notifications.map(notificationPresenter.toPublic),
+        ...paginatedData,
         unreadCount,
       };
       res.status(StatusCodesEnum.OK).json(response);

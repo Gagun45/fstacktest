@@ -1,7 +1,13 @@
-import { INotificationDto } from "@repo/shared";
+import {
+  INotificationDto,
+  INotificationQueryDto,
+  IPaginatedResponse,
+} from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
 import { notificationRepository } from "../repositories/notification.repository.js";
+import { notificationQueryBuilder } from "../lib/notification.query.builder.js";
+import { createPaginatedResponse } from "../lib/paginated-res-builder.js";
 
 export const notificationService = {
   create: async (userId: number, dto: INotificationDto) => {
@@ -29,14 +35,18 @@ export const notificationService = {
     });
     return updatedNotification;
   },
-  get: async (userId: number) => {
-    const [notifications, unreadCount] = await Promise.all([
+  get: async (userId: number, query: INotificationQueryDto) => {
+    const args = notificationQueryBuilder(query);
+    const [notifications, totalCount, unreadCount] = await Promise.all([
       notificationRepository.findMany({
+        ...args,
         where: {
           userId,
         },
-        orderBy: {
-          createdAt: "desc",
+      }),
+      notificationRepository.count({
+        where: {
+          userId,
         },
       }),
       notificationRepository.count({
@@ -46,6 +56,12 @@ export const notificationService = {
         },
       }),
     ]);
-    return { notifications, unreadCount };
+    const paginatedResponse = createPaginatedResponse(
+      notifications,
+      totalCount,
+      query.page,
+      5,
+    );
+    return { data: paginatedResponse, unreadCount };
   },
 };
