@@ -60,9 +60,6 @@ model Notification {
 
   type NotificationType
 
-  title   String
-  message String
-
   entityId Int?
 
   isRead Boolean @default(false)

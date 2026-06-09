@@ -7,8 +7,6 @@ export const notificationPresenter = {
       createdAt: notification.createdAt,
       id: notification.id,
       isRead: notification.isRead,
-      message: notification.message,
-      title: notification.title,
       type: notification.type,
       entityId: notification.entityId,
     };

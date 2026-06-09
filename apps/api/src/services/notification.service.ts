@@ -5,11 +5,9 @@ import { notificationRepository } from "../repositories/notification.repository.
 
 export const notificationService = {
   create: async (userId: number, dto: INotificationDto) => {
-    const { message, title, type, entityId } = dto;
+    const { type, entityId } = dto;
     const notification = await notificationRepository.create({
       data: {
-        message,
-        title,
         type,
         userId,
         entityId,

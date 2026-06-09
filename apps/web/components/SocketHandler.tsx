@@ -4,7 +4,6 @@
 import { useMe } from "@/features/auth/hooks/useMe";
 import { orderKeys } from "@/features/orders/order.keys";
 import { productKeys } from "@/features/products/lib/product.keys";
-import { reviewKeys } from "@/features/reviews/lib/review.keys";
 import { socket } from "@/lib/socket";
 import { INotification } from "@repo/shared";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,18 +26,22 @@ export default function SocketHandler() {
 
     // 4. Setup Listeners
     socket.on("new_notification", (notification: INotification) => {
-      const { message, title, type } = notification;
+      const { type, entityId } = notification;
       qclient.invalidateQueries({ queryKey: ["notifications"] });
-      toast.info(title, {
-        description: message,
-      });
+
       switch (type) {
         case "NEW_ORDER": {
           qclient.invalidateQueries({ queryKey: orderKeys.sales });
+          toast.info(`New order #${entityId}`, {
+            description: "Check out new order",
+          });
         }
         case "NEW_REVIEW": {
           qclient.invalidateQueries({
             queryKey: productKeys.all,
+          });
+          toast.info(`New review on product #${entityId}`, {
+            description: "Check out new review",
           });
         }
         default: {

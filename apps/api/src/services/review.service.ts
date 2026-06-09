@@ -70,8 +70,6 @@ export const reviewService = {
       ...reviewArgs,
     });
     const notification = await notificationService.create(product.sellerId, {
-      message: "New review",
-      title: "New asdasdasd review!",
       type: "NEW_REVIEW",
       entityId: newReview.productId,
     });

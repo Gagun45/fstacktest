@@ -28,7 +28,7 @@ export interface IFavoritedResponse {
 }
 
 export interface INotificationsResponse {
-  notifications: INotification[];
+  data: IPaginatedResponse<INotification>;
   unreadCount: number;
 }
 

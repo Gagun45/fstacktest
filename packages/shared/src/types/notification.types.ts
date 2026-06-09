@@ -1,6 +1,4 @@
 export type INotificationDto = {
-  title: string;
-  message: string;
   type: INotificationType;
   entityId?: number;
 };
@@ -8,8 +6,6 @@ export type INotificationDto = {
 export type INotification = {
   id: number;
   entityId: number | null;
-  message: string;
-  title: string;
   type: INotificationType;
   createdAt: Date;
   isRead: boolean;

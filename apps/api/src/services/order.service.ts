@@ -79,8 +79,6 @@ export const orderService = {
       const sellerIdsSet = new Set(newOrder.items.map((i) => i.sellerId));
       sellerIdsSet.forEach(async (sellerId) => {
         const notification = await notificationService.create(sellerId, {
-          message: "New order",
-          title: "AAAAAA new order check it",
           type: "NEW_ORDER",
           entityId: newOrder.id,
         });
