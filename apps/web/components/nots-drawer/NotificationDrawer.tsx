@@ -14,7 +14,7 @@ import Notifications from "./nots/Notifications";
 
 const NotificationDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useNotifications();
 
   const nots = data?.pages.flatMap((page) => page.data) ?? [];
@@ -33,7 +33,7 @@ const NotificationDrawer = () => {
           <SheetTitle>Notifications</SheetTitle>
           <SheetDescription>Manage your notifications</SheetDescription>
         </SheetHeader>
-        <Notifications notifications={nots} isLoading={isLoading} />
+        <Notifications notifications={nots} isLoading={isFetchingNextPage} />
         {hasNextPage && (
           <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
             Load more

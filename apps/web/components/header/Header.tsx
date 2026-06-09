@@ -1,5 +1,6 @@
 "use client";
 
+import { useMe } from "@/features/auth/hooks/useMe";
 import CartDrawer from "../cart-drawer/CartDrawer";
 import NotificationDrawer from "../nots-drawer/NotificationDrawer";
 import ThemeToggle from "../theme-toggle/ThemeToggle";
@@ -7,6 +8,7 @@ import { SidebarTrigger } from "../ui/sidebar";
 import HeaderAuthSection from "./auth-section/HeaderAuthSection";
 
 const Header = () => {
+  const { data: me } = useMe();
   return (
     <header
       className="h-24 px-4 w-full bg-sidebar flex items-center gap-4
@@ -19,7 +21,7 @@ const Header = () => {
         <HeaderAuthSection />
       </div>
       <CartDrawer />
-      <NotificationDrawer />
+      {me && <NotificationDrawer />}
     </header>
   );
 };
