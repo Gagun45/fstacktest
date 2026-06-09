@@ -1,7 +1,6 @@
 import Loader from "@/components/general/Loader";
+import { notificationConfig } from "@/constants/notifications";
 import { useReadNotification } from "@/features/notifications/hooks/mutations/use-read-not";
-import { backendUrls } from "@/lib/backend.urls";
-import { frontendUrls } from "@/lib/frontendUrls";
 import { INotification } from "@repo/shared";
 import Link from "next/link";
 
@@ -21,10 +20,8 @@ const Notifications = ({ notifications, isLoading }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       {notifications.map((n) => {
-        const link =
-          n.type === "NEW_ORDER"
-            ? frontendUrls.sales.my
-            : frontendUrls.products.details(n.entityId ?? 0);
+        const config = notificationConfig[n.type](n);
+
         return (
           <div
             key={n.id}
@@ -32,17 +29,21 @@ const Notifications = ({ notifications, isLoading }: Props) => {
             className="flex items-start gap-3 rounded-lg border p-3"
           >
             {!n.isRead && (
-              <div className="mt-1 size-2 rounded-full bg-blue-500 shrink-0" />
+              <div className="mt-1 size-2 shrink-0 rounded-full bg-blue-500" />
             )}
-            <Link href={link}>Go to</Link>
+
+            <Link href={config.href}>Go to</Link>
 
             <div>
               <div
                 className={n.isRead ? "text-muted-foreground" : "font-semibold"}
               >
-                {n.title} #${n.entityId}
+                {config.title}
               </div>
-              <div className="text-sm text-muted-foreground">{n.message}</div>
+
+              <div className="text-sm text-muted-foreground">
+                {config.message}
+              </div>
             </div>
           </div>
         );

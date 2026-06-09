@@ -16,7 +16,7 @@ const NotificationDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading } = useNotifications();
 
-  const nots = data?.notifications ?? [];
+  const nots = data?.data.data ?? [];
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
