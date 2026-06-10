@@ -12,18 +12,18 @@ interface Props {
 
 const TypeFilter = ({ value, onChange }: Props) => {
   return (
-    <Card className="p-4 space-y-3 rounded-2xl">
+    <Card className="p-4 space-y-3 rounded-2xl flex-1">
       <div className="font-medium">Categories</div>
 
-      <div className="space-y-3">
+      <div className="flex flex-wrap items-center gap-8">
         {PRODUCT_TYPES.map((type) => (
-          <div key={type.value} className="flex items-center space-x-2">
+          <div key={type.value} className="flex items-center gap-2">
             <Checkbox
               id={type.value}
               checked={value.includes(type.value)}
               onCheckedChange={() => onChange(type.value)}
             />
-            <Label htmlFor={type.value} className="cursor-pointer">
+            <Label htmlFor={type.value} className="cursor-pointer text-base">
               {type.label}
             </Label>
           </div>

@@ -1,15 +1,11 @@
-import Loader from "@/components/general/Loader";
-import { Suspense } from "react";
-import Dashboard from "./_components/Dashboard";
+import Products from "./_components/Products";
 
 const ProductsPage = () => {
   return (
-    <div>
+    <main>
       <h1>Homepage</h1>
-      <Suspense fallback={<Loader />}>
-        <Dashboard />
-      </Suspense>
-    </div>
+      <Products />
+    </main>
   );
 };
 

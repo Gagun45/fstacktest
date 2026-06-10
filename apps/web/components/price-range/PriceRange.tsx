@@ -74,7 +74,7 @@ const PriceRange = ({
   };
 
   return (
-    <div className="space-y-5 rounded-2xl border p-4">
+    <div className="space-y-5 rounded-2xl border p-4 flex-1">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label>Price Range</Label>

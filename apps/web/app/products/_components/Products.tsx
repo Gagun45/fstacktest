@@ -9,7 +9,7 @@ import ProductsList from "./list/ProductsList";
 import SelectComponent from "@/components/sorting/SelectComponent";
 import { useProductsQuery } from "@/features/products/lib/use-products-query";
 
-const Dashboard = () => {
+const Products = () => {
   const { query, setSorting } = useProductsQuery();
 
   const { order, sortBy } = query;
@@ -25,11 +25,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <SelectComponent
-        options={PRODUCT_SORT_OPTIONS}
-        onChange={setSorting}
-        value={sortValue}
-      />
       <ProductFilters />
 
       {status === "pending" ? (
@@ -37,7 +32,17 @@ const Dashboard = () => {
       ) : products.length === 0 ? (
         <p>No products found satisfying filters</p>
       ) : (
-        <ProductsList products={products} />
+        <div className="flex flex-col justify-center w-full mt-4 gap-3">
+          <div className="flex justify-end">
+            <SelectComponent
+              options={PRODUCT_SORT_OPTIONS}
+              onChange={setSorting}
+              value={sortValue}
+            />
+          </div>
+
+          <ProductsList products={products} />
+        </div>
       )}
       {hasNextPage && (
         <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
@@ -48,4 +53,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Products;
