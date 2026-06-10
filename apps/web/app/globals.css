@@ -136,4 +136,7 @@
   .event-form-dialog-content-title {
     @apply text-2xl! font-bold!
   }
+  .products-list {
+    @apply grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 w-full max-w-7xl
+  }
 }

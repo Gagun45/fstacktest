@@ -12,7 +12,7 @@ const FavoriteProductsList = ({ products }: Props) => {
     mutate({ isFavorite, productId });
   };
   return (
-    <ul className="flex flex-wrap gap-4">
+    <div className="products-list">
       {products.map((product) => (
         <ProductCard
           key={product.id}
@@ -21,7 +21,7 @@ const FavoriteProductsList = ({ products }: Props) => {
           onToggleFavorite={onToggleFavorite}
         />
       ))}
-    </ul>
+    </div>
   );
 };
 
