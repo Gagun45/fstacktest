@@ -67,16 +67,27 @@ const Checkout = () => {
   };
   if (items.length === 0) return <p>No items in cart</p>;
   return (
-    <>
-      <CheckoutItemsList items={items} />
-      <p>Total: {totalAmount}</p>
-      <CheckoutCustomerInfoForm
-        onSubmit={onSubmit}
-        form={form}
-        onReset={() => form.reset()}
-        isPending={isPending}
-      />
-    </>
+    <div className="grid gap-8 xl:grid-cols-2 w-full">
+      <aside className="order-1 xl:order-2 rounded-lg border p-4">
+        <h2 className="font-semibold">Order summary</h2>
+
+        <CheckoutItemsList items={items} />
+
+        <div className="mt-4 border-t pt-4 flex justify-between font-semibold">
+          <span>Total</span>
+          <span>${totalAmount}</span>
+        </div>
+      </aside>
+
+      <section className="order-2 xl:order-1 flex justify-center">
+        <CheckoutCustomerInfoForm
+          onSubmit={onSubmit}
+          form={form}
+          onReset={() => form.reset()}
+          isPending={isPending}
+        />
+      </section>
+    </div>
   );
 };
 

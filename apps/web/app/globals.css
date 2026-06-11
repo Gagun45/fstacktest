@@ -119,7 +119,7 @@
 
 @layer base {
   form {
-    @apply space-y-6 w-full! max-w-md;
+    @apply space-y-6 w-full!;
   }
   main {
     @apply w-full flex flex-col items-center p-8 min-h-[calc(100vh-96px)] max-w-7xl! mx-auto;

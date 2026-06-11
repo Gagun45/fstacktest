@@ -7,7 +7,7 @@ interface Props {
 
 const CheckoutItemsList = ({ items }: Props) => {
   return (
-    <div className="flex flex-col gap-2 border">
+    <div className="flex flex-col gap-2">
       {items.map((item) => (
         <CheckoutItemCard key={item.id} item={item} />
       ))}
