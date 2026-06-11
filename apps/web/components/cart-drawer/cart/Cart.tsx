@@ -16,22 +16,48 @@ const Cart = ({ onClose }: Props) => {
   const onClearCart = () => {
     dispatch(clearCart());
   };
-  if (items.length === 0) return <p>Cart is empty</p>;
+  if (items.length === 0) {
+    return (
+      <div className="flex flex-1 items-center justify-center text-muted-foreground">
+        Your cart is empty
+      </div>
+    );
+  }
   return (
-    <>
-      <CartItemsList items={items} />
-      <Button onClick={onClearCart} variant={"destructive"}>
-        Clear cart
-      </Button>
-      <p>Total: {totalAmount}</p>
-      <Link
-        onClick={onClose}
-        href={frontendUrls.orders.checkout}
-        className={buttonVariants()}
-      >
-        Proceed to checkout
-      </Link>
-    </>
+    <div className="mt-6 flex min-h-0 flex-1 flex-col">
+      {/* Items */}
+      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+        <CartItemsList items={items} />
+      </div>
+
+      {/* Footer */}
+      <div className="mt-4 border-t p-4">
+        <div className="mb-4 flex items-center justify-between text-lg font-semibold">
+          <span>Total</span>
+          <span>${totalAmount}</span>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => dispatch(clearCart())}
+          >
+            Clear
+          </Button>
+
+          <Link
+            href={frontendUrls.orders.checkout}
+            onClick={onClose}
+            className={buttonVariants({
+              className: "flex-1",
+            })}
+          >
+            Checkout
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

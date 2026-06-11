@@ -24,10 +24,12 @@ const CartDrawer = () => {
           <span>{totalItems}</span>
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="flex flex-col">
         <SheetHeader>
           <SheetTitle>Cart</SheetTitle>
-          <SheetDescription>Manage your items</SheetDescription>
+          <SheetDescription>
+            {totalItems} item{totalItems !== 1 && "s"}
+          </SheetDescription>
         </SheetHeader>
         <Cart onClose={() => setIsOpen(false)} />
       </SheetContent>
