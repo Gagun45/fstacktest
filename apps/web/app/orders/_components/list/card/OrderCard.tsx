@@ -1,21 +1,38 @@
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Card, CardContent } from "@/components/ui/card";
 import { IOrder } from "@repo/shared";
+import OrderDetails from "./details/OrderDetails";
+import OrderHeader from "./header/OrderHeader";
 import OrderItemsList from "./items-list/OrderItemsList";
+import OrderTotal from "./total/OrderTotal";
 
 interface Props {
   order: IOrder;
 }
 
 const OrderCard = ({ order }: Props) => {
-  const createdAt = new Date(order.createdAt);
   return (
-    <div className="border border-amber-300">
-      <p>Order #{order.id}</p>
-      <p>Total: {order.total}</p>
-      <p>Created: {createdAt.toDateString()}</p>
-      <p>Status: {order.status}</p>
-      <p>Address: {order.shippingAddress1}</p>
-      <OrderItemsList items={order.items} />
-    </div>
+    <AccordionItem value={`order-${order.id}`} className="border-none">
+      <Card>
+        <AccordionTrigger className="px-6">
+          <OrderHeader order={order} />
+        </AccordionTrigger>
+
+        <AccordionContent>
+          <CardContent className="space-y-6 pt-0">
+            <OrderDetails order={order} />
+
+            <OrderItemsList items={order.items} />
+
+            <OrderTotal total={order.total} />
+          </CardContent>
+        </AccordionContent>
+      </Card>
+    </AccordionItem>
   );
 };
 

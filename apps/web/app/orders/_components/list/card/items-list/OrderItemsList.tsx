@@ -7,7 +7,7 @@ interface Props {
 
 const OrderItemsList = ({ items }: Props) => {
   return (
-    <div className="flex flex-col gap-4 border p-2 border-b-blue-600">
+    <div className="flex flex-col gap-2">
       {items.map((item) => (
         <OrderItemCard key={item.id} item={item} />
       ))}

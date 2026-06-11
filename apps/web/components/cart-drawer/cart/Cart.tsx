@@ -38,11 +38,7 @@ const Cart = ({ onClose }: Props) => {
         </div>
 
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={() => dispatch(clearCart())}
-          >
+          <Button variant="outline" className="flex-1" onClick={onClearCart}>
             Clear
           </Button>
 

@@ -8,30 +8,59 @@ import { ISortValue, PRODUCT_SORT_OPTIONS } from "@/constants/sort.options";
 import { IProductSortOption } from "@repo/shared";
 import { useProductsQuery } from "@/features/products/lib/use-products-query";
 import Pagination from "@/components/pagination/Pagination";
+import StateScreen from "@/components/general/StateScreen";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { frontendUrls } from "@/lib/frontendUrls";
 
 const MyProducts = () => {
   const { query, setSorting, setPage } = useProductsQuery();
-  const sortValue: ISortValue<IProductSortOption> = `${query.sortBy}-${query.order}`;
-  const { data, isLoading } = useMyProducts(query);
+  const { sortBy, order } = query;
+  const sortValue: ISortValue<IProductSortOption> = `${sortBy}-${order}`;
+  const { data, isLoading, isError } = useMyProducts(query);
   if (isLoading) return <Loader />;
-  if (!data) return <p>Failed to load data</p>;
+  if (isError || !data) {
+    return (
+      <StateScreen
+        title="Couldn't load your products"
+        description="Please try again in a moment."
+      />
+    );
+  }
   const { data: myProducts, pagination } = data;
+  if (myProducts.length === 0) {
+    return (
+      <StateScreen
+        title="You haven't listed any products yet"
+        description="Start by adding your first product to your store."
+        action={
+          <Button asChild>
+            <Link href={frontendUrls.products.create}>Add product</Link>
+          </Button>
+        }
+      />
+    );
+  }
   const { hasNext, hasPrev, page, totalPages } = pagination;
   return (
-    <div>
-      <SelectComponent
-        options={PRODUCT_SORT_OPTIONS}
-        value={sortValue}
-        onChange={setSorting}
-      />
+    <div className="flex flex-col items-center gap-3 w-full">
+      <div className="flex justify-end w-full">
+        <SelectComponent
+          options={PRODUCT_SORT_OPTIONS}
+          value={sortValue}
+          onChange={setSorting}
+        />
+      </div>
       <MyProductsList products={myProducts} />
-      <Pagination
-        hasNext={hasNext}
-        hasPrev={hasPrev}
-        page={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+      <div className="mt-4">
+        <Pagination
+          hasNext={hasNext}
+          hasPrev={hasPrev}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      </div>
     </div>
   );
 };

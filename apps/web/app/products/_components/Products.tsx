@@ -8,9 +8,10 @@ import ProductFilters from "./filters/ProductFilters";
 import ProductsList from "./list/ProductsList";
 import SelectComponent from "@/components/sorting/SelectComponent";
 import { useProductsQuery } from "@/features/products/lib/use-products-query";
+import StateScreen from "@/components/general/StateScreen";
 
 const Products = () => {
-  const { query, setSorting } = useProductsQuery();
+  const { query, setSorting, resetQuery } = useProductsQuery();
 
   const { order, sortBy } = query;
 
@@ -19,7 +20,14 @@ const Products = () => {
   const { data, fetchNextPage, status, hasNextPage, isFetchingNextPage } =
     useProducts(query);
 
-  if (status === "error") return <p>Error loading products.</p>;
+  if (status === "error") {
+    return (
+      <StateScreen
+        title="Couldn't load your products"
+        description="Please try again in a moment."
+      />
+    );
+  }
 
   const products = data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -30,7 +38,11 @@ const Products = () => {
       {status === "pending" ? (
         <Loader />
       ) : products.length === 0 ? (
-        <p>No products found satisfying filters</p>
+        <StateScreen
+          title="No products match your filters"
+          description="Try changing sorting or removing filters to see more results."
+          action={<Button onClick={resetQuery}>Reset sorting</Button>}
+        />
       ) : (
         <div className="flex flex-col justify-center w-full mt-4 gap-3">
           <div className="flex justify-end">
@@ -45,7 +57,11 @@ const Products = () => {
         </div>
       )}
       {hasNextPage && (
-        <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+        <Button
+          className="mt-4"
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+        >
           Load more
         </Button>
       )}
