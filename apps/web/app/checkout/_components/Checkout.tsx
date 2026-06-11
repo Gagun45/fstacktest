@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CheckoutItemsList from "./list/CheckoutItemsList";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 const Checkout = () => {
   const { items, totalAmount } = useAppSelector((s) => s.cart);
@@ -65,7 +67,21 @@ const Checkout = () => {
       },
     );
   };
-  if (items.length === 0) return <p>No items in cart</p>;
+  if (items.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
+        <h1 className="text-2xl font-semibold">Your cart is empty</h1>
+
+        <p className="text-muted-foreground">
+          Add some products before proceeding to checkout.
+        </p>
+
+        <Link href={frontendUrls.products.all} className={buttonVariants()}>
+          Continue shopping
+        </Link>
+      </div>
+    );
+  }
   return (
     <div className="grid gap-8 xl:grid-cols-2 w-full">
       <aside className="order-1 xl:order-2 rounded-lg border p-4">
