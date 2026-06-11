@@ -16,7 +16,7 @@ export const notificationQueryBuilder = (
 
     orderBy: [
       {
-        createdAt: "asc",
+        createdAt: "desc",
       },
     ],
   };
