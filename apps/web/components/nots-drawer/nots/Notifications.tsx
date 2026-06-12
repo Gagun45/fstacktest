@@ -1,53 +1,33 @@
 import Loader from "@/components/general/Loader";
-import { notificationConfig } from "@/constants/notifications";
 import { useReadNotification } from "@/features/notifications/hooks/mutations/use-read-not";
 import { INotification } from "@repo/shared";
-import Link from "next/link";
+import NotificationCard from "./card/NotificationCard";
 
 interface Props {
   notifications: INotification[];
   isLoading: boolean;
+  onNavigate: () => void;
 }
 
-const Notifications = ({ notifications, isLoading }: Props) => {
+const Notifications = ({ notifications, isLoading, onNavigate }: Props) => {
   const { mutate } = useReadNotification();
-  const onMarkAsRead = (notificationId: number) => {
-    mutate({
-      notificationId,
-    });
+
+  const handleRead = (notificationId: number) => {
+    mutate({ notificationId });
   };
+
   if (isLoading) return <Loader />;
+
   return (
     <div className="flex flex-col gap-4">
-      {notifications.map((n) => {
-        const config = notificationConfig[n.type](n);
-
-        return (
-          <div
-            key={n.id}
-            onClick={n.isRead ? undefined : () => onMarkAsRead(n.id)}
-            className="flex items-start gap-3 rounded-lg border p-3"
-          >
-            {!n.isRead && (
-              <div className="mt-1 size-2 shrink-0 rounded-full bg-blue-500" />
-            )}
-
-            <Link href={config.href}>Go to</Link>
-
-            <div>
-              <div
-                className={n.isRead ? "text-muted-foreground" : "font-semibold"}
-              >
-                {config.title}
-              </div>
-
-              <div className="text-sm text-muted-foreground">
-                {config.message}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+      {notifications.map((notification) => (
+        <NotificationCard
+          key={notification.id}
+          notification={notification}
+          onRead={handleRead}
+          onNavigate={onNavigate}
+        />
+      ))}
     </div>
   );
 };

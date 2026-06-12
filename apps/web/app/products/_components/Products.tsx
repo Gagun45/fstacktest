@@ -9,6 +9,8 @@ import ProductsList from "./list/ProductsList";
 import SelectComponent from "@/components/sorting/SelectComponent";
 import { useProductsQuery } from "@/features/products/lib/use-products-query";
 import StateScreen from "@/components/general/StateScreen";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 const Products = () => {
   const { query, setSorting, resetQuery } = useProductsQuery();
@@ -19,6 +21,13 @@ const Products = () => {
 
   const { data, fetchNextPage, status, hasNextPage, isFetchingNextPage } =
     useProducts(query);
+
+  const { ref, inView } = useInView();
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (status === "error") {
     return (
@@ -56,14 +65,13 @@ const Products = () => {
           <ProductsList products={products} />
         </div>
       )}
-      {hasNextPage && (
-        <Button
-          className="mt-4"
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          Load more
-        </Button>
+      {hasNextPage && <div ref={ref} className="h-1" />}
+
+      {isFetchingNextPage && <Loader />}
+      {!hasNextPage && products.length > 0 && (
+        <p className="py-6 text-center text-sm text-muted-foreground">
+          You&apos;ve reached the end of the catalog.
+        </p>
       )}
     </>
   );
