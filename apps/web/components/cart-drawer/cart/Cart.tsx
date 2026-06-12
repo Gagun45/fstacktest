@@ -18,7 +18,7 @@ const Cart = ({ onClose }: Props) => {
   };
   if (items.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center text-muted-foreground">
+      <div className="flex flex-1 text-2xl items-center justify-center text-muted-foreground">
         Your cart is empty
       </div>
     );
@@ -38,7 +38,11 @@ const Cart = ({ onClose }: Props) => {
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline" className="flex-1" onClick={onClearCart}>
+          <Button
+            variant="destructive"
+            className="flex-1"
+            onClick={onClearCart}
+          >
             Clear
           </Button>
 
