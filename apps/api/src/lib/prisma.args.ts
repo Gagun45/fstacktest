@@ -33,7 +33,7 @@ export type IPrismaMyProduct = Prisma.ProductGetPayload<
   typeof productDetailsArgs
 > & { totalSold: number };
 
-export const purchaseArgs = {
+export const orderArgs = {
   include: {
     items: true,
   },

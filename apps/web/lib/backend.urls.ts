@@ -29,8 +29,11 @@ export const backendUrls = {
   },
   orders: {
     checkout: "/orders/checkout",
-    getMyPurchases: "/orders/my/purchases",
-    getMySales: "/orders/my/sales",
+    get: "/orders",
+    getOne: (orderId: number) => `/orders/${orderId}`,
+  },
+  sales: {
+    get: "sales",
   },
   notifications: {
     get: "/notifications",

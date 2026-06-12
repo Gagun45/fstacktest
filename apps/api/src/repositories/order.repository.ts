@@ -19,4 +19,7 @@ export const orderRepository = {
   findMany: <T extends Prisma.OrderFindManyArgs>(
     args: Prisma.SelectSubset<T, Prisma.OrderFindManyArgs>,
   ) => prisma.order.findMany(args),
+  findUnique: <T extends Prisma.OrderFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.OrderFindUniqueArgs>,
+  ) => prisma.order.findUnique(args),
 };

@@ -1,4 +1,4 @@
 export const orderKeys = {
-  purchases: ["purchases"] as const,
+  orders: ["orders"] as const,
   sales: ["sales"] as const,
 };

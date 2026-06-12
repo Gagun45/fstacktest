@@ -2,12 +2,12 @@ import { NotificationType, Prisma } from "@prisma/client";
 import { ICheckoutDto } from "@repo/shared";
 import { StatusCodesEnum } from "../enums/status-codes.enum.js";
 import { ApiError } from "../errors/api.error.js";
-import { purchaseArgs } from "../lib/prisma.args.js";
 import { prisma } from "../lib/prisma.js";
 import { orderRepository } from "../repositories/order.repository.js";
 import { productRepository } from "../repositories/product.repository.js";
 import { sendLiveNotification } from "../socket.js";
 import { notificationService } from "./notification.service.js";
+import { orderArgs, saleArgs } from "../lib/prisma.args.js";
 
 export const orderService = {
   create: async (userId: number, dto: ICheckoutDto) => {
@@ -72,7 +72,7 @@ export const orderService = {
       const newOrder = await orderRepository.create(
         {
           ...orderData,
-          ...purchaseArgs,
+          ...orderArgs,
         },
         tx,
       );
@@ -87,12 +87,23 @@ export const orderService = {
       return newOrder;
     });
   },
-  getPurchasesByUserId: (userId: number) =>
+  getOrdersByUserId: (userId: number) =>
     orderRepository.findMany({
       where: { buyerId: userId },
-      ...purchaseArgs,
+      ...orderArgs,
       orderBy: { createdAt: "desc" },
     }),
+  getOrderById: async (userId: number, orderId: number) => {
+    const order = await orderRepository.findUnique({
+      where: { id: orderId },
+      ...orderArgs,
+    });
+    if (!order)
+      throw new ApiError("Order not found", StatusCodesEnum.NOT_FOUND);
+    if (order.buyerId !== userId)
+      throw new ApiError("Not allowed", StatusCodesEnum.FORBIDDEN);
+    return order;
+  },
   getSalesByUserId: (userId: number) =>
     orderRepository.findMany({
       where: {
@@ -111,4 +122,14 @@ export const orderService = {
         },
       },
     }),
+  getSaleById: async (userId: number, saleId: number) => {
+    const sale = await orderRepository.findUnique({
+      where: { id: saleId },
+      ...saleArgs,
+    });
+    if (!sale) throw new ApiError("Sale not found", StatusCodesEnum.NOT_FOUND);
+    if (sale.buyerId !== userId)
+      throw new ApiError("Not allowed", StatusCodesEnum.FORBIDDEN);
+    return sale;
+  },
 };

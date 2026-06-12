@@ -22,23 +22,47 @@ export const orderController = {
       next(e);
     }
   },
-  getMyPurchases: async (req: Request, res: Response, next: NextFunction) => {
+  getOrders: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = res.locals.currentUserId;
 
       const response: IMyOrdersResponse =
-        await orderService.getPurchasesByUserId(userId);
+        await orderService.getOrdersByUserId(userId);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);
     }
   },
-  getMySales: async (req: Request, res: Response, next: NextFunction) => {
+  getOrderById: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = res.locals.currentUserId;
+      const orderId = Number(req.params["orderId"]);
+
+      const order = await orderService.getOrderById(userId, orderId);
+      const response: IOrder = order;
+      res.status(StatusCodesEnum.OK).json(response);
+    } catch (e) {
+      next(e);
+    }
+  },
+  getSales: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = res.locals.currentUserId;
 
       const sales = await orderService.getSalesByUserId(userId);
       const response: ISaleOrder[] = sales.map(salePresenter.toSaleOrder);
+      res.status(StatusCodesEnum.OK).json(response);
+    } catch (e) {
+      next(e);
+    }
+  },
+  getSaleById: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = res.locals.currentUserId;
+      const saleId = Number(req.params["saleId"]);
+
+      const sale = await orderService.getSaleById(userId, saleId);
+      const response: ISaleOrder = salePresenter.toSaleOrder(sale);
       res.status(StatusCodesEnum.OK).json(response);
     } catch (e) {
       next(e);

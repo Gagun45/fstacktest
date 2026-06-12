@@ -12,9 +12,10 @@ import {
 export const orderService = {
   checkout: (data: ICheckoutDto) =>
     api.post<IOrder>(backendUrls.orders.checkout, data),
-  getMyPurchases: () =>
-    api.get<IMyOrdersResponse>(backendUrls.orders.getMyPurchases),
-  getMySales: () => api.get<ISaleOrder[]>(backendUrls.orders.getMySales),
+  getOrders: () => api.get<IMyOrdersResponse>(backendUrls.orders.get),
+  getOrder: (orderId: number) =>
+    api.get<IOrder>(backendUrls.orders.getOne(orderId)),
+  getSales: () => api.get<ISaleOrder[]>(backendUrls.sales.get),
   updateStatus: ({
     dto,
     orderItemId,

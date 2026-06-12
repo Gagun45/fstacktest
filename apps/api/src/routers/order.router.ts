@@ -13,15 +13,11 @@ router.post(
   orderController.checkout,
 );
 
+router.get("/", authMiddleware.checkAccessToken, orderController.getOrders);
 router.get(
-  "/my/purchases",
+  "/:orderId",
   authMiddleware.checkAccessToken,
-  orderController.getMyPurchases,
-);
-router.get(
-  "/my/sales",
-  authMiddleware.checkAccessToken,
-  orderController.getMySales,
+  orderController.getOrderById,
 );
 
 export const orderRouter = router;
