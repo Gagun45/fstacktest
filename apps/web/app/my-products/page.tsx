@@ -1,17 +1,15 @@
 import Loader from "@/components/general/Loader";
 import { Suspense } from "react";
 import MyProducts from "./_components/MyProducts";
+import PageHeader from "@/components/general/PageHeader";
 
 const MyProductsPage = () => {
   return (
     <main>
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold">My Products</h1>
-
-        <p className="text-muted-foreground">
-          Manage the products you’ve listed for sale.
-        </p>
-      </div>
+      <PageHeader
+        title="My Products"
+        description="Manage the products you’ve listed for sale."
+      />
       <Suspense fallback={<Loader />}>
         <MyProducts />
       </Suspense>
