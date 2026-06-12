@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import Products from "./_components/Products";
+import Loader from "@/components/general/Loader";
 
 const ProductsPage = () => {
   return (
@@ -10,7 +12,9 @@ const ProductsPage = () => {
           Browse our collection and find what you need.
         </p>
       </div>
-      <Products />
+      <Suspense fallback={<Loader />}>
+        <Products />
+      </Suspense>
     </main>
   );
 };
