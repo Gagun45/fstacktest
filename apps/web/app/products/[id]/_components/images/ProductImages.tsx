@@ -11,6 +11,7 @@ interface Props {
 
 const ProductImages = ({ images, title }: Props) => {
   const [active, setActive] = useState(images[0]);
+  if (images.length === 0) return null;
 
   return (
     <div className="space-y-4">

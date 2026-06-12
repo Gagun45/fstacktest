@@ -2,7 +2,7 @@ interface Props {
   total: number;
 }
 
-const OrderTotal = ({ total }: Props) => {
+const OrderCardTotal = ({ total }: Props) => {
   return (
     <div className="flex items-center justify-between border-t pt-4">
       <span className="text-sm text-muted-foreground">Total</span>
@@ -12,4 +12,4 @@ const OrderTotal = ({ total }: Props) => {
   );
 };
 
-export default OrderTotal;
+export default OrderCardTotal;

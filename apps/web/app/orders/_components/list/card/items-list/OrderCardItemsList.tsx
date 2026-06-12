@@ -5,7 +5,7 @@ interface Props {
   items: IOrderItem[];
 }
 
-const OrderItemsList = ({ items }: Props) => {
+const OrderCardItemsList = ({ items }: Props) => {
   return (
     <div className="flex flex-col gap-2">
       {items.map((item) => (
@@ -15,4 +15,4 @@ const OrderItemsList = ({ items }: Props) => {
   );
 };
 
-export default OrderItemsList;
+export default OrderCardItemsList;

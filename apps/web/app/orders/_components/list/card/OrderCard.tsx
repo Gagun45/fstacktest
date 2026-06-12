@@ -5,10 +5,12 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { IOrder } from "@repo/shared";
-import OrderDetails from "./details/OrderDetails";
-import OrderHeader from "./header/OrderHeader";
-import OrderItemsList from "./items-list/OrderItemsList";
-import OrderTotal from "./total/OrderTotal";
+import OrderCardDetails from "./details/OrderCardDetails";
+import OrderCardItemsList from "./items-list/OrderCardItemsList";
+import OrderCardTotal from "./total/OrderCardTotal";
+import Link from "next/link";
+import { frontendUrls } from "@/lib/frontendUrls";
+import OrderCardHeader from "./header/OrderCardHeader";
 
 interface Props {
   order: IOrder;
@@ -19,16 +21,17 @@ const OrderCard = ({ order }: Props) => {
     <AccordionItem value={`order-${order.id}`} className="border-none">
       <Card>
         <AccordionTrigger className="px-4">
-          <OrderHeader order={order} />
+          <OrderCardHeader order={order} />
         </AccordionTrigger>
 
         <AccordionContent>
           <CardContent className="space-y-6 pt-0">
-            <OrderDetails order={order} />
+            <OrderCardDetails order={order} />
 
-            <OrderItemsList items={order.items} />
+            <OrderCardItemsList items={order.items} />
 
-            <OrderTotal total={order.total} />
+            <OrderCardTotal total={order.total} />
+            <Link href={frontendUrls.orders.order(order.id)}>View details</Link>
           </CardContent>
         </AccordionContent>
       </Card>

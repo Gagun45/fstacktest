@@ -1,15 +1,14 @@
 "use client";
 
 import Loader from "@/components/general/Loader";
-import { Button } from "@/components/ui/button";
 import { useProductDetails } from "@/features/products/hooks/queries/use-product-details";
 import ProductActions from "./actions/ProductActions";
+import AddToCartButton from "./add-to-cart-btn/AddToCartButton";
 import ProductDescription from "./description/ProductDescription";
 import ProductImages from "./images/ProductImages";
 import ProductReviews from "./reviews/ProductReviews";
 import ProductSpecs from "./specs/ProductSpecs";
 import ProductReviewSummary from "./summary/ProductReviewSummary";
-import AddToCartButton from "./add-to-cart-btn/AddToCartButton";
 
 interface Props {
   id: number;
@@ -52,7 +51,7 @@ const ProductDetails = ({ id }: Props) => {
           <ProductReviews productId={id} />
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 sticky top-36 self-start">
+        <div className="flex flex-1 flex-col h-fit gap-4 sticky top-32 border p-4 rounded-md">
           <h1 className="text-2xl font-semibold">{product.title}</h1>
           <ProductActions product={product} />
           <ProductReviewSummary product={product} />

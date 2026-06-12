@@ -11,7 +11,7 @@ const AddToCartButton = ({ product }: Props) => {
   return (
     <Button
       variant={isAdded ? "destructive" : "default"}
-      className="fixed bottom-0 left-0 right-0 w-full text-base h-10 rounded-md"
+      className="fixed md:hidden bottom-0 bg-green-600 left-0 right-0 w-full text-base h-12 border-none "
       onClick={toggleCart}
     >
       {isAdded ? "Remove from cart" : "Add to cart"}

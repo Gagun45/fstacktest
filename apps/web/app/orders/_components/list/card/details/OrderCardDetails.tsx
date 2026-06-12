@@ -4,7 +4,7 @@ interface Props {
   order: IOrder;
 }
 
-const OrderDetails = ({ order }: Props) => {
+const OrderCardDetails = ({ order }: Props) => {
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -43,4 +43,4 @@ const OrderDetails = ({ order }: Props) => {
   );
 };
 
-export default OrderDetails;
+export default OrderCardDetails;

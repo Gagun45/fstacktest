@@ -24,7 +24,7 @@ const ProductActions = ({ product }: Props) => {
       </div>
       <Button
         variant={isAdded ? "destructive" : "default"}
-        className="w-full text-base h-10 rounded-md"
+        className="w-full text-base h-10 rounded-md bg-green-600"
         onClick={toggleCart}
       >
         {isAdded ? "Remove from cart" : "Add to cart"}

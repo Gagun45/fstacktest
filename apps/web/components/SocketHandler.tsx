@@ -35,6 +35,7 @@ export default function SocketHandler() {
           toast.info(`New order #${entityId}`, {
             description: "Check out new order",
           });
+          break;
         }
         case "NEW_REVIEW": {
           qclient.invalidateQueries({
@@ -43,6 +44,7 @@ export default function SocketHandler() {
           toast.info(`New review on product #${entityId}`, {
             description: "Check out new review",
           });
+          break;
         }
         default: {
         }

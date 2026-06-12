@@ -15,7 +15,7 @@ export const frontendUrls = {
   orders: {
     checkout: "/checkout",
     orders: "/orders",
-    sales: "/sales",
+    order: (orderId: number) => `/orders/${orderId}`,
   },
   sales: {
     my: "/sales",

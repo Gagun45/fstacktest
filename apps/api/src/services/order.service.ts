@@ -113,6 +113,7 @@ export const orderService = {
           },
         },
       },
+      orderBy: { createdAt: "desc" },
       include: {
         items: {
           where: {

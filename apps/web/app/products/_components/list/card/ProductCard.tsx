@@ -1,11 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { frontendUrls } from "@/lib/frontendUrls";
-import { useAppDispatch, useAppSelector } from "@/redux";
-import { addToCart, removeFromCart } from "@/redux/slices/cart-slice";
-import { IMyProduct, IProductCard } from "@repo/shared";
-import Image from "next/image";
-import Link from "next/link";
-import FavoriteButton from "./fav-btn/FavoriteButton";
 import {
   Card,
   CardContent,
@@ -13,7 +6,11 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { useCartItem } from "@/hooks/use-cart-item";
-import { Heart } from "lucide-react";
+import { frontendUrls } from "@/lib/frontendUrls";
+import { IMyProduct, IProductCard } from "@repo/shared";
+import Image from "next/image";
+import Link from "next/link";
+import FavoriteButton from "./fav-btn/FavoriteButton";
 
 interface Props {
   product: IProductCard | IMyProduct;
@@ -75,8 +72,12 @@ const ProductCard = ({
             <p>Total sold: {(product as IMyProduct).totalSold}</p>
           </div>
         ) : product.isInStock ? (
-          <Button onClick={toggleCart} variant="ghost" size="icon">
-            <Heart className={isAdded ? "fill-red-500 text-red-500" : ""} />
+          <Button
+            variant={isAdded ? "destructive" : "default"}
+            className="w-full rounded-md bg-green-600"
+            onClick={toggleCart}
+          >
+            {isAdded ? "Remove from cart" : "Add to cart"}{" "}
           </Button>
         ) : (
           <Button className="w-full" disabled>

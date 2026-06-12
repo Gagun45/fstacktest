@@ -4,7 +4,7 @@ import { orderKeys } from "../../order.keys";
 
 export const useOrder = (orderId: number) => {
   return useQuery({
-    queryKey: orderKeys.orders,
+    queryKey: orderKeys.order(orderId),
     queryFn: async () => {
       const { data } = await orderService.getOrder(orderId);
       return data;

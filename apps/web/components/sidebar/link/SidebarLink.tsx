@@ -1,7 +1,6 @@
 import { useSidebar } from "@/components/ui/sidebar";
 import { ILink } from "@/types/link.types";
 import Link from "next/link";
-import React from "react";
 
 const SidebarLink = ({
   href,

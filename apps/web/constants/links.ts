@@ -21,7 +21,7 @@ export const USER_LINKS: ILink[] = [
     label: "My orders",
   },
   {
-    href: frontendUrls.orders.sales,
+    href: frontendUrls.sales.my,
     label: "My sales",
   },
   {

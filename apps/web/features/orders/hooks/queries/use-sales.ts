@@ -6,7 +6,7 @@ export const useSales = () => {
   return useQuery({
     queryKey: orderKeys.sales,
     queryFn: async () => {
-      const { data } = await orderService.getMySales();
+      const { data } = await orderService.getSales();
       return data;
     },
   });
