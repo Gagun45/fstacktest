@@ -7,7 +7,7 @@ interface Props {
 
 const SaleItemsList = ({ items }: Props) => {
   return (
-    <div className="bg-gray-600 p-2 flex flex-wrap gap-2">
+    <div className="flex flex-col gap-4 border-t border-dashed border-b py-4">
       {items.map((item) => (
         <SaleItemCard key={item.id} item={item} />
       ))}

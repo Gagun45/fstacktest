@@ -1,5 +1,6 @@
 import { ISaleOrder } from "@repo/shared";
 import SaleCard from "./card/SaleCard";
+import { Accordion } from "@/components/ui/accordion";
 
 interface Props {
   sales: ISaleOrder[];
@@ -7,11 +8,11 @@ interface Props {
 
 const SalesList = ({ sales }: Props) => {
   return (
-    <div className="flex flex-wrap gap-4">
+    <Accordion type="single" collapsible className="gap-8">
       {sales.map((sale) => (
         <SaleCard key={sale.id} sale={sale} />
       ))}
-    </div>
+    </Accordion>
   );
 };
 

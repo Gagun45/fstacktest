@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/select";
 import { useOrderItemUpdateStatus } from "@/features/orders/hooks/mutations/use-upd-status";
 import { IOrderItemStatus, ORDER_ITEM_STATUSES } from "@repo/shared";
+import { X } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -17,8 +18,10 @@ interface Props {
 }
 
 const StatusUpdate = ({ orderItemId, currentStatus }: Props) => {
-  const { mutate } = useOrderItemUpdateStatus();
+  const { mutate, isPending } = useOrderItemUpdateStatus();
+
   const [status, setStatus] = useState<IOrderItemStatus>(currentStatus);
+  const hasChanges = status !== currentStatus;
   const onUpdate = () => {
     mutate(
       {
@@ -39,14 +42,15 @@ const StatusUpdate = ({ orderItemId, currentStatus }: Props) => {
     );
   };
   return (
-    <div>
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
       <Select
         value={status}
         onValueChange={(val) => setStatus(val as IOrderItemStatus)}
       >
-        <SelectTrigger className="w-45">
-          <SelectValue placeholder="Category" />
+        <SelectTrigger className="w-full sm:w-44">
+          <SelectValue />
         </SelectTrigger>
+
         <SelectContent>
           {ORDER_ITEM_STATUSES.map((status) => (
             <SelectItem key={status} value={status}>
@@ -55,9 +59,22 @@ const StatusUpdate = ({ orderItemId, currentStatus }: Props) => {
           ))}
         </SelectContent>
       </Select>
-      <Button onClick={onUpdate} disabled={status === currentStatus}>
-        Update status to: {status}
-      </Button>
+
+      <div className="flex items-center gap-2">
+        <Button onClick={onUpdate} disabled={!hasChanges || isPending}>
+          {isPending ? "Saving..." : "Save"}
+        </Button>
+        {hasChanges && (
+          <Button
+            variant="destructive"
+            size="icon"
+            onClick={() => setStatus(currentStatus)}
+            disabled={isPending}
+          >
+            <X className="size-4" />
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

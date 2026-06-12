@@ -10,18 +10,14 @@ const OrderHeader = ({ order }: Props) => {
   const createdAt = new Date(order.createdAt);
 
   return (
-    <CardHeader>
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <CardTitle>Order #{order.id}</CardTitle>
+    <CardHeader className="flex-1">
+      <CardTitle>Order #{order.id}</CardTitle>
 
-          <CardDescription>
-            Placed on {createdAt.toLocaleDateString()}
-          </CardDescription>
-        </div>
+      <CardDescription>
+        Placed on {createdAt.toLocaleDateString()}
+      </CardDescription>
 
-        <Badge>{order.status}</Badge>
-      </div>
+      <Badge>{order.status}</Badge>
     </CardHeader>
   );
 };
