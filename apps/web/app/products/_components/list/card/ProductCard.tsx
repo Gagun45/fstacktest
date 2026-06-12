@@ -12,6 +12,8 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { useCartItem } from "@/hooks/use-cart-item";
+import { Heart } from "lucide-react";
 
 interface Props {
   product: IProductCard | IMyProduct;
@@ -25,14 +27,7 @@ const ProductCard = ({
   onToggleFavorite,
   isMyProduct,
 }: Props) => {
-  const dispatch = useAppDispatch();
-  const cart = useAppSelector((s) => s.cart);
-  const isAdded = cart.items.some((item) => item.id === product.id);
-  const handleCartClick = () => {
-    if (isAdded) {
-      dispatch(removeFromCart(product.id));
-    } else dispatch(addToCart(product));
-  };
+  const { toggleCart, isAdded } = useCartItem(product);
   return (
     <Card className="h-full overflow-hidden flex flex-col">
       <CardHeader className="p-0">
@@ -80,12 +75,8 @@ const ProductCard = ({
             <p>Total sold: {(product as IMyProduct).totalSold}</p>
           </div>
         ) : product.isInStock ? (
-          <Button
-            className="w-full"
-            variant={isAdded ? "destructive" : "default"}
-            onClick={handleCartClick}
-          >
-            {isAdded ? "Remove from cart" : "Add to cart"}
+          <Button onClick={toggleCart} variant="ghost" size="icon">
+            <Heart className={isAdded ? "fill-red-500 text-red-500" : ""} />
           </Button>
         ) : (
           <Button className="w-full" disabled>

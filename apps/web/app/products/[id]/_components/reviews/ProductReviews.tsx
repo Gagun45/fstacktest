@@ -14,7 +14,6 @@ const ProductReviews = ({ productId }: Props) => {
   const reviews = data?.pages.flatMap((page) => page.data) ?? [];
   return (
     <div className="flex flex-col flex-wrap gap-4">
-      <p>Total reviews: {data.pages[0].pagination.total}</p>
       {reviews.map((rev) => (
         <p key={rev.id} className="border p-2">
           {rev.comment} - {rev.rating}* by {rev.user.username} at{" "}

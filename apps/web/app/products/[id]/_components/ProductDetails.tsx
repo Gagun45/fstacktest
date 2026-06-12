@@ -1,9 +1,15 @@
 "use client";
 
 import Loader from "@/components/general/Loader";
+import { Button } from "@/components/ui/button";
 import { useProductDetails } from "@/features/products/hooks/queries/use-product-details";
-import Image from "next/image";
+import ProductActions from "./actions/ProductActions";
+import ProductDescription from "./description/ProductDescription";
+import ProductImages from "./images/ProductImages";
 import ProductReviews from "./reviews/ProductReviews";
+import ProductSpecs from "./specs/ProductSpecs";
+import ProductReviewSummary from "./summary/ProductReviewSummary";
+import AddToCartButton from "./add-to-cart-btn/AddToCartButton";
 
 interface Props {
   id: number;
@@ -14,21 +20,48 @@ const ProductDetails = ({ id }: Props) => {
   if (isLoading) return <Loader />;
   if (!product) return <p>Failed to load data</p>;
   return (
-    <div>
-      <h1>Product details page</h1>
-      <h2>Title: {product.title}</h2>
-      <p>Seller: {product.seller.username}</p>
-      <div className="flex flex-wrap gap-4">
-        {product.images.map((img) => (
-          <div key={img.id} className="size-24 relative">
-            <Image src={img.url} fill alt="" />
-          </div>
-        ))}
+    <>
+      {/* MOBILE */}
+      <div className="flex flex-col gap-4 xl:hidden pb-12 w-full max-w-2xl">
+        <h1 className="text-2xl font-semibold">{product.title}</h1>
+
+        <ProductImages images={product.images} title={product.title} />
+
+        <p className="text-sm text-muted-foreground">
+          Sold by {product.seller.username}
+        </p>
+        <ProductActions product={product} />
+
+        <ProductDescription description={product.description} />
+
+        <ProductSpecs product={product} />
+
+        <ProductReviewSummary product={product} />
+
+        <ProductReviews productId={id} />
+
+        <AddToCartButton product={product} />
       </div>
-      <ProductReviews productId={id} />
-      {/* <ProductReviews id={id} />
-      <NewReview productId={product.id} /> */}
-    </div>
+
+      {/* DESKTOP */}
+      <div className="hidden xl:flex gap-8 pb-12 w-full">
+        <div className="flex flex-1 flex-col gap-4">
+          <ProductImages images={product.images} title={product.title} />
+          <ProductDescription description={product.description} />
+          <ProductSpecs product={product} />
+          <ProductReviews productId={id} />
+        </div>
+
+        <div className="flex flex-1 flex-col gap-4 sticky top-36 self-start">
+          <h1 className="text-2xl font-semibold">{product.title}</h1>
+          <ProductActions product={product} />
+          <ProductReviewSummary product={product} />
+          <p className="text-sm text-muted-foreground">
+            Sold by {product.seller.username}
+          </p>
+        </div>
+      </div>
+    </>
   );
 };
 
