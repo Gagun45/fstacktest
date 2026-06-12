@@ -10,7 +10,7 @@ const OrderHeader = ({ order }: Props) => {
   const createdAt = new Date(order.createdAt);
 
   return (
-    <CardHeader className="flex-1">
+    <CardHeader className="flex-1 px-0">
       <CardTitle>Order #{order.id}</CardTitle>
 
       <CardDescription>

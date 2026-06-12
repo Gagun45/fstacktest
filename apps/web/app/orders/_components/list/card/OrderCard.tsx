@@ -18,7 +18,7 @@ const OrderCard = ({ order }: Props) => {
   return (
     <AccordionItem value={`order-${order.id}`} className="border-none">
       <Card>
-        <AccordionTrigger>
+        <AccordionTrigger className="px-4">
           <OrderHeader order={order} />
         </AccordionTrigger>
 

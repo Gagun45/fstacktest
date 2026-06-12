@@ -16,7 +16,7 @@ const SaleCard = ({ sale }: Props) => {
   return (
     <AccordionItem value={String(sale.id)} className="border-none">
       <Card>
-        <AccordionTrigger>
+        <AccordionTrigger className="px-4">
           <SaleHeader sale={sale} />
         </AccordionTrigger>
 

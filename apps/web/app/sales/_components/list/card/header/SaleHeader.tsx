@@ -7,7 +7,7 @@ interface Props {
 
 const SaleHeader = ({ sale }: Props) => {
   return (
-    <CardHeader className="flex-1">
+    <CardHeader className="flex-1 px-0">
       <CardTitle>Order #{sale.id}</CardTitle>
 
       <CardDescription>

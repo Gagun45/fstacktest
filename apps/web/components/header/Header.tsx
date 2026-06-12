@@ -11,7 +11,7 @@ const Header = () => {
   const { data: me } = useMe();
   return (
     <header
-      className="h-24 px-4 w-full bg-sidebar flex items-center gap-4
+      className="h-24 sticky top-0 border-b z-20 px-4 w-full bg-sidebar flex items-center gap-4
   "
     >
       {/* <NotificationProvider /> */}
