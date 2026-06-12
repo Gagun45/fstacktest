@@ -1,53 +1,34 @@
 "use client";
 
+import StateScreen from "@/components/general/StateScreen";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useMe } from "@/features/auth/hooks/useMe";
 import { useCheckout } from "@/features/orders/hooks/mutations/use-checkout";
 import CheckoutCustomerInfoForm from "@/forms/checkout/CheckoutCustomerInfoForm";
 import { frontendUrls } from "@/lib/frontendUrls";
 import { useAppDispatch, useAppSelector } from "@/redux";
 import { clearCart } from "@/redux/slices/cart-slice";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { customerInfoSchema, ICustomerInfoDto } from "@repo/shared";
+import { ICustomerInfoDto } from "@repo/shared";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CheckoutItemsList from "./list/CheckoutItemsList";
-import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import StateScreen from "@/components/general/StateScreen";
+import Loader from "@/components/general/Loader";
 
 const Checkout = () => {
   const { items, totalAmount } = useAppSelector((s) => s.cart);
   const dispatch = useAppDispatch();
-  const { data: user } = useMe();
   const router = useRouter();
   const { mutate, isPending } = useCheckout();
-
-  const form = useForm<ICustomerInfoDto>({
-    resolver: zodResolver(customerInfoSchema),
-    defaultValues: {
-      name: user?.name ?? "",
-      email: user?.email ?? "",
-      phone: user?.phone ?? "",
-      shippingCountry: "",
-      shippingAddress1: "",
-      shippingCity: "",
-      shippingAddress2: "",
-      shippingNote: "",
-      shippingPostalCode: "",
-    },
-  });
-  useEffect(() => {
-    if (!user) return;
-
-    form.reset({
-      ...form.getValues(),
-      name: user.name ?? "",
-      email: user.email ?? "",
-      phone: user.phone ?? "",
-    });
-  }, [user, form]);
+  const { data: me, isLoading, isError } = useMe();
+  if (isLoading) return <Loader />;
+  if (isError || !me)
+    return (
+      <StateScreen
+        title="Failed to load user data"
+        description="Try again later"
+      />
+    );
 
   const onSubmit = (values: ICustomerInfoDto) => {
     mutate(
@@ -99,9 +80,8 @@ const Checkout = () => {
 
       <section className="order-2 xl:order-1 flex justify-center">
         <CheckoutCustomerInfoForm
+          user={me}
           onSubmit={onSubmit}
-          form={form}
-          onReset={() => form.reset()}
           isPending={isPending}
         />
       </section>
