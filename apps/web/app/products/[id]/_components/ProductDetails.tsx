@@ -9,15 +9,23 @@ import ProductImages from "./images/ProductImages";
 import ProductReviews from "./reviews/ProductReviews";
 import ProductSpecs from "./specs/ProductSpecs";
 import ProductReviewSummary from "./summary/ProductReviewSummary";
+import StateScreen from "@/components/general/StateScreen";
 
 interface Props {
   id: number;
 }
 
 const ProductDetails = ({ id }: Props) => {
-  const { data: product, isLoading } = useProductDetails(id);
+  const { data: product, isLoading, isError } = useProductDetails(id);
   if (isLoading) return <Loader />;
-  if (!product) return <p>Failed to load data</p>;
+  if (isError || !product) {
+    return (
+      <StateScreen
+        title="Couldn't load this product"
+        description="Please try again in a moment or return to the catalog."
+      />
+    );
+  }
   return (
     <>
       {/* MOBILE */}

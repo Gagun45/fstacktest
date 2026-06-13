@@ -25,6 +25,7 @@ const ProductCard = ({
   isMyProduct,
 }: Props) => {
   const { toggleCart, isAdded } = useCartItem(product);
+  const isOutOfStock = !product.isInStock;
   return (
     <Card className="h-full overflow-hidden flex flex-col">
       <CardHeader className="p-0">
@@ -71,17 +72,20 @@ const ProductCard = ({
             </Button>
             <p>Total sold: {(product as IMyProduct).totalSold}</p>
           </div>
-        ) : product.isInStock ? (
+        ) : (
           <Button
-            variant={isAdded ? "destructive" : "default"}
-            className="w-full rounded-md bg-green-600"
+            disabled={isOutOfStock}
+            variant={
+              isOutOfStock ? "secondary" : isAdded ? "destructive" : "success"
+            }
+            className="w-full text-base h-10 rounded-md"
             onClick={toggleCart}
           >
-            {isAdded ? "Remove from cart" : "Add to cart"}{" "}
-          </Button>
-        ) : (
-          <Button className="w-full" disabled>
-            Out of stock
+            {isOutOfStock
+              ? "Out of stock"
+              : isAdded
+                ? "Remove from cart"
+                : "Add to cart"}
           </Button>
         )}
       </CardFooter>

@@ -9,6 +9,7 @@ interface Props {
 
 const ProductActions = ({ product }: Props) => {
   const { isAdded, toggleCart } = useCartItem(product);
+  const isOutOfStock = !product.isInStock;
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
@@ -23,11 +24,18 @@ const ProductActions = ({ product }: Props) => {
         <ToggleFavoriteButton productId={product.id} />
       </div>
       <Button
-        variant={isAdded ? "destructive" : "default"}
-        className="w-full text-base h-10 rounded-md bg-green-600"
+        disabled={isOutOfStock}
+        variant={
+          isOutOfStock ? "secondary" : isAdded ? "destructive" : "success"
+        }
+        className="w-full text-base h-10 rounded-md"
         onClick={toggleCart}
       >
-        {isAdded ? "Remove from cart" : "Add to cart"}
+        {isOutOfStock
+          ? "Out of stock"
+          : isAdded
+            ? "Remove from cart"
+            : "Add to cart"}
       </Button>
     </div>
   );
