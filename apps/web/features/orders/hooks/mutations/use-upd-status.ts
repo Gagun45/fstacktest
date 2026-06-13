@@ -16,8 +16,9 @@ export const useOrderItemUpdateStatus = () => {
     }
   >({
     mutationFn: orderService.updateStatus,
-    onSuccess: () => {
-      qclient.invalidateQueries({ queryKey: orderKeys.purchases });
+    onSuccess: ({ data: { orderId } }) => {
+      qclient.invalidateQueries({ queryKey: orderKeys.orders });
+      qclient.invalidateQueries({ queryKey: orderKeys.order(orderId) });
       qclient.invalidateQueries({ queryKey: orderKeys.sales });
     },
   });

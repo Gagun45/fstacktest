@@ -14,7 +14,7 @@ export const useCheckout = () => {
   >({
     mutationFn: orderService.checkout,
     onSuccess: () => {
-      qclient.invalidateQueries({ queryKey: orderKeys.purchases });
+      qclient.invalidateQueries({ queryKey: orderKeys.orders });
       qclient.invalidateQueries({ queryKey: orderKeys.sales });
     },
   });
