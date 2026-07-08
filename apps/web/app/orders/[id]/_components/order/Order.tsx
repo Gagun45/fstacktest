@@ -1,12 +1,13 @@
 "use client";
 
+import OrderCardDetails from "@/app/orders/_components/list/card/details/OrderCardDetails";
+import OrderCardHeader from "@/app/orders/_components/list/card/header/OrderCardHeader";
+import OrderCardItemsList from "@/app/orders/_components/list/card/items-list/OrderCardItemsList";
+import OrderCardTotal from "@/app/orders/_components/list/card/total/OrderCardTotal";
 import Loader from "@/components/general/Loader";
 import StateScreen from "@/components/general/StateScreen";
+import { Card, CardContent } from "@/components/ui/card";
 import { useOrder } from "@/features/orders/hooks/queries/use-order";
-import OrderHeader from "./header/OrderHeader";
-import OrderItemsList from "./items-list/OrderItemsList";
-import OrderShipping from "./shipping/OrderShipping";
-import OrderSummary from "./summary/OrderSummary";
 
 interface Props {
   orderId: number;
@@ -29,15 +30,26 @@ const Order = ({ orderId }: Props) => {
   }
 
   return (
-    <div className="space-y-8 w-full">
-      <OrderHeader order={order} />
+    <Card className="w-full p-6">
+      <OrderCardHeader order={order} />
 
-      <OrderItemsList items={order.items} />
+      <CardContent className="space-y-6 pt-0">
+        <OrderCardDetails order={order} />
 
-      <OrderShipping order={order} />
+        <OrderCardItemsList items={order.items} />
 
-      <OrderSummary total={order.total} />
-    </div>
+        <OrderCardTotal total={order.total} />
+      </CardContent>
+    </Card>
+    // <div className="space-y-8 w-full">
+    //   <OrderHeader order={order} />
+
+    //   <OrderItemsList items={order.items} />
+
+    //   <OrderShipping order={order} />
+
+    //   <OrderSummary total={order.total} />
+    // </div>
   );
 };
 
