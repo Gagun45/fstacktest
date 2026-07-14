@@ -10,13 +10,17 @@ export const uploadSingleImage = async (file: File) => {
 
   // 2. upload to s3
 
-  await fetch(uploadUrl, {
+  const response = await fetch(uploadUrl, {
     method: "PUT",
     headers: {
       "Content-Type": file.type,
     },
     body: file,
   });
+
+  if (!response.ok) {
+    throw new Error(`Image upload failed with status ${response.status}`);
+  }
 
   return {
     url: publicUrl,

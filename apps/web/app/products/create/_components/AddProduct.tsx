@@ -15,6 +15,7 @@ const AddProduct = () => {
   const form = useForm<ICreateProductDto>({
     resolver: zodResolver(productSchema),
     defaultValues: {
+      images: [],
       isHotswap: false,
       title: "",
       description: "",

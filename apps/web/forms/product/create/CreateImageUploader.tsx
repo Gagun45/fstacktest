@@ -8,8 +8,13 @@ import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { uploadSingleImage } from "@/lib/upload.image";
 import { ICreateProductDto } from "@repo/shared";
+import { toast } from "sonner";
 
-const CreateImageUploader = () => {
+interface Props {
+  onUploadingChange: (isUploading: boolean) => void;
+}
+
+const CreateImageUploader = ({ onUploadingChange }: Props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -19,23 +24,36 @@ const CreateImageUploader = () => {
   const images = watch("images") ?? [];
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.length) return;
+    const selectedFiles = e.target.files;
+    if (!selectedFiles?.length) return;
+
+    const input = e.target;
+    const remainingSlots = 10 - images.length;
+    const files = Array.from(selectedFiles).slice(0, remainingSlots);
+
+    if (selectedFiles.length > remainingSlots) {
+      toast.error(`You can upload up to ${remainingSlots} more image(s)`);
+    }
 
     try {
       setIsUploading(true);
+      onUploadingChange(true);
 
       const uploadedImages = await Promise.all(
-        Array.from(e.target.files).map((file) => uploadSingleImage(file)),
+        files.map((file) => uploadSingleImage(file)),
       );
 
       setValue("images", [...images, ...uploadedImages], {
+        shouldDirty: true,
         shouldValidate: true,
       });
+    } catch {
+      toast.error("Unable to upload one or more images");
     } finally {
       setIsUploading(false);
+      onUploadingChange(false);
+      input.value = "";
     }
-
-    e.target.value = "";
   };
 
   const handleRemove = (key: string) => {
@@ -43,6 +61,7 @@ const CreateImageUploader = () => {
       "images",
       images.filter((img) => img.key !== key),
       {
+        shouldDirty: true,
         shouldValidate: true,
       },
     );
@@ -54,7 +73,7 @@ const CreateImageUploader = () => {
         hidden
         multiple
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         ref={inputRef}
         onChange={handleUpload}
       />

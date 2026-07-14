@@ -102,10 +102,19 @@ export const productController = {
   getUploadUrl: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { fileName, contentType } = req.body;
-      if (!fileName || !contentType) {
+      const allowedContentTypes = ["image/jpeg", "image/png", "image/webp"];
+
+      if (
+        typeof fileName !== "string" ||
+        !fileName.trim() ||
+        typeof contentType !== "string" ||
+        !allowedContentTypes.includes(contentType)
+      ) {
         return res
-          .status(400)
-          .json({ error: "fileName and contentType required" });
+          .status(StatusCodesEnum.BAD_REQUEST)
+          .json({
+            error: "A valid image file name and content type are required",
+          });
       }
 
       const result = await s3Service.getPresignedUploadUrl(

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { FieldSet } from "@/components/ui/field";
 import { FormProvider, UseFormReturn } from "react-hook-form";
+import { useState } from "react";
 
 import { ICreateProductDto } from "@repo/shared";
 import BaseFields from "../shared-fields/fields/BaseFields";
@@ -21,6 +22,8 @@ interface Props {
 
 const CreateProductForm = ({ form, onSubmit, isPending, onReset }: Props) => {
   const productType = form.watch("type");
+  const [isUploading, setIsUploading] = useState(false);
+  const imageError = form.formState.errors.images;
 
   return (
     <FormProvider {...form}>
@@ -28,7 +31,10 @@ const CreateProductForm = ({ form, onSubmit, isPending, onReset }: Props) => {
         <FieldSet disabled={isPending}>
           <BaseFields />
 
-          <CreateImageUploader />
+          <CreateImageUploader onUploadingChange={setIsUploading} />
+          {imageError && (
+            <p className="text-sm text-destructive">{imageError.message}</p>
+          )}
 
           <ProductTypeSelect disabled={false} />
 
@@ -39,11 +45,16 @@ const CreateProductForm = ({ form, onSubmit, isPending, onReset }: Props) => {
           {productType === "KEYCAPS" && <KeycapFields />}
 
           <div className="flex gap-3">
-            <Button type="submit">
+            <Button type="submit" disabled={isUploading}>
               {isPending ? "Submitting..." : "Create product"}
             </Button>
 
-            <Button type="reset" variant="outline" onClick={onReset}>
+            <Button
+              type="reset"
+              variant="outline"
+              disabled={isUploading}
+              onClick={onReset}
+            >
               Reset
             </Button>
           </div>
