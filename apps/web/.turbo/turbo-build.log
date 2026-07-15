@@ -3,23 +3,34 @@ $ next build
 - Environments: .env.production
 
   Creating an optimized production build ...
-✓ Compiled successfully in 2.9s
+✓ Compiled successfully in 5.4s
   Running TypeScript ...
-  Finished TypeScript in 3.4s ...
-  Collecting page data using 6 workers ...
-  Generating static pages using 6 workers (0/5) ...
-https://fstacktest.onrender.com
-  Generating static pages using 6 workers (1/5) 
-  Generating static pages using 6 workers (2/5) 
-  Generating static pages using 6 workers (3/5) 
-✓ Generating static pages using 6 workers (5/5) in 695ms
+  Finished TypeScript in 6.3s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/13) ...
+  Generating static pages using 15 workers (3/13) 
+  Generating static pages using 15 workers (6/13) 
+  Generating static pages using 15 workers (9/13) 
+✓ Generating static pages using 15 workers (13/13) in 452ms
   Finalizing page optimization ...
 
-Route (app)      Revalidate  Expire
-┌ ○ /                   15s      1y
+Route (app)
+┌ ○ /
 ├ ○ /_not-found
-└ ○ /auth
+├ ○ /auth
+├ ○ /checkout
+├ ○ /my-products
+├ ○ /orders
+├ ƒ /orders/[id]
+├ ○ /populate
+├ ○ /products
+├ ƒ /products/[id]
+├ ƒ /products/[id]/edit
+├ ○ /products/create
+├ ○ /products/favorites
+└ ○ /sales
 
 
-○  (Static)  prerendered as static content
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
 

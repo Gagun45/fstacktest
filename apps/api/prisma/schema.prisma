@@ -3,6 +3,9 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+// pnpm exec prisma generate
+// pnpm exec prisma migrate dev
+
 // pnpm prisma migrate dev --name _
 //
 
@@ -32,20 +35,15 @@ enum CategoryType {
 }
 
 enum OrderStatus {
-  PENDING
   PROCESSING
-  SHIPPED
   DELIVERED
   CANCELLED
 }
 
 enum OrderItemStatus {
-  PENDING
   PROCESSING
-  SHIPPED
   DELIVERED
   CANCELLED
-  REFUNDED
 }
 
 enum NotificationType {
@@ -206,7 +204,7 @@ model Order {
 
   total Float
 
-  status OrderStatus @default(PENDING)
+  status OrderStatus @default(PROCESSING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -230,7 +228,7 @@ model OrderItem {
   quantity    Int
   seller      User            @relation(fields: [sellerId], references: [id])
   sellerId    Int
-  status      OrderItemStatus @default(PENDING)
+  status      OrderItemStatus @default(PROCESSING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

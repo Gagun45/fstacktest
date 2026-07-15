@@ -1,10 +1,7 @@
 export const ORDER_ITEM_STATUSES = [
-  "PENDING",
   "CANCELLED",
   "PROCESSING",
-  "SHIPPED",
   "DELIVERED",
-  "REFUNDED",
 ] as const;
 
 export type IOrderItemStatus = (typeof ORDER_ITEM_STATUSES)[number];

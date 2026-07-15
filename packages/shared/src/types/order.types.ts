@@ -1,12 +1,6 @@
 import { IOrderItem } from "./order-item.types";
 
-export const ORDER_STATUSES = [
-  "PENDING",
-  "CANCELLED",
-  "PROCESSING",
-  "SHIPPED",
-  "DELIVERED",
-] as const;
+export const ORDER_STATUSES = ["CANCELLED", "PROCESSING", "DELIVERED"] as const;
 
 export type IOrderStatus = (typeof ORDER_STATUSES)[number];
 
